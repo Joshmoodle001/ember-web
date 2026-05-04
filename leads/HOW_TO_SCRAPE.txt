@@ -1,0 +1,18 @@
+HOW TO SCRAPE ADDITIONAL LEADS
+==================================================
+
+Docker Desktop is not running. To scrape leads:
+
+1. Start Docker Desktop (wait for it to fully load)
+2. Open PowerShell
+3. cd "C:\Users\joshm\Desktop\App\EMBER WEB\ember-web-futuristic\leads"
+4. .\scrape_top_businesses.ps1
+
+Or manually run:
+  docker run --name gmaps-scraper \
+    -v gmaps-playwright-cache:/opt \
+    -v "C:\Users\joshm\Desktop\App\EMBER WEB\ember-web-futuristic\leads\scrape_queries.txt:/queries.txt" \
+    -v "C:\Users\joshm\Desktop\App\EMBER WEB\ember-web-futuristic\leads\gmaps_top_businesses.csv:/results.csv" \
+    gosom/google-maps-scraper \
+    -input /queries.txt -results /results.csv \
+    -exit-on-inactivity 5m -depth 3 -email -lang en -c 4
