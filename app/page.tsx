@@ -62,8 +62,8 @@ export default function Home() {
         <div className="hero-grain" aria-hidden="true" />
         <nav className="nav" aria-label="Main navigation">
           <a className="brand" href="#top" aria-label="EmberWeb home">EMBER<span>WEB</span></a>
-          <div className="nav-links"><a href="/packages">Packages</a><a href="/audit">Free audits</a><a href="#method">Our approach</a></div>
-          <a className="nav-cta" href="mailto:info@emberweb.co.za?subject=New%20EmberWeb%20project">Start a project <Arrow /></a>
+          <div className="nav-links"><a href="/work">Work</a><a href="/packages">Packages</a><a href="/audit">Free audits</a><a href="#method">Our approach</a></div>
+          <a className="nav-cta" href="/start">Start a project <Arrow /></a>
         </nav>
         <div className="hero-copy" data-reveal>
           <p className="eyebrow"><i /> Independent digital studio · South Africa</p>
@@ -124,7 +124,7 @@ export default function Home() {
       <section className="trust" data-reveal><div><p className="section-label">[ Made to stay ]</p><h2>A site that feels like a <em>safe pair of hands.</em></h2></div><div className="trust-grid"><article><b>01</b><h3>We stay after launch</h3><p>Hosting, updates, backups and someone to call when you need help.</p></article><article><b>02</b><h3>Your business stays yours</h3><p>Your domain is yours. Your content is portable. No mystery handover.</p></article><article><b>03</b><h3>Made for local action</h3><p>Fast mobile journeys, WhatsApp, maps and obvious ways to enquire.</p></article><a className="whatsapp" href="https://wa.me/27825106642">Talk to us on WhatsApp <Arrow /></a></div></section>
 
       <section className="closing" data-reveal><img src="/visuals/next-chapter.png" alt="An entrepreneur walking toward their next chapter" /><div><p className="section-label">[ Your next chapter ]</p><h2>Let&apos;s make<br />something <em>unmissable.</em></h2><a className="closing-cta" href="mailto:info@emberweb.co.za?subject=New%20EmberWeb%20project">Tell us where you&apos;re going <Arrow /></a></div></section>
-      <footer><a className="brand" href="#top">EMBER<span>WEB</span></a><p>© {new Date().getFullYear()} EmberWeb. Crafted with intent.</p><a href="mailto:info@emberweb.co.za">info@emberweb.co.za</a></footer>
+      <footer><a className="brand" href="#top">EMBER<span>WEB</span></a><p>© {new Date().getFullYear()} EmberWeb. Crafted with intent.</p><nav className="footer-links" aria-label="Explore EmberWeb"><a href="/work">Work</a><a href="/industries">Industries</a><a href="/care">EmberCare</a><a href="/policies">Policies</a></nav><a href="mailto:info@emberweb.co.za">info@emberweb.co.za</a></footer>
     </main>
   );
 }
