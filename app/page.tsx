@@ -60,11 +60,6 @@ export default function Home() {
       <div className="progress" aria-hidden="true" />
       <section className="hero" id="top">
         <div className="hero-grain" aria-hidden="true" />
-        <nav className="nav" aria-label="Main navigation">
-          <a className="brand" href="#top" aria-label="EmberWeb home">EMBER<span>WEB</span></a>
-          <div className="nav-links"><a href="/work">Work</a><a href="/packages">Packages</a><a href="/audit">Free audits</a><a href="#method">Our approach</a></div>
-          <a className="nav-cta" href="/start">Start a project <Arrow /></a>
-        </nav>
         <div className="hero-copy" data-reveal>
           <p className="eyebrow"><i /> Independent digital studio · South Africa</p>
           <h1>Websites with<br /><em>real pull.</em></h1>
