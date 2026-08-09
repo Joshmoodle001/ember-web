@@ -56,7 +56,7 @@ export default function Home() {
   }, []);
 
   return (
-    <main>
+    <main id="main-content">
       <div className="progress" aria-hidden="true" />
       <section className="hero" id="top">
         <div className="hero-grain" aria-hidden="true" />

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 import "./globals.css";
 import { SiteNav } from "./components/site-nav";
+import { SiteSupport } from "./components/site-support";
 
 const geist = Geist({ variable: "--font-geist", subsets: ["latin"] });
 
@@ -14,5 +15,6 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="en"><body className={geist.variable}><SiteNav />{children}</body></html>;
+  const structuredData = { "@context": "https://schema.org", "@type": "ProfessionalService", name: "EmberWeb", url: "https://emberweb.co.za", email: "info@emberweb.co.za", telephone: "+27825106642", areaServed: "South Africa", serviceType: ["Website design", "Web applications", "Business automation"] };
+  return <html lang="en"><body className={geist.variable}><a className="skip-link" href="#main-content">Skip to content</a><SiteNav />{children}<SiteSupport /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} /></body></html>;
 }
