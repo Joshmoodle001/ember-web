@@ -13,5 +13,6 @@
 - [x] Added CSS-built geometric vector accents without introducing external icon dependencies.
 - [x] Checked phone, tablet and desktop layouts for adaptive grids and horizontal overflow.
 - [x] Audited every text-over-image treatment and added reliable contrast surfaces or overlays.
+- [x] Rebuilt Packages and Free Audits as independent, conversion-focused workflows.
 - [ ] Add confirmed PayFast payment-link URLs when supplied.
 - [ ] Complete custom-domain DNS verification at Domains.co.za for `emberweb.co.za`.
