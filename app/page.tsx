@@ -40,7 +40,8 @@ export default function Home() {
         <nav className="nav" aria-label="Main navigation">
           <a className="brand" href="#top" aria-label="EmberWeb home">EMBER<span>WEB</span></a>
           <div className="nav-links">
-            <a href="#services">What we do</a>
+            <a href="/packages">Packages</a>
+            <a href="/audit">Free audits</a>
             <a href="#approach">Our approach</a>
           </div>
           <a className="nav-cta" href="mailto:hello@emberweb.co.za?subject=Let's%20build%20something%20better">Start a project <Arrow /></a>
@@ -59,6 +60,8 @@ export default function Home() {
       </section>
 
       <section className="qualifier" data-reveal><p className="section-label">[ Find your launch path ]</p><div><span>0{Math.min(step + 1, 3)} / 03</span><h2>{step < 2 ? questions[step][0] : "Ready to talk through your project?"}</h2>{step < 2 ? <div className="answers">{questions[step].slice(1).map((answer) => <button key={answer} onClick={() => setStep(step + 1)}>{answer} <Arrow /></button>)}</div> : <div className="answers"><a href="mailto:info@emberweb.co.za?subject=Book%20a%20free%20meeting">Yes — let’s book a meeting <Arrow /></a><a href="mailto:info@emberweb.co.za?subject=I%20have%20a%20few%20questions">I have a few questions first <Arrow /></a></div>}</div><p>No signup needed. We use this to point you to the right conversation—not the whole catalogue.</p></section>
+
+      <section className="trust" data-reveal><div><p className="section-label">[ Made to stay ]</p><h2>Your website should feel<br/>like a <em>safe pair of hands.</em></h2></div><div className="trust-grid"><article><b>01</b><h3>We stay after launch</h3><p>Hosting, monitoring, updates, backups and someone to call when you need help.</p></article><article><b>02</b><h3>Your business stays yours</h3><p>Your domain is yours. Your content can be exported. No mystery handover.</p></article><article><b>03</b><h3>Built for local action</h3><p>Click-to-WhatsApp, maps, fast mobile experiences and clear ways for customers to enquire.</p></article><a className="whatsapp" href="https://wa.me/27825106642">Talk to us on WhatsApp <Arrow /></a></div></section>
 
       <section className="marquee"><div>WEB DESIGN <b>✦</b> HOSTING <b>✦</b> AI AUTOMATION <b>✦</b> BUSINESS SYSTEMS <b>✦</b> WEB DESIGN <b>✦</b> HOSTING <b>✦</b> AI AUTOMATION <b>✦</b> BUSINESS SYSTEMS <b>✦</b></div></section>
 
