@@ -71,6 +71,8 @@ export default function Home() {
         <p className="statement-note">EmberWeb combines clear thinking, considered craft, and smart technology to build digital experiences people choose to use.</p>
       </section>
 
+      <section className="human-story" data-reveal><img src="/human-story.png" alt="A business owner and web designer working together"/><div><p className="section-label">[ Real people. Real momentum. ]</p><h2>Good digital work<br/>starts with a <em>real conversation.</em></h2><p>We work closely with founders and teams to make the next move feel clear. No agency fog. No ticket maze. Just practical thinking and people who stay involved.</p><a href="mailto:info@emberweb.co.za?subject=Let%27s%20talk">Meet your digital partner <Arrow /></a></div></section>
+
       <section className="services" id="services" data-reveal>
         <div className="section-heading">
           <p className="section-label">[ How we help ]</p>
