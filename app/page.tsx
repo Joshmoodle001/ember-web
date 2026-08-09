@@ -62,7 +62,7 @@ export default function Home() {
         <div className="hero-grain" aria-hidden="true" />
         <div className="hero-copy" data-reveal>
           <p className="eyebrow"><i /> Independent digital studio · South Africa</p>
-          <h1>Websites with<br /><em>real pull.</em></h1>
+          <h1 className="typed-headline" aria-label="Websites with real pull."><span className="typed-line">Websites with</span><em className="typed-line typed-line-accent">real pull.</em></h1>
           <div className="hero-foot"><p>We turn good businesses into vivid digital experiences that get remembered, trusted and chosen.</p><a className="round-link" href="#story" aria-label="Explore the EmberWeb story"><Arrow /></a></div>
         </div>
         <div className="hero-art parallax-layer" data-parallax=".34" aria-hidden="true"><img src="/visuals/hero-3d.png" alt="" /><span className="orb orb-one" /><span className="orb orb-two" /><span className="vector-shape triangle" /><b>EW</b></div>

@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
-import { Geist } from "next/font/google";
+import { DM_Mono, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import { SiteNav } from "./components/site-nav";
 import { SiteSupport } from "./components/site-support";
+import { SiteIntro } from "./components/site-intro";
 
-const geist = Geist({ variable: "--font-geist", subsets: ["latin"] });
+const display = Space_Grotesk({ variable: "--font-display", subsets: ["latin"] });
+const mono = DM_Mono({ variable: "--font-mono", subsets: ["latin"], weight: ["400", "500"] });
 
 export const metadata: Metadata = {
   title: "EmberWeb | Websites that move business forward",
@@ -16,5 +18,5 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const structuredData = { "@context": "https://schema.org", "@type": "ProfessionalService", name: "EmberWeb", url: "https://emberweb.co.za", email: "info@emberweb.co.za", telephone: "+27825106642", areaServed: "South Africa", serviceType: ["Website design", "Web applications", "Business automation"] };
-  return <html lang="en"><body className={geist.variable}><a className="skip-link" href="#main-content">Skip to content</a><SiteNav />{children}<SiteSupport /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} /></body></html>;
+  return <html lang="en"><body className={`${display.variable} ${mono.variable}`}><a className="skip-link" href="#main-content">Skip to content</a><SiteIntro /><SiteNav />{children}<SiteSupport /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} /></body></html>;
 }
