@@ -4,20 +4,20 @@ const services = [
   {
     number: "01",
     title: "Web experiences",
-    text: "Distinctive, fast websites that turn the right attention into real enquiries.",
-    tags: ["Strategy", "Design", "Development"],
+    text: "Done-for-you websites: strategy, design, build, hosting and ongoing support in one focused team.",
+    tags: ["Web design", "E-commerce", "Web apps"],
   },
   {
     number: "02",
-    title: "Useful software",
-    text: "Purpose-built apps and client portals that make the complicated feel obvious.",
-    tags: ["Web apps", "Portals", "Integrations"],
+    title: "Always-on care",
+    text: "Hosting, SSL, backups, updates, monitoring and human support—handled after launch, not forgotten after invoice.",
+    tags: ["Hosting", "Maintenance", "Support"],
   },
   {
     number: "03",
     title: "Automation systems",
-    text: "AI-powered workflows that reclaim time, sharpen follow-up, and keep business moving.",
-    tags: ["AI", "Operations", "Growth"],
+    text: "Practical automation and AI systems that remove repetitive work and make follow-up faster.",
+    tags: ["AI readiness", "Automation", "Consulting"],
   },
 ];
 
@@ -46,6 +46,8 @@ export default function Home() {
         <p className="scroll">SCROLL TO EXPLORE <span>↓</span></p>
       </section>
 
+      <section className="marquee"><div>WEB DESIGN <b>✦</b> HOSTING <b>✦</b> AI AUTOMATION <b>✦</b> BUSINESS SYSTEMS <b>✦</b> WEB DESIGN <b>✦</b> HOSTING <b>✦</b> AI AUTOMATION <b>✦</b> BUSINESS SYSTEMS <b>✦</b></div></section>
+
       <section className="statement">
         <p className="section-label">[ Built for momentum ]</p>
         <h2>Not another digital<br />agency. A <em>growth partner</em><br />with taste and teeth.</h2>
@@ -72,6 +74,8 @@ export default function Home() {
         <div className="approach-visual"><p>GOOD WORK<br />STARTS WITH<br /><em>GOOD QUESTIONS.</em></p><div className="grid-mark" /></div>
         <div className="approach-copy"><p className="section-label">[ The Ember method ]</p><h2>Clarity first.<br /><em>Everything else</em><br />follows.</h2><p>We get close to the problem before we open a design tool. That means fewer assumptions, stronger decisions, and work that earns its place in your business.</p><ol><li><span>01</span> Find the signal</li><li><span>02</span> Shape the solution</li><li><span>03</span> Build for the real world</li></ol></div>
       </section>
+
+      <section className="showcase"><div className="showcase-intro"><p className="section-label">[ Proof in the process ]</p><h2>Designed to make<br/>your next client <em>stop scrolling.</em></h2><p>EmberWeb is the kind of experience we build for our clients: clear on a phone, memorable in a pitch, and alive in the details.</p></div><div className="artifact"><img src="/ember-artifact.png" alt="Abstract EmberWeb digital artwork"/><div className="artifact-copy"><span>01 / VISUAL SYSTEM</span><strong>Motion with a reason</strong><p>Layered imagery, considered type, and responsive interactions—made to signal quality before a word is read.</p></div></div><div className="outcomes"><article><span>01</span><h3>Choose a pace</h3><p>Need to launch this month? Prefer a considered 4–6 week build? We shape the work around the opportunity.</p></article><article><span>02</span><h3>Keep it simple</h3><p>One team manages the work from first idea to updates, support, and the systems behind it.</p></article><article><span>03</span><h3>Pay when ready</h3><p>We scope together first. Payment links come only once you’re happy with the way forward.</p></article></div></section>
 
       <section className="closing">
         <p className="section-label">[ Your next chapter ]</p>
