@@ -8,5 +8,9 @@
 - [x] Built a 20-image original EmberWeb visual archive in `public/visuals`.
 - [x] Added new warm local-business storytelling imagery across key sections.
 - [x] Preserved the existing packages, audits, enquiry, WhatsApp and project-qualifier paths.
+- [x] Added scroll-driven parallax and fade choreography, with reduced-motion support.
+- [x] Reframed the visual archive as a client-facing creative-direction service.
+- [x] Added CSS-built geometric vector accents without introducing external icon dependencies.
+- [x] Checked phone, tablet and desktop layouts for adaptive grids and horizontal overflow.
 - [ ] Add confirmed PayFast payment-link URLs when supplied.
 - [ ] Complete custom-domain DNS verification at Domains.co.za for `emberweb.co.za`.
