@@ -1,8 +1,8 @@
 const packages = [
-  ["01", "Launch Lite", "A smart, credible first presence.", "A focused, mobile-first website with the essentials to get found and start building trust.", "Best for new businesses", "R1,990", "R549", ["Mobile-first website", "Managed hosting + SSL", "Backups + support"]],
-  ["02", "Starter", "Turn attention into leads.", "A fuller content experience with local SEO foundations, enquiry paths and ongoing care.", "Best for service businesses", "R4,990", "R749", ["Everything in Launch Lite", "Lead-focused pages", "Google-ready foundations"]],
-  ["03", "Business", "Make the site part of the operation.", "More pages, deeper conversion journeys, integrations and a stronger growth foundation.", "Best for established teams", "R8,990", "R1,190", ["Everything in Starter", "Conversion journeys", "Integrations + support"]],
-  ["04", "Growth", "Build beyond a brochure site.", "A tailored digital system: web app, automation, dashboard or customer experience.", "Best for ambitious teams", "From R15,000", "R1,990", ["Custom digital system", "Automation planning", "Built around your workflow"]],
+  ["01", "Launch Lite", "A smart, credible first presence.", "A focused, mobile-first website with the essentials to get found and start building trust.", "Best for new businesses", "R1,500", "R799", ["Mobile-first website", "Managed hosting + SSL", "Backups + support"]],
+  ["02", "Starter", "Turn attention into leads.", "A fuller content experience with local SEO foundations, enquiry paths and ongoing care.", "Best for service businesses", "R2,500", "R999", ["Everything in Launch Lite", "Lead-focused pages", "Google-ready foundations"]],
+  ["03", "Business", "Make the site part of the operation.", "More pages, deeper conversion journeys, integrations and a stronger growth foundation.", "Best for established teams", "R4,000", "R1,250", ["Everything in Starter", "Conversion journeys", "Integrations + support"]],
+  ["04", "Growth", "Build beyond a brochure site.", "A tailored digital system: web app, automation, dashboard or customer experience.", "Best for ambitious teams", "R6,000", "R1,500", ["Custom digital system", "Automation planning", "Built around your workflow"]],
 ];
 
 export default function Packages() {

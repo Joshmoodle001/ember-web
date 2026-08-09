@@ -15,5 +15,6 @@
 - [x] Audited every text-over-image treatment and added reliable contrast surfaces or overlays.
 - [x] Rebuilt Packages and Free Audits as independent, conversion-focused workflows.
 - [x] Benchmarked current South African competitors and added transparent launch-fee + monthly-care pricing.
+- [x] Updated the launch-fee ladder to R1,500 / R2,500 / R4,000 / R6,000 and care to R799–R1,500 monthly.
 - [ ] Add confirmed PayFast payment-link URLs when supplied.
 - [ ] Complete custom-domain DNS verification at Domains.co.za for `emberweb.co.za`.
