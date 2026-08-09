@@ -9,7 +9,7 @@ export function SiteIntro() {
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || localStorage.getItem("emberweb-intro-seen")) return;
     setShow(true);
-    const timer = window.setTimeout(() => { localStorage.setItem("emberweb-intro-seen", "true"); setShow(false); }, 4800);
+    const timer = window.setTimeout(() => { localStorage.setItem("emberweb-intro-seen", "true"); setShow(false); }, 6500);
     return () => window.clearTimeout(timer);
   }, []);
   const finish = () => { localStorage.setItem("emberweb-intro-seen", "true"); setShow(false); };
