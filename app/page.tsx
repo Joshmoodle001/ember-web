@@ -80,7 +80,7 @@ export default function Home() {
 
       <section className="human-story" id="story" data-reveal>
         <div className="human-photo parallax-layer" data-parallax=".11"><img src="/visuals/founder-collab.png" alt="A business owner and web designer working together" /><span>REAL PEOPLE / REAL PROGRESS</span></div>
-        <div className="human-copy"><p className="section-label">[ Start human ]</p><h2>Good work begins with a <em>good conversation.</em></h2><p>We listen closely, ask the useful questions and build alongside founders who care about where their business is headed. No agency fog. No ticket maze.</p><a href="mailto:info@emberweb.co.za?subject=Let%27s%20talk">Meet your digital partner <Arrow /></a></div>
+        <div className="human-copy"><p className="section-label">[ Start human ]</p><h2>Good work begins with a <em>good conversation.</em></h2><p>We listen closely, ask the useful questions and build alongside founders who care about where their business is headed. No agency fog. No ticket maze.</p><a href="/start?source=digital-partner">Meet your digital partner <Arrow /></a></div>
       </section>
 
       <section className="scroll-story" data-reveal>
@@ -94,7 +94,7 @@ export default function Home() {
 
       <section className="services" data-reveal>
         <div className="section-heading"><p className="section-label">[ What we build ]</p><p>A small, senior team for the digital moments that can change the direction of your business.</p></div>
-        <div className="service-list">{services.map(([number, title, text, image]) => <article className="service" key={number}><div className="service-index">{number}</div><div className="service-text"><h3>{title}</h3><p>{text}</p><a href="mailto:info@emberweb.co.za?subject=I%27m%20interested%20in%20EmberWeb">Explore this <Arrow /></a></div><img src={image} alt="" loading="lazy" /></article>)}</div>
+        <div className="service-list">{services.map(([number, title, text, image]) => <article className="service" key={number}><div className="service-index">{number}</div><div className="service-text"><h3>{title}</h3><p>{text}</p><a href={`/start?service=${encodeURIComponent(title)}`}>Explore this <Arrow /></a></div><img src={image} alt="" loading="lazy" /></article>)}</div>
       </section>
 
       <section className="method" id="method" data-reveal>
@@ -113,12 +113,12 @@ export default function Home() {
       </section>
 
       <section className="qualifier" data-reveal>
-        <p className="section-label">[ Find your launch path ]</p><div><span>0{Math.min(step + 1, 3)} / 03</span><h2>{step < 2 ? questions[step][0] : "Ready to make it real?"}</h2>{step < 2 ? <div className="answers">{questions[step].slice(1).map((answer) => <button key={answer} onClick={() => setStep(step + 1)}>{answer} <Arrow /></button>)}</div> : <div className="answers"><a href="mailto:info@emberweb.co.za?subject=Book%20a%20free%20meeting">Book a free meeting <Arrow /></a><a href="mailto:info@emberweb.co.za?subject=I%20have%20a%20few%20questions">I have a few questions <Arrow /></a></div>}</div><p>No signup needed. Just a useful first conversation about what is possible.</p>
+        <p className="section-label">[ Find your launch path ]</p><div><span>0{Math.min(step + 1, 3)} / 03</span><h2>{step < 2 ? questions[step][0] : "Ready to make it real?"}</h2>{step < 2 ? <div className="answers">{questions[step].slice(1).map((answer) => <button key={answer} onClick={() => setStep(step + 1)}>{answer} <Arrow /></button>)}</div> : <div className="answers"><a href="/start?intent=book-meeting">Book a free meeting <Arrow /></a><a href="/start?intent=questions">I have a few questions <Arrow /></a></div>}</div><p>No signup needed. Just a useful first conversation about what is possible.</p>
       </section>
 
       <section className="trust" data-reveal><div><p className="section-label">[ Made to stay ]</p><h2>A site that feels like a <em>safe pair of hands.</em></h2></div><div className="trust-grid"><article><b>01</b><h3>We stay after launch</h3><p>Hosting, updates, backups and someone to call when you need help.</p></article><article><b>02</b><h3>Your business stays yours</h3><p>Your domain is yours. Your content is portable. No mystery handover.</p></article><article><b>03</b><h3>Made for local action</h3><p>Fast mobile journeys, WhatsApp, maps and obvious ways to enquire.</p></article><a className="whatsapp" href="https://wa.me/27825106642">Talk to us on WhatsApp <Arrow /></a></div></section>
 
-      <section className="closing" data-reveal><img src="/visuals/next-chapter.png" alt="An entrepreneur walking toward their next chapter" /><div><p className="section-label">[ Your next chapter ]</p><h2>Let&apos;s make<br />something <em>unmissable.</em></h2><a className="closing-cta" href="mailto:info@emberweb.co.za?subject=New%20EmberWeb%20project">Tell us where you&apos;re going <Arrow /></a></div></section>
+      <section className="closing" data-reveal><img src="/visuals/next-chapter.png" alt="An entrepreneur walking toward their next chapter" /><div><p className="section-label">[ Your next chapter ]</p><h2>Let&apos;s make<br />something <em>unmissable.</em></h2><a className="closing-cta" href="/start?source=closing">Tell us where you&apos;re going <Arrow /></a></div></section>
       <footer><a className="brand" href="#top">EMBER<span>WEB</span></a><p>© {new Date().getFullYear()} EmberWeb. Crafted with intent.</p><nav className="footer-links" aria-label="Explore EmberWeb"><a href="/work">Work</a><a href="/industries">Industries</a><a href="/care">EmberCare</a><a href="/policies">Policies</a></nav><a href="mailto:info@emberweb.co.za">info@emberweb.co.za</a></footer>
     </main>
   );
