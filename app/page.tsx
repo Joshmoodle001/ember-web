@@ -35,6 +35,15 @@ export default function Home() {
       const progress = Math.min(1, window.scrollY / Math.max(1, document.body.scrollHeight - window.innerHeight));
       document.documentElement.style.setProperty("--scroll", `${progress}`);
       document.documentElement.style.setProperty("--depth", `${Math.min(1, window.scrollY / 1000)}`);
+      if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        document.querySelectorAll<HTMLElement>("[data-parallax]").forEach((item) => {
+          const rect = item.getBoundingClientRect();
+          const amount = Number(item.dataset.parallax ?? 0.1);
+          const position = Math.max(-1, Math.min(1, (rect.top + rect.height / 2 - window.innerHeight / 2) / window.innerHeight));
+          item.style.setProperty("--parallax", `${position * amount * -100}`);
+          item.style.setProperty("--fade", `${Math.max(0, 1 - Math.abs(position) * 0.32)}`);
+        });
+      }
     };
     const observer = new IntersectionObserver(
       (entries) => entries.forEach((entry) => entry.isIntersecting && entry.target.classList.add("is-visible")),
@@ -61,7 +70,7 @@ export default function Home() {
           <h1>Websites with<br /><em>real pull.</em></h1>
           <div className="hero-foot"><p>We turn good businesses into vivid digital experiences that get remembered, trusted and chosen.</p><a className="round-link" href="#story" aria-label="Explore the EmberWeb story"><Arrow /></a></div>
         </div>
-        <div className="hero-art" aria-hidden="true"><img src="/visuals/hero-3d.png" alt="" /><span className="orb orb-one" /><span className="orb orb-two" /><b>EW</b></div>
+        <div className="hero-art parallax-layer" data-parallax=".34" aria-hidden="true"><img src="/visuals/hero-3d.png" alt="" /><span className="orb orb-one" /><span className="orb orb-two" /><span className="vector-shape triangle" /><b>EW</b></div>
         <p className="scroll-note">SCROLL INTO THE WORK <span>↓</span></p>
       </section>
 
@@ -71,20 +80,20 @@ export default function Home() {
         <p className="section-label">[ Digital, with a pulse ]</p>
         <h2>More character.<br />More <em>momentum.</em><br />More business.</h2>
         <p>Strong digital work is never decoration. It is a feeling, a clear route forward, and an experience people can trust in seconds.</p>
-        <div className="manifesto-art" aria-hidden="true"><img src="/visuals/mobius-3d.png" alt="" /></div>
+        <div className="manifesto-art parallax-layer" data-parallax=".16" aria-hidden="true"><img src="/visuals/mobius-3d.png" alt="" /><span className="vector-shape ring" /></div>
       </section>
 
       <section className="human-story" id="story" data-reveal>
-        <div className="human-photo"><img src="/visuals/founder-collab.png" alt="A business owner and web designer working together" /><span>REAL PEOPLE / REAL PROGRESS</span></div>
+        <div className="human-photo parallax-layer" data-parallax=".11"><img src="/visuals/founder-collab.png" alt="A business owner and web designer working together" /><span>REAL PEOPLE / REAL PROGRESS</span></div>
         <div className="human-copy"><p className="section-label">[ Start human ]</p><h2>Good work begins with a <em>good conversation.</em></h2><p>We listen closely, ask the useful questions and build alongside founders who care about where their business is headed. No agency fog. No ticket maze.</p><a href="mailto:info@emberweb.co.za?subject=Let%27s%20talk">Meet your digital partner <Arrow /></a></div>
       </section>
 
       <section className="scroll-story" data-reveal>
         <div className="story-sticky"><p className="section-label">[ A scroll-led system ]</p><h2>Move from<br /><em>signal</em> to sale.</h2><p>Every interaction has a job: create curiosity, make the value clear, and give the next step a little more gravity.</p></div>
         <div className="story-panels">
-          <article><img src="/visuals/ribbon-tunnel.png" alt="Abstract blue and orange ribbon forms" /><span>01 / ARRIVE</span><h3>Make the first second count.</h3></article>
-          <article><img src="/visuals/topographic-waves.png" alt="Abstract blue and clay forms" /><span>02 / EXPLORE</span><h3>Let the story unfold, not dump.</h3></article>
-          <article><img src="/visuals/kinetic-sheets.png" alt="Abstract kinetic colour forms" /><span>03 / ACT</span><h3>Give every visitor a clear way in.</h3></article>
+          <article><img className="parallax-layer" data-parallax=".18" src="/visuals/ribbon-tunnel.png" alt="Abstract blue and orange ribbon forms" /><span>01 / ARRIVE</span><h3>Make the first second count.</h3></article>
+          <article><img className="parallax-layer" data-parallax=".12" src="/visuals/topographic-waves.png" alt="Abstract blue and clay forms" /><span>02 / EXPLORE</span><h3>Let the story unfold, not dump.</h3></article>
+          <article><img className="parallax-layer" data-parallax=".2" src="/visuals/kinetic-sheets.png" alt="Abstract kinetic colour forms" /><span>03 / ACT</span><h3>Give every visitor a clear way in.</h3></article>
         </div>
       </section>
 
@@ -99,8 +108,13 @@ export default function Home() {
       </section>
 
       <section className="visual-vault" data-reveal>
-        <div className="vault-intro"><p className="section-label">[ A visual vocabulary ]</p><h2>Every element<br />has <em>energy.</em></h2><p>Twenty original visual studies—made for EmberWeb—give the experience texture, humanity and an unmistakable point of view.</p></div>
-        <div className="vault-grid">{visualArchive.map(([name, alt], index) => <figure className={`vault-tile tile-${(index % 6) + 1}`} key={name}><img src={`/visuals/${name}.png`} alt={alt} loading="lazy" /><figcaption>{String(index + 1).padStart(2, "0")} / EMBER VISUAL STUDY</figcaption></figure>)}</div>
+        <div className="vault-intro"><p className="section-label">[ Brand worlds, not filler ]</p><h2>Visuals that make<br />a brand <em>felt.</em></h2><p>This is a snapshot of a service we can build for clients: a distinctive visual language for the website, launch campaign and social content—not a random image wall.</p></div>
+        <div className="creative-offers">
+          <article className="creative-card identity-card"><img className="parallax-layer" data-parallax=".13" src="/visuals/sphere-3d.png" alt="A cobalt, clay and chartreuse 3D sphere" /><div><span>01 / VISUAL IDENTITY</span><h3>A brand world with a point of view.</h3><p>Palette, art direction, shapes and visual rules that make every touchpoint feel related.</p></div></article>
+          <article className="creative-card campaign-card"><img className="parallax-layer" data-parallax=".18" src="/visuals/florist.png" alt="A florist in a warmly styled studio" /><div><span>02 / LAUNCH CONTENT</span><h3>Campaign creative with a human centre.</h3><p>Web imagery and social-ready launch assets that show the people and energy behind the business.</p></div></article>
+          <article className="creative-card motion-card"><img className="parallax-layer" data-parallax=".1" src="/visuals/pebble-3d.png" alt="A vivid organic 3D pebble" /><div><span>03 / DIGITAL ARTIFACTS</span><h3>Memorable details, designed to move.</h3><p>Custom 3D forms, animated art direction and interactive moments that make the experience stay with people.</p></div></article>
+        </div>
+        <div className="vault-strip" aria-label="A selection of EmberWeb visual studies">{visualArchive.slice(0, 8).map(([name, alt], index) => <figure key={name}><img src={`/visuals/${name}.png`} alt={alt} loading="lazy" /><figcaption>{String(index + 1).padStart(2, "0")}</figcaption></figure>)}</div>
       </section>
 
       <section className="qualifier" data-reveal>
