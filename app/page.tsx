@@ -1,5 +1,5 @@
 "use client";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 const Arrow = () => <span aria-hidden="true">↗</span>;
 
 const services = [
@@ -24,6 +24,8 @@ const services = [
 ];
 
 export default function Home() {
+  const [step, setStep] = useState(0);
+  const questions = [["What is your main reason for a website?", "More enquiries & leads", "Look professional online", "Replace an outdated site", "Starting a business"], ["How soon do you want to be online?", "ASAP — this month", "Within 4–6 weeks", "Just exploring for now"]];
   useEffect(() => {
     const update = () => document.documentElement.style.setProperty("--scroll", `${Math.min(1, scrollY / Math.max(1, document.body.scrollHeight - innerHeight))}`);
     const observer = new IntersectionObserver((entries) => entries.forEach((entry) => entry.isIntersecting && entry.target.classList.add("is-visible")), { threshold: .16 });
@@ -55,6 +57,8 @@ export default function Home() {
         <div className="hero-orbit" aria-hidden="true"><span /><span /><span /><b>EW</b></div>
         <p className="scroll">SCROLL TO EXPLORE <span>↓</span></p>
       </section>
+
+      <section className="qualifier" data-reveal><p className="section-label">[ Find your launch path ]</p><div><span>0{Math.min(step + 1, 3)} / 03</span><h2>{step < 2 ? questions[step][0] : "Ready to talk through your project?"}</h2>{step < 2 ? <div className="answers">{questions[step].slice(1).map((answer) => <button key={answer} onClick={() => setStep(step + 1)}>{answer} <Arrow /></button>)}</div> : <div className="answers"><a href="mailto:info@emberweb.co.za?subject=Book%20a%20free%20meeting">Yes — let’s book a meeting <Arrow /></a><a href="mailto:info@emberweb.co.za?subject=I%20have%20a%20few%20questions">I have a few questions first <Arrow /></a></div>}</div><p>No signup needed. We use this to point you to the right conversation—not the whole catalogue.</p></section>
 
       <section className="marquee"><div>WEB DESIGN <b>✦</b> HOSTING <b>✦</b> AI AUTOMATION <b>✦</b> BUSINESS SYSTEMS <b>✦</b> WEB DESIGN <b>✦</b> HOSTING <b>✦</b> AI AUTOMATION <b>✦</b> BUSINESS SYSTEMS <b>✦</b></div></section>
 
