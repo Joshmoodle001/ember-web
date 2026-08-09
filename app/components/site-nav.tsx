@@ -19,7 +19,7 @@ export function SiteNav() {
 
   return <header className="site-header">
     <nav className="site-nav" aria-label="Main navigation">
-      <a className="brand brand-lockup" href="/" aria-label="EmberWeb home"><img src="https://emberweb.co.za/__l5e/assets-v1/ae94f57d-45f5-4d12-ae3c-62d1e4c17945/ee-now-logo.png" alt="EmberWeb logo" /><span className="brand-wordmark">EMBER<span>WEB</span></span></a>
+      <a className="brand brand-lockup" href="/" aria-label="EmberWeb home"><img src="https://emberweb.co.za/__l5e/assets-v1/ae94f57d-45f5-4d12-ae3c-62d1e4c17945/ee-now-logo.png" alt="" onError={(event) => { event.currentTarget.hidden = true; }} /><span className="brand-wordmark">EMBER<span>WEB</span></span></a>
       <div className="site-nav-links">
         {links.map(([label, href]) => <a key={href} href={href} className={pathname === href ? "is-active" : ""}>{label}</a>)}
       </div>
