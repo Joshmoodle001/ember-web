@@ -1,0 +1,11 @@
+const steps = [
+  ["01", "Start with the signal", "We get clear on the business, the customer and the outcome that would make this project worthwhile."],
+  ["02", "Confirm the route", "You receive a written scope, what is included, key timing and the payment plan before production begins."],
+  ["03", "Shape the experience", "We turn the strategy into a clear customer journey, a visual direction and content that sounds like your business."],
+  ["04", "Build for real life", "Every key experience is designed for mobile, clear action and the practical details your customers need."],
+  ["05", "Launch with care", "We test, launch, hand over the agreed access and stay available through EmberCare."],
+];
+
+export default function Process() {
+  return <main className="subpage process-page"><nav className="sub-nav"><a className="brand" href="/">EMBER<span>WEB</span></a><a className="sub-nav-cta" href="/start">Start a project →</a></nav><header className="sub-hero"><p className="section-label">[ How EmberWeb works ]</p><h1>Less agency fog.<br /><em>More forward motion.</em></h1><div className="sub-hero-foot"><strong>A clear path from first chat to a website that works.</strong><p>Good projects should feel energising, not mysterious. We make the next decision clear at every stage.</p></div></header><section className="process-steps"><div><p className="section-label">[ A practical partnership ]</p><h2>Built with you,<br /><em>not around you.</em></h2><p>There are no surprise handovers, inaccessible accounts or unexplained invoices. Your business remains at the centre of each decision.</p></div><ol>{steps.map(([number, title, text]) => <li key={number}><span>{number}</span><div><h3>{title}</h3><p>{text}</p></div></li>)}</ol></section><section className="process-commitments"><p className="section-label">[ What stays true ]</p><div><article><h2>Your domain stays yours.</h2><p>EmberWeb works with your ownership, not against it. Access and handover are agreed before launch.</p></article><article><h2>Scope comes before payment.</h2><p>We confirm the work and payment plan before issuing a secure PayFast payment request.</p></article><article><h2>Support does not disappear at launch.</h2><p>EmberCare keeps the essentials looked after while your business keeps moving.</p></article></div><a href="/start">Start the conversation →</a></section></main>;
+}

@@ -7,6 +7,7 @@ const links = [
   ["Work", "/work"],
   ["Packages", "/packages"],
   ["Free audit", "/audit"],
+  ["How it works", "/process"],
   ["Industries", "/industries"],
   ["EmberCare", "/care"],
 ];
