@@ -79,7 +79,7 @@ export default function Home() {
       </section>
 
       <section className="human-story" id="story" data-reveal>
-        <div className="human-photo parallax-layer" data-parallax=".11"><img src="/visuals/founder-collab.png" alt="A business owner and web designer working together" /><span>REAL PEOPLE / REAL PROGRESS</span></div>
+        <div className="human-photo parallax-layer" data-parallax=".11"><img src="/visuals/founder-collab.png" alt="A business owner and web designer working together" loading="lazy" decoding="async" /><span>REAL PEOPLE / REAL PROGRESS</span></div>
         <div className="human-copy"><p className="section-label">[ Start human ]</p><h2>Good work begins with a <em>good conversation.</em></h2><p>We listen closely, ask the useful questions and build alongside founders who care about where their business is headed. No agency fog. No ticket maze.</p><a href="/start?source=digital-partner">Meet your digital partner <Arrow /></a></div>
       </section>
 

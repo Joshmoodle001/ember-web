@@ -22,7 +22,7 @@ export function SiteNav() {
     <nav className="site-nav" aria-label="Main navigation">
       <a className="brand brand-lockup" href="/" aria-label="EmberWeb home"><img src="https://emberweb.co.za/__l5e/assets-v1/ae94f57d-45f5-4d12-ae3c-62d1e4c17945/ee-now-logo.png" alt="" onError={(event) => { event.currentTarget.hidden = true; }} /><span className="brand-wordmark">EMBER<span>WEB</span></span></a>
       <div className="site-nav-links">
-        {links.map(([label, href]) => <a key={href} href={href} className={pathname === href ? "is-active" : ""}>{label}</a>)}
+        {links.map(([label, href]) => <a key={href} href={href} className={pathname === href ? "is-active" : ""} aria-current={pathname === href ? "page" : undefined}>{label}</a>)}
       </div>
       <a className="site-nav-cta" href="/start">Start a project <span aria-hidden="true">→</span></a>
       <button className="menu-toggle" type="button" aria-expanded={open} aria-controls="mobile-navigation" onClick={() => setOpen((current) => !current)}><span className="sr-only">{open ? "Close" : "Open"} navigation</span><i /><i /></button>

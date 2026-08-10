@@ -14,6 +14,7 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://emberweb.co.za"),
   openGraph: { title: "Websites that move business forward.", description: "AI web design · Apps · Automation", images: ["/og.png"] },
   twitter: { card: "summary_large_image", title: "Websites that move business forward.", description: "AI web design · Apps · Automation", images: ["/og.png"] },
+  icons: { icon: "/favicon.svg" },
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
