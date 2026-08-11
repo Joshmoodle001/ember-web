@@ -7,6 +7,7 @@ export default function Start() {
   const [ready, setReady] = useState(false);
   const searchParams = useSearchParams();
   const chosenPackage = searchParams.get("package");
+  const context = searchParams.get("service") || searchParams.get("industry") || searchParams.get("intent") || searchParams.get("source");
 
   const submit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -20,6 +21,7 @@ export default function Start() {
       `Phone: ${form.get("phone") || "Not provided"}`,
       `What I need: ${form.get("need")}`,
       `Starting point: ${form.get("package") || "Not specified"}`,
+      `Page context: ${context || "Not specified"}`,
       `Launch timing: ${form.get("timing")}`,
       `Notes: ${form.get("notes") || "Not provided"}`,
     ].join("\n");

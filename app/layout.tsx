@@ -6,6 +6,7 @@ import { SiteSupport } from "./components/site-support";
 import { SiteIntro } from "./components/site-intro";
 import { SiteMascot } from "./components/site-mascot";
 import { SiteRouteGuide } from "./components/site-route-guide";
+import { SitePagePulse } from "./components/site-page-pulse";
 
 const display = Space_Grotesk({ variable: "--font-display", subsets: ["latin"] });
 const mono = DM_Mono({ variable: "--font-mono", subsets: ["latin"], weight: ["400", "500"] });
@@ -21,5 +22,5 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const structuredData = { "@context": "https://schema.org", "@graph": [{ "@type": "ProfessionalService", "@id": "https://emberweb.co.za/#business", name: "EmberWeb", url: "https://emberweb.co.za", email: "info@emberweb.co.za", telephone: "+27825106642", areaServed: { "@type": "Country", name: "South Africa" }, serviceType: ["Website design", "Web applications", "Business automation"], contactPoint: { "@type": "ContactPoint", telephone: "+27825106642", contactType: "sales", availableLanguage: "English" } }, { "@type": "WebSite", "@id": "https://emberweb.co.za/#website", url: "https://emberweb.co.za", name: "EmberWeb", publisher: { "@id": "https://emberweb.co.za/#business" } }] };
-  return <html lang="en"><body className={`${display.variable} ${mono.variable}`}><a className="skip-link" href="#main-content">Skip to content</a><SiteIntro /><SiteNav />{children}<SiteRouteGuide /><SiteMascot /><SiteSupport /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} /></body></html>;
+  return <html lang="en"><body className={`${display.variable} ${mono.variable}`}><a className="skip-link" href="#main-content">Skip to content</a><SiteIntro /><SiteNav />{children}<SitePagePulse /><SiteRouteGuide /><SiteMascot /><SiteSupport /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} /></body></html>;
 }
