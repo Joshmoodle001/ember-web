@@ -63,7 +63,7 @@ export default function Home() {
         <div className="hero-copy" data-reveal>
           <p className="eyebrow"><i /> Independent digital studio · South Africa</p>
           <h1 className="typed-headline" aria-label="Websites with real pull."><span className="typed-line">Websites with</span><em className="typed-line typed-line-accent">real pull.</em></h1>
-          <div className="hero-foot"><p>We turn good businesses into vivid digital experiences that get remembered, trusted and chosen.</p><a className="round-link" href="#story" aria-label="Explore the EmberWeb story"><Arrow /></a></div>
+          <div className="hero-foot"><p>We turn good businesses into vivid digital experiences that get remembered, trusted and chosen.</p><a className="round-link" href="#story-action" aria-label="Continue to the next step"><Arrow /></a></div>
         </div>
         <div className="hero-art parallax-layer" data-parallax=".34" aria-hidden="true"><img src="/visuals/hero-3d.png" alt="" /><span className="orb orb-one" /><span className="orb orb-two" /><span className="vector-shape triangle" /><b>EW</b></div>
         <p className="scroll-note">SCROLL INTO THE WORK <span>↓</span></p>
@@ -80,7 +80,7 @@ export default function Home() {
 
       <section className="human-story" id="story" data-reveal>
         <div className="human-photo parallax-layer" data-parallax=".11"><img src="/visuals/founder-collab.png" alt="A business owner and web designer working together" loading="lazy" decoding="async" /><span>REAL PEOPLE / REAL PROGRESS</span></div>
-        <div className="human-copy"><p className="section-label">[ Start human ]</p><h2>Good work begins with a <em>good conversation.</em></h2><p>We listen closely, ask the useful questions and build alongside founders who care about where their business is headed. No agency fog. No ticket maze.</p><a href="/start?source=digital-partner">Meet your digital partner <Arrow /></a></div>
+        <div className="human-copy"><p className="section-label">[ Start human ]</p><h2>Good work begins with a <em>good conversation.</em></h2><p>We listen closely, ask the useful questions and build alongside founders who care about where their business is headed. No agency fog. No ticket maze.</p><a id="story-action" href="/start?source=digital-partner">Meet your digital partner <Arrow /></a></div>
       </section>
 
       <section className="scroll-story" data-reveal>
