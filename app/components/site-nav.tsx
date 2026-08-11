@@ -20,7 +20,7 @@ export function SiteNav() {
 
   return <header className="site-header">
     <nav className="site-nav" aria-label="Main navigation">
-      <a className="brand brand-lockup" href="/" aria-label="EmberWeb home"><img src="/brand/emberweb-monogram-v2.png" alt="" /><span className="brand-wordmark">EMBER<span>WEB</span></span></a>
+      <a className="brand brand-lockup" href="/" aria-label="EmberWeb home"><img src="/brand/emberweb-weave.png" alt="" /><span className="brand-wordmark">EMBER<span>WEB</span></span></a>
       <div className="site-nav-links">
         {links.map(([label, href]) => <a key={href} href={href} className={pathname === href ? "is-active" : ""} aria-current={pathname === href ? "page" : undefined}>{label}</a>)}
       </div>
