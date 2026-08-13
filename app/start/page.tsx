@@ -9,7 +9,7 @@ export default function Start() {
   const chosenPackage = searchParams.get("package");
   const context = searchParams.get("service") || searchParams.get("industry") || searchParams.get("intent") || searchParams.get("source");
 
-  const submit = (event: FormEvent<HTMLFormElement>) => {
+  const submit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const form = new FormData(event.currentTarget);
     const message = [
@@ -25,6 +25,8 @@ export default function Start() {
       `Launch timing: ${form.get("timing")}`,
       `Notes: ${form.get("notes") || "Not provided"}`,
     ].join("\n");
+    const source = ["utm_source", "utm_medium", "utm_campaign"].map((key) => `${key}=${searchParams.get(key) || ""}`).filter((value) => !value.endsWith("=")).join(" · ") || context || "direct";
+    try { await fetch("/api/leads", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ kind: "project brief", contactName: form.get("name"), businessName: form.get("business"), email: form.get("email"), phone: form.get("phone"), need: form.get("need"), timing: form.get("timing"), notes: form.get("notes"), source, company: "" }) }); } catch { /* WhatsApp remains a reliable fallback. */ }
     window.open(`https://wa.me/27825106642?text=${encodeURIComponent(message)}`, "_blank", "noopener,noreferrer");
     setReady(true);
   };

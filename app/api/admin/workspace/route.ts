@@ -1,7 +1,7 @@
 import { randomBytes, randomUUID } from "node:crypto";
 import { desc, eq } from "drizzle-orm";
 import { getDb } from "../../../../db";
-import { clients, paymentRequests } from "../../../../db/schema";
+import { clients, leads, paymentRequests } from "../../../../db/schema";
 import { isOwner } from "../../../admin/owner";
 
 function error(message: string, status = 400) { return Response.json({ error: message }, { status }); }
@@ -10,8 +10,8 @@ async function guard() { return (await isOwner()) ? null : error("Not found", 40
 export async function GET() {
   const denied = await guard(); if (denied) return denied;
   const db = getDb();
-  const [clientRows, paymentRows] = await Promise.all([db.select().from(clients).orderBy(desc(clients.createdAt)), db.select().from(paymentRequests).orderBy(desc(paymentRequests.createdAt))]);
-  return Response.json({ clients: clientRows, payments: paymentRows });
+  const [clientRows, paymentRows, leadRows] = await Promise.all([db.select().from(clients).orderBy(desc(clients.createdAt)), db.select().from(paymentRequests).orderBy(desc(paymentRequests.createdAt)), db.select().from(leads).orderBy(desc(leads.createdAt))]);
+  return Response.json({ clients: clientRows, payments: paymentRows, leads: leadRows });
 }
 
 export async function POST(request: Request) {

@@ -10,10 +10,13 @@ const audits = [
 export default function Audit() {
   const [focus, setFocus] = useState(audits[0][1]);
   const [ready, setReady] = useState(false);
-  const submitAudit = (event: FormEvent<HTMLFormElement>) => {
+  const submitAudit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const form = new FormData(event.currentTarget);
     const message = ["Hi EmberWeb, I would like a free audit.", "", `Audit: ${form.get("focus")}`, `Name: ${form.get("name")}`, `Business: ${form.get("business")}`, `Website: ${form.get("website")}`, `Email: ${form.get("email")}`, `What would help: ${form.get("notes") || "Not specified"}`].join("\n");
+    const params = new URLSearchParams(window.location.search);
+    const source = ["utm_source", "utm_medium", "utm_campaign"].map((key) => `${key}=${params.get(key) || ""}`).filter((value) => !value.endsWith("=")).join(" · ") || "direct";
+    try { await fetch("/api/leads", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ kind: "free audit", contactName: form.get("name"), businessName: form.get("business"), email: form.get("email"), website: form.get("website"), need: form.get("focus"), notes: form.get("notes"), source, company: "" }) }); } catch { /* WhatsApp remains a reliable fallback. */ }
     window.open(`https://wa.me/27825106642?text=${encodeURIComponent(message)}`, "_blank", "noopener,noreferrer");
     setReady(true);
   };

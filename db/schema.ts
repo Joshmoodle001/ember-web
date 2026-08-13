@@ -30,3 +30,21 @@ export const paymentRequests = sqliteTable("payment_requests", {
   index("payment_requests_client_due_idx").on(table.clientId, table.dueDate),
   index("payment_requests_open_due_idx").on(table.status, table.dueDate),
 ]);
+
+export const leads = sqliteTable("leads", {
+  id: text("id").primaryKey(),
+  kind: text("kind").notNull(),
+  contactName: text("contact_name").notNull(),
+  businessName: text("business_name").notNull(),
+  email: text("email").notNull(),
+  phone: text("phone").notNull().default(""),
+  website: text("website").notNull().default(""),
+  need: text("need").notNull().default(""),
+  timing: text("timing").notNull().default(""),
+  notes: text("notes").notNull().default(""),
+  source: text("source").notNull().default("direct"),
+  status: text("status").notNull().default("new"),
+  createdAt: text("created_at").notNull().default(sql`CURRENT_TIMESTAMP`),
+}, (table) => [
+  index("leads_status_created_idx").on(table.status, table.createdAt),
+]);
