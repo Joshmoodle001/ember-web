@@ -24,7 +24,7 @@ export function SiteMascot() {
       <p><span>EMBERGUIDE</span>{prompt}</p>
       <div>
         <a href="/start">Start a project <b aria-hidden="true">→</b></a>
-        <a href="https://wa.me/27825106642?text=Hi%20EmberWeb%2C%20I%27d%20like%20to%20chat%20about%20a%20website" target="_blank" rel="noreferrer">WhatsApp us <b aria-hidden="true">→</b></a>
+        <a href="https://wa.me/27723398781?text=Hi%20EmberWeb%2C%20I%27d%20like%20to%20chat%20about%20a%20website" target="_blank" rel="noreferrer">WhatsApp us <b aria-hidden="true">→</b></a>
       </div>
     </div>
     <button type="button" className="ember-guide-button" onClick={() => setOpen((value) => !value)} aria-expanded={open} aria-label={open ? "Close EmberGuide" : "Open EmberGuide"}>

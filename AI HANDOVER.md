@@ -34,7 +34,7 @@ The project folder includes the source code, database migration, generated visua
 - Homepage with animated introduction, persistent navigation, responsive layouts, motion effects and EmberGuide mascot.
 - Public pages: Work, Packages, Free Audit, Process, Industries, EmberCare, Policies and Start a Project.
 - All public package calls-to-action now lead to a conversation/project brief. They do **not** collect payment from a cold visitor.
-- Project and audit forms prepare a WhatsApp message to `082 510 6642`.
+- Project and audit forms prepare a WhatsApp message to `072 339 8781`.
 
 ### Private client-payment experience
 
@@ -242,4 +242,3 @@ c9e640e  Deepen internal route content and preserve enquiry context
 6. Confirm PayFast signatures and ITN validation against current official documentation before changing payment logic.
 7. Build and deploy through OpenAI Sites; do not silently move hosting or DNS.
 8. Keep the site mobile-first and preserve reduced-motion accessibility support.
-
