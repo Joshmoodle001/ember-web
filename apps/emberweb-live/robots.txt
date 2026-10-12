@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://emberweb.co.za/sitemap.xml

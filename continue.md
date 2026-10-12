@@ -122,3 +122,13 @@ Josh Brain must update this file after every meaningful user request, command re
   - ℹ️ .opencode command docs reference brain-refresh and brain-capture but these are documentation files only
 - **Action taken**: Updated session memory with scan results and noted no memory packs were generated locally
 - **Next step**: If you want me to run the brain.ps1 commands, provide the actual `josh-ai-brain` folder path or copy its scripts into this workspace.
+
+## Session Log - 2026-10-12
+
+### EmberWeb live-site copy
+- **Branch**: `codex/live-site-copy`
+- **App path**: `apps/emberweb-live` (isolated static copy of the public EmberWeb site)
+- **Vercel configuration**: Updated the dedicated `ember-web` project to Root Directory `apps/emberweb-live`, Build Command `npm run build`, and Output Directory `dist`; `vercel.json` also pins the build command and output directory. Confirm by the preview build.
+- **Validation**: `node build.mjs` and `node lint.mjs` passed; all nine routes returned HTTP 200, and local navigation, EmberGuide, and intercepted WhatsApp handoffs were exercised. Audit-choice buttons now select the matching focus and focus the form selector.
+- **Remaining steps**: Security review, push the branch, then create/check a protected Vercel preview.
+- **External services**: DNS and all Supabase projects remain untouched.
