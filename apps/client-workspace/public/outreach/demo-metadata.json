@@ -1,0 +1,14 @@
+{
+  "duration_seconds": 16.0,
+  "frames_decoded": 384,
+  "fps": 24.0,
+  "dimensions": [
+    1280,
+    720
+  ],
+  "codec": "h264",
+  "pixel_format": "yuv420p(progressive)",
+  "audio": false,
+  "bytes": 586490,
+  "label": "Illustrative concept; no customer outcomes or actual integrations are represented."
+}

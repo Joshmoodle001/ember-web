@@ -1,0 +1,15 @@
+.outreach-page .page-heading{margin-bottom:18px}
+.outreach-page .page-heading h1{font-size:clamp(26px,3.4vw,42px);margin:6px 0}
+.outreach-page .page-heading .muted{font-size:14px;margin:8px 0 0}
+.outreach-page .whatsapp-desk{margin-top:0}
+.outreach-secondary-tools{margin-top:22px;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.outreach-disclosure{min-width:0;border-bottom:1px solid var(--line);scroll-margin-top:20px}
+.outreach-disclosure:last-child{border-bottom:0}
+.outreach-disclosure>summary{padding:17px 20px;min-height:52px;color:var(--ink);font-size:14px;font-weight:600;cursor:pointer;overflow-wrap:anywhere}
+.outreach-disclosure[open]>summary{color:var(--ember-soft);background:rgba(240,120,69,.05)}
+.outreach-disclosure>.panel,.outreach-disclosure>.booking-callout{margin:12px 16px 20px}
+.outreach-disclosure>.small-button{margin:12px 20px 0}
+.outreach-disclosure:focus-within{outline-offset:3px}
+.outreach-disclosure>summary:focus-visible{outline:2px solid var(--ember-soft);outline-offset:-4px}
+.outreach-disclosure .panel{border-radius:8px}
+@media(max-width:640px){.outreach-page .page-heading{gap:12px}.outreach-disclosure>summary{padding:16px 14px}.outreach-disclosure>.panel,.outreach-disclosure>.booking-callout{margin:8px 8px 16px}.outreach-secondary-tools{margin-top:16px}}

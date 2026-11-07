@@ -1,0 +1,12 @@
+artifacts/
+.vercel/
+.vercel/access-control-private/
+continue.md
+**/.env*
+**/node_modules/
+**/.next/
+**/dist/
+.git/
+EmberWeb Access Control.xlsx
+~$EmberWeb Access Control.xlsx
+EmberWeb Access Control.xlsx.inspect.ndjson

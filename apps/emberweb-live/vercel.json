@@ -1,0 +1,208 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "rewrites": [
+    {
+      "source": "/api/account",
+      "destination": "https://portal.emberweb.co.za/api/account"
+    },
+    {
+      "source": "/account",
+      "destination": "https://portal.emberweb.co.za/account"
+    },
+    {
+      "source": "/api/account/:path*",
+      "destination": "https://portal.emberweb.co.za/api/account/:path*"
+    },
+    {
+      "source": "/account/:path*",
+      "destination": "https://portal.emberweb.co.za/account/:path*"
+    },
+    {
+      "source": "/outreach",
+      "destination": "https://portal.emberweb.co.za/admin/outreach"
+    },
+    {
+      "source": "/outreach/:path*",
+      "destination": "https://portal.emberweb.co.za/outreach/:path*"
+    },
+    {
+      "source": "/login",
+      "destination": "https://portal.emberweb.co.za/login"
+    },
+    {
+      "source": "/setup",
+      "destination": "https://portal.emberweb.co.za/setup"
+    },
+    {
+      "source": "/admin",
+      "destination": "https://portal.emberweb.co.za/admin"
+    },
+    {
+      "source": "/admin/:path*",
+      "destination": "https://portal.emberweb.co.za/admin/:path*"
+    },
+    {
+      "source": "/auth/:path*",
+      "destination": "https://portal.emberweb.co.za/auth/:path*"
+    },
+    {
+      "source": "/api/admin/:path*",
+      "destination": "https://portal.emberweb.co.za/api/admin/:path*"
+    },
+    {
+      "source": "/api/auth/:path*",
+      "destination": "https://portal.emberweb.co.za/api/auth/:path*"
+    },
+    {
+      "source": "/_next/:path*",
+      "destination": "https://portal.emberweb.co.za/_next/:path*"
+    },
+    {
+      "source": "/demo",
+      "destination": "https://portal.emberweb.co.za/demo"
+    },
+    {
+      "source": "/demo/:path*",
+      "destination": "https://portal.emberweb.co.za/demo/:path*"
+    },
+    {
+      "source": "/api/intake",
+      "destination": "https://portal.emberweb.co.za/api/intake"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=()"
+        }
+      ]
+    },
+    {
+      "source": "/404",
+      "headers": [
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self'; style-src 'self'; style-src-attr 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-src https://calendar.google.com; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'"
+        }
+      ]
+    },
+    {
+      "source": "/audit",
+      "headers": [
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self' 'sha256-EosdZ/prRhuoJfq3P+tCgb9d2Val2xz7/bvcJUOYpsM='; style-src 'self'; style-src-attr 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-src https://calendar.google.com; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'"
+        }
+      ]
+    },
+    {
+      "source": "/book",
+      "headers": [
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self' 'sha256-EosdZ/prRhuoJfq3P+tCgb9d2Val2xz7/bvcJUOYpsM='; style-src 'self'; style-src-attr 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-src https://calendar.google.com; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'"
+        }
+      ]
+    },
+    {
+      "source": "/care",
+      "headers": [
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self' 'sha256-EosdZ/prRhuoJfq3P+tCgb9d2Val2xz7/bvcJUOYpsM='; style-src 'self'; style-src-attr 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-src https://calendar.google.com; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'"
+        }
+      ]
+    },
+    {
+      "source": "/",
+      "headers": [
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self' 'sha256-EosdZ/prRhuoJfq3P+tCgb9d2Val2xz7/bvcJUOYpsM='; style-src 'self'; style-src-attr 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-src https://calendar.google.com; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'"
+        }
+      ]
+    },
+    {
+      "source": "/industries",
+      "headers": [
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self' 'sha256-EosdZ/prRhuoJfq3P+tCgb9d2Val2xz7/bvcJUOYpsM='; style-src 'self'; style-src-attr 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-src https://calendar.google.com; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'"
+        }
+      ]
+    },
+    {
+      "source": "/packages",
+      "headers": [
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self' 'sha256-EosdZ/prRhuoJfq3P+tCgb9d2Val2xz7/bvcJUOYpsM='; style-src 'self'; style-src-attr 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-src https://calendar.google.com; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'"
+        }
+      ]
+    },
+    {
+      "source": "/policies",
+      "headers": [
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self' 'sha256-EosdZ/prRhuoJfq3P+tCgb9d2Val2xz7/bvcJUOYpsM='; style-src 'self'; style-src-attr 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-src https://calendar.google.com; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'"
+        }
+      ]
+    },
+    {
+      "source": "/portfolio",
+      "headers": [
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self' 'sha256-EosdZ/prRhuoJfq3P+tCgb9d2Val2xz7/bvcJUOYpsM='; style-src 'self'; style-src-attr 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-src https://calendar.google.com; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'"
+        }
+      ]
+    },
+    {
+      "source": "/process",
+      "headers": [
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self' 'sha256-EosdZ/prRhuoJfq3P+tCgb9d2Val2xz7/bvcJUOYpsM='; style-src 'self'; style-src-attr 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-src https://calendar.google.com; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'"
+        }
+      ]
+    },
+    {
+      "source": "/start",
+      "headers": [
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self' 'sha256-EosdZ/prRhuoJfq3P+tCgb9d2Val2xz7/bvcJUOYpsM='; style-src 'self'; style-src-attr 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-src https://calendar.google.com; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'"
+        }
+      ]
+    },
+    {
+      "source": "/work",
+      "headers": [
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self' 'sha256-EosdZ/prRhuoJfq3P+tCgb9d2Val2xz7/bvcJUOYpsM='; style-src 'self'; style-src-attr 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-src https://calendar.google.com; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'"
+        }
+      ]
+    }
+  ]
+}

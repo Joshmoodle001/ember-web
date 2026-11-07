@@ -1,0 +1,597 @@
+{
+  "schemaVersion": 1,
+  "encoder": {
+    "format": "webp",
+    "quality": 88,
+    "effort": 5,
+    "responsiveWidths": [
+      640,
+      960
+    ],
+    "preserveAlpha": true,
+    "preserveOriginalDimensions": true
+  },
+  "totals": {
+    "sourceImages": 19,
+    "sourceBytes": 37667344,
+    "fullSizeWebpBytes": 3509040,
+    "fullSizeSavingsBytes": 34158304,
+    "fullSizeSavingsPercent": 90.68,
+    "responsiveVariantCount": 38,
+    "responsiveVariantBytes": 3764060,
+    "allGeneratedWebpBytes": 7273100,
+    "generatedBytesWhileOriginalsAreKept": 44940444
+  },
+  "images": {
+    "/brand/ember-guide.png": {
+      "width": 1254,
+      "height": 1254,
+      "hasAlpha": true,
+      "sourceBytes": 658628,
+      "mainWebp": {
+        "url": "/brand/ember-guide.webp",
+        "width": 1254,
+        "height": 1254,
+        "bytes": 79150
+      },
+      "variants": [
+        {
+          "requestedWidth": 640,
+          "url": "/brand/ember-guide-640.webp",
+          "width": 640,
+          "height": 640,
+          "bytes": 44540
+        },
+        {
+          "requestedWidth": 960,
+          "url": "/brand/ember-guide-960.webp",
+          "width": 960,
+          "height": 960,
+          "bytes": 72968
+        }
+      ],
+      "fullSizeSavingsBytes": 579478,
+      "fullSizeSavingsPercent": 87.98
+    },
+    "/brand/emberweb-weave.png": {
+      "width": 1254,
+      "height": 1254,
+      "hasAlpha": true,
+      "sourceBytes": 389006,
+      "mainWebp": {
+        "url": "/brand/emberweb-weave.webp",
+        "width": 1254,
+        "height": 1254,
+        "bytes": 63430
+      },
+      "variants": [
+        {
+          "requestedWidth": 640,
+          "url": "/brand/emberweb-weave-640.webp",
+          "width": 640,
+          "height": 640,
+          "bytes": 39704
+        },
+        {
+          "requestedWidth": 960,
+          "url": "/brand/emberweb-weave-960.webp",
+          "width": 960,
+          "height": 960,
+          "bytes": 68414
+        }
+      ],
+      "fullSizeSavingsBytes": 325576,
+      "fullSizeSavingsPercent": 83.69
+    },
+    "/visuals/bubble-clay.png": {
+      "width": 1254,
+      "height": 1254,
+      "hasAlpha": false,
+      "sourceBytes": 2513412,
+      "mainWebp": {
+        "url": "/visuals/bubble-clay.webp",
+        "width": 1254,
+        "height": 1254,
+        "bytes": 357078
+      },
+      "variants": [
+        {
+          "requestedWidth": 640,
+          "url": "/visuals/bubble-clay-640.webp",
+          "width": 640,
+          "height": 640,
+          "bytes": 133308
+        },
+        {
+          "requestedWidth": 960,
+          "url": "/visuals/bubble-clay-960.webp",
+          "width": 960,
+          "height": 960,
+          "bytes": 241038
+        }
+      ],
+      "fullSizeSavingsBytes": 2156334,
+      "fullSizeSavingsPercent": 85.79
+    },
+    "/visuals/cafe-owner.png": {
+      "width": 1024,
+      "height": 1536,
+      "hasAlpha": false,
+      "sourceBytes": 2926279,
+      "mainWebp": {
+        "url": "/visuals/cafe-owner.webp",
+        "width": 1024,
+        "height": 1536,
+        "bytes": 358968
+      },
+      "variants": [
+        {
+          "requestedWidth": 640,
+          "url": "/visuals/cafe-owner-640.webp",
+          "width": 640,
+          "height": 960,
+          "bytes": 157740
+        },
+        {
+          "requestedWidth": 960,
+          "url": "/visuals/cafe-owner-960.webp",
+          "width": 960,
+          "height": 1440,
+          "bytes": 305214
+        }
+      ],
+      "fullSizeSavingsBytes": 2567311,
+      "fullSizeSavingsPercent": 87.73
+    },
+    "/visuals/clay-pillar.png": {
+      "width": 1024,
+      "height": 1536,
+      "hasAlpha": false,
+      "sourceBytes": 1773177,
+      "mainWebp": {
+        "url": "/visuals/clay-pillar.webp",
+        "width": 1024,
+        "height": 1536,
+        "bytes": 120264
+      },
+      "variants": [
+        {
+          "requestedWidth": 640,
+          "url": "/visuals/clay-pillar-640.webp",
+          "width": 640,
+          "height": 960,
+          "bytes": 55466
+        },
+        {
+          "requestedWidth": 960,
+          "url": "/visuals/clay-pillar-960.webp",
+          "width": 960,
+          "height": 1440,
+          "bytes": 105694
+        }
+      ],
+      "fullSizeSavingsBytes": 1652913,
+      "fullSizeSavingsPercent": 93.22
+    },
+    "/visuals/florist.png": {
+      "width": 1536,
+      "height": 1024,
+      "hasAlpha": false,
+      "sourceBytes": 2351516,
+      "mainWebp": {
+        "url": "/visuals/florist.webp",
+        "width": 1536,
+        "height": 1024,
+        "bytes": 206562
+      },
+      "variants": [
+        {
+          "requestedWidth": 640,
+          "url": "/visuals/florist-640.webp",
+          "width": 640,
+          "height": 427,
+          "bytes": 65046
+        },
+        {
+          "requestedWidth": 960,
+          "url": "/visuals/florist-960.webp",
+          "width": 960,
+          "height": 640,
+          "bytes": 113946
+        }
+      ],
+      "fullSizeSavingsBytes": 2144954,
+      "fullSizeSavingsPercent": 91.22
+    },
+    "/visuals/founder-collab.png": {
+      "width": 1726,
+      "height": 911,
+      "hasAlpha": false,
+      "sourceBytes": 2029944,
+      "mainWebp": {
+        "url": "/visuals/founder-collab.webp",
+        "width": 1726,
+        "height": 911,
+        "bytes": 147778
+      },
+      "variants": [
+        {
+          "requestedWidth": 640,
+          "url": "/visuals/founder-collab-640.webp",
+          "width": 640,
+          "height": 338,
+          "bytes": 42450
+        },
+        {
+          "requestedWidth": 960,
+          "url": "/visuals/founder-collab-960.webp",
+          "width": 960,
+          "height": 507,
+          "bytes": 72090
+        }
+      ],
+      "fullSizeSavingsBytes": 1882166,
+      "fullSizeSavingsPercent": 92.72
+    },
+    "/visuals/founder-portrait.png": {
+      "width": 1024,
+      "height": 1536,
+      "hasAlpha": false,
+      "sourceBytes": 2201633,
+      "mainWebp": {
+        "url": "/visuals/founder-portrait.webp",
+        "width": 1024,
+        "height": 1536,
+        "bytes": 138310
+      },
+      "variants": [
+        {
+          "requestedWidth": 640,
+          "url": "/visuals/founder-portrait-640.webp",
+          "width": 640,
+          "height": 960,
+          "bytes": 68730
+        },
+        {
+          "requestedWidth": 960,
+          "url": "/visuals/founder-portrait-960.webp",
+          "width": 960,
+          "height": 1440,
+          "bytes": 123508
+        }
+      ],
+      "fullSizeSavingsBytes": 2063323,
+      "fullSizeSavingsPercent": 93.72
+    },
+    "/visuals/hands-strategy.png": {
+      "width": 1023,
+      "height": 1537,
+      "hasAlpha": false,
+      "sourceBytes": 2098777,
+      "mainWebp": {
+        "url": "/visuals/hands-strategy.webp",
+        "width": 1023,
+        "height": 1537,
+        "bytes": 152944
+      },
+      "variants": [
+        {
+          "requestedWidth": 640,
+          "url": "/visuals/hands-strategy-640.webp",
+          "width": 640,
+          "height": 962,
+          "bytes": 79394
+        },
+        {
+          "requestedWidth": 960,
+          "url": "/visuals/hands-strategy-960.webp",
+          "width": 960,
+          "height": 1442,
+          "bytes": 140172
+        }
+      ],
+      "fullSizeSavingsBytes": 1945833,
+      "fullSizeSavingsPercent": 92.71
+    },
+    "/visuals/hero-3d.png": {
+      "width": 1536,
+      "height": 1024,
+      "hasAlpha": false,
+      "sourceBytes": 2001140,
+      "mainWebp": {
+        "url": "/visuals/hero-3d.webp",
+        "width": 1536,
+        "height": 1024,
+        "bytes": 171024
+      },
+      "variants": [
+        {
+          "requestedWidth": 640,
+          "url": "/visuals/hero-3d-640.webp",
+          "width": 640,
+          "height": 427,
+          "bytes": 45494
+        },
+        {
+          "requestedWidth": 960,
+          "url": "/visuals/hero-3d-960.webp",
+          "width": 960,
+          "height": 640,
+          "bytes": 87076
+        }
+      ],
+      "fullSizeSavingsBytes": 1830116,
+      "fullSizeSavingsPercent": 91.45
+    },
+    "/visuals/kinetic-sheets.png": {
+      "width": 1536,
+      "height": 1024,
+      "hasAlpha": false,
+      "sourceBytes": 1973485,
+      "mainWebp": {
+        "url": "/visuals/kinetic-sheets.webp",
+        "width": 1536,
+        "height": 1024,
+        "bytes": 191362
+      },
+      "variants": [
+        {
+          "requestedWidth": 640,
+          "url": "/visuals/kinetic-sheets-640.webp",
+          "width": 640,
+          "height": 427,
+          "bytes": 55210
+        },
+        {
+          "requestedWidth": 960,
+          "url": "/visuals/kinetic-sheets-960.webp",
+          "width": 960,
+          "height": 640,
+          "bytes": 103444
+        }
+      ],
+      "fullSizeSavingsBytes": 1782123,
+      "fullSizeSavingsPercent": 90.3
+    },
+    "/visuals/mobius-3d.png": {
+      "width": 1254,
+      "height": 1254,
+      "hasAlpha": false,
+      "sourceBytes": 1553970,
+      "mainWebp": {
+        "url": "/visuals/mobius-3d.webp",
+        "width": 1254,
+        "height": 1254,
+        "bytes": 125264
+      },
+      "variants": [
+        {
+          "requestedWidth": 640,
+          "url": "/visuals/mobius-3d-640.webp",
+          "width": 640,
+          "height": 640,
+          "bytes": 37608
+        },
+        {
+          "requestedWidth": 960,
+          "url": "/visuals/mobius-3d-960.webp",
+          "width": 960,
+          "height": 960,
+          "bytes": 79370
+        }
+      ],
+      "fullSizeSavingsBytes": 1428706,
+      "fullSizeSavingsPercent": 91.94
+    },
+    "/visuals/next-chapter.png": {
+      "width": 1024,
+      "height": 1536,
+      "hasAlpha": false,
+      "sourceBytes": 2300923,
+      "mainWebp": {
+        "url": "/visuals/next-chapter.webp",
+        "width": 1024,
+        "height": 1536,
+        "bytes": 208696
+      },
+      "variants": [
+        {
+          "requestedWidth": 640,
+          "url": "/visuals/next-chapter-640.webp",
+          "width": 640,
+          "height": 960,
+          "bytes": 110482
+        },
+        {
+          "requestedWidth": 960,
+          "url": "/visuals/next-chapter-960.webp",
+          "width": 960,
+          "height": 1440,
+          "bytes": 196434
+        }
+      ],
+      "fullSizeSavingsBytes": 2092227,
+      "fullSizeSavingsPercent": 90.93
+    },
+    "/visuals/partners.png": {
+      "width": 1797,
+      "height": 875,
+      "hasAlpha": false,
+      "sourceBytes": 2152666,
+      "mainWebp": {
+        "url": "/visuals/partners.webp",
+        "width": 1797,
+        "height": 875,
+        "bytes": 145750
+      },
+      "variants": [
+        {
+          "requestedWidth": 640,
+          "url": "/visuals/partners-640.webp",
+          "width": 640,
+          "height": 312,
+          "bytes": 35018
+        },
+        {
+          "requestedWidth": 960,
+          "url": "/visuals/partners-960.webp",
+          "width": 960,
+          "height": 467,
+          "bytes": 60456
+        }
+      ],
+      "fullSizeSavingsBytes": 2006916,
+      "fullSizeSavingsPercent": 93.23
+    },
+    "/visuals/pebble-3d.png": {
+      "width": 1254,
+      "height": 1254,
+      "hasAlpha": false,
+      "sourceBytes": 2069927,
+      "mainWebp": {
+        "url": "/visuals/pebble-3d.webp",
+        "width": 1254,
+        "height": 1254,
+        "bytes": 234318
+      },
+      "variants": [
+        {
+          "requestedWidth": 640,
+          "url": "/visuals/pebble-3d-640.webp",
+          "width": 640,
+          "height": 640,
+          "bytes": 71208
+        },
+        {
+          "requestedWidth": 960,
+          "url": "/visuals/pebble-3d-960.webp",
+          "width": 960,
+          "height": 960,
+          "bytes": 149590
+        }
+      ],
+      "fullSizeSavingsBytes": 1835609,
+      "fullSizeSavingsPercent": 88.68
+    },
+    "/visuals/ribbon-tunnel.png": {
+      "width": 1536,
+      "height": 1024,
+      "hasAlpha": false,
+      "sourceBytes": 1901412,
+      "mainWebp": {
+        "url": "/visuals/ribbon-tunnel.webp",
+        "width": 1536,
+        "height": 1024,
+        "bytes": 140944
+      },
+      "variants": [
+        {
+          "requestedWidth": 640,
+          "url": "/visuals/ribbon-tunnel-640.webp",
+          "width": 640,
+          "height": 427,
+          "bytes": 44294
+        },
+        {
+          "requestedWidth": 960,
+          "url": "/visuals/ribbon-tunnel-960.webp",
+          "width": 960,
+          "height": 640,
+          "bytes": 76714
+        }
+      ],
+      "fullSizeSavingsBytes": 1760468,
+      "fullSizeSavingsPercent": 92.59
+    },
+    "/visuals/sphere-3d.png": {
+      "width": 1254,
+      "height": 1254,
+      "hasAlpha": false,
+      "sourceBytes": 2430562,
+      "mainWebp": {
+        "url": "/visuals/sphere-3d.webp",
+        "width": 1254,
+        "height": 1254,
+        "bytes": 320866
+      },
+      "variants": [
+        {
+          "requestedWidth": 640,
+          "url": "/visuals/sphere-3d-640.webp",
+          "width": 640,
+          "height": 640,
+          "bytes": 109858
+        },
+        {
+          "requestedWidth": 960,
+          "url": "/visuals/sphere-3d-960.webp",
+          "width": 960,
+          "height": 960,
+          "bytes": 211790
+        }
+      ],
+      "fullSizeSavingsBytes": 2109696,
+      "fullSizeSavingsPercent": 86.8
+    },
+    "/visuals/topographic-waves.png": {
+      "width": 1536,
+      "height": 1024,
+      "hasAlpha": false,
+      "sourceBytes": 2197211,
+      "mainWebp": {
+        "url": "/visuals/topographic-waves.webp",
+        "width": 1536,
+        "height": 1024,
+        "bytes": 211738
+      },
+      "variants": [
+        {
+          "requestedWidth": 640,
+          "url": "/visuals/topographic-waves-640.webp",
+          "width": 640,
+          "height": 427,
+          "bytes": 61328
+        },
+        {
+          "requestedWidth": 960,
+          "url": "/visuals/topographic-waves-960.webp",
+          "width": 960,
+          "height": 640,
+          "bytes": 109494
+        }
+      ],
+      "fullSizeSavingsBytes": 1985473,
+      "fullSizeSavingsPercent": 90.36
+    },
+    "/visuals/tradeswoman.png": {
+      "width": 1024,
+      "height": 1536,
+      "hasAlpha": false,
+      "sourceBytes": 2143676,
+      "mainWebp": {
+        "url": "/visuals/tradeswoman.webp",
+        "width": 1024,
+        "height": 1536,
+        "bytes": 134594
+      },
+      "variants": [
+        {
+          "requestedWidth": 640,
+          "url": "/visuals/tradeswoman-640.webp",
+          "width": 640,
+          "height": 960,
+          "bytes": 69022
+        },
+        {
+          "requestedWidth": 960,
+          "url": "/visuals/tradeswoman-960.webp",
+          "width": 960,
+          "height": 1440,
+          "bytes": 120748
+        }
+      ],
+      "fullSizeSavingsBytes": 2009082,
+      "fullSizeSavingsPercent": 93.72
+    }
+  }
+}

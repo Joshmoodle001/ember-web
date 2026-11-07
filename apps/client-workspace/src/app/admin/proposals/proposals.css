@@ -1,0 +1,5 @@
+.proposal-share-link { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: 9px; margin-top: 15px; }
+.proposal-share-link .field { min-width: 0; }
+.proposal-share-link input { font-size: 11px; }
+.proposal-share-link .button { min-height: 42px; }
+@media (max-width: 520px) { .proposal-share-link { grid-template-columns: 1fr; } }

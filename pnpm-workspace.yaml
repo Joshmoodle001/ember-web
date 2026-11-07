@@ -1,0 +1,6 @@
+packages:
+  - apps/client-workspace
+  - apps/emberweb-live
+allowBuilds:
+  sharp: true
+  unrs-resolver: true

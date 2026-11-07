@@ -1,0 +1,59 @@
+/* EmberWeb: midnight canvas, cobalt depth, acid-lime actions.
+   Exact cobalt is reserved for artwork and light surfaces; its lighter tint
+   keeps small text and focus indicators readable against midnight black. */
+:root {
+  --ink: #030407;
+  --paper: #f1f5ef;
+  --cobalt: #1558c9;
+  --cyan: #8eafff;
+  --lime: #d4ff24;
+  --clay: #8eafff;
+}
+
+::selection { background: #d4ff24; color: #030407; }
+.site-header { background: #030407f5; border-bottom-color: #8eafff26; }
+.mobile-nav, .site-footer, .intro-screen { background: #030407; }
+.section-ink, .signal-studio { background: #080e1c; }
+.client-access-strip { background: #0b1428; border-bottom-color: #8eafff26; }
+.hero {
+  background: radial-gradient(ellipse at 78% 42%, #1558c961, transparent 56%), #030407;
+}
+.sub-hero {
+  background: radial-gradient(ellipse at 90% 15%, #1558c933, transparent 58%), #030407;
+}
+.service-card, .concept-card, .art-frame { background-color: #0b1428; border-color: #8eafff33; }
+.section-light .concept-card { background-color: var(--paper); border-color: #bdcfca; }
+.section-light em, .section-light .eyebrow, .section-light .section-label,
+.client-path-card .eyebrow, .client-path-card > svg,
+.section-light .package-card .eyebrow, .care-grid .eyebrow, .industry-grid .eyebrow { color: #1558c9; }
+.button-primary, .action-primary, .site-nav-cta, .mobile-nav-cta {
+  background: #d4ff24;
+  color: #030407;
+  border-color: #d4ff24;
+}
+.button-primary:hover, .action-primary:hover, .site-nav-cta:hover {
+  background: #e1ff70;
+  border-color: #e1ff70;
+}
+.mobile-nav .mobile-nav-cta:hover { background: #e1ff70; color: #030407; }
+.hero-orbits > g:first-child { stroke: #1558c9; }
+.hero-orbits .orbit-slow { stroke: #d4ff24; }
+.hero-orbits .orbit-slow circle[fill] { fill: #d4ff24; }
+.hero-orbits .orbit-counter { stroke: #8eafff; }
+.intro-symbol { stroke: #8eafff; }
+.intro-symbol path:first-child { stroke: #d4ff24; }
+.intro-line { background: linear-gradient(90deg, #1558c9, #8eafff 55%, #d4ff24); }
+.signal-grid {
+  background-image: linear-gradient(#1558c933 1px, transparent 1px),
+    linear-gradient(90deg, #1558c933 1px, transparent 1px);
+}
+.signal-cables { stroke: #8eafff; }
+.signal-window, .signal-app-body { background: #0d1a36; }
+.signal-core svg { background: #030407ee; }
+.signal-chart i, .signal-chart i:last-child { background: #1558c9; }
+.signal-chart i:nth-child(2n), .signal-app-rows i { background: #d4ff24; }
+.signal-progress i { background: #d4ff24; }
+.page-motion-toggle { background: #030407; color: #f1f5ef; border-color: #8eafff; }
+.page-motion-toggle:hover, .page-motion-toggle[aria-pressed="true"] {
+  background: #d4ff24; color: #030407; border-color: #d4ff24;
+}

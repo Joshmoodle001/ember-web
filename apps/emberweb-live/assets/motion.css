@@ -1,0 +1,322 @@
+/* Quiet, progressive-enhancement motion for the EmberWeb marketing site.
+   Text and controls remain visible when JavaScript is unavailable. */
+
+:root {
+  --ember-motion-depth: 0px;
+}
+
+/* Clip the art without creating a hidden scroll container on keyboard focus. */
+.hero { overflow: clip; }
+
+/* Remove the captured perpetual hero floats and broad background spin. The
+   replacement motion is confined to the small orbital SVG below. */
+.hero::before,
+.hero-art,
+.method-visual img,
+.triangle,
+.ring,
+.ember-guide-button img,
+.ember-guide-spark {
+  animation: none;
+}
+
+.hero-art::after { content: none; animation: none; }
+
+.hero-orbits {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  color: var(--cyan, #3de7ff);
+  opacity: .62;
+  pointer-events: none;
+}
+
+.hero-orbits :is(path, ellipse, circle) {
+  vector-effect: non-scaling-stroke;
+}
+
+.hero-orbits .orbit-slow,
+.hero-orbits .orbit-counter {
+  transform-box: view-box;
+  transform-origin: center;
+  animation-play-state: paused;
+}
+
+html.motion-enabled .hero-art.is-motion-active .hero-orbits .orbit-slow {
+  animation: ember-orbit-drift 72s linear infinite;
+  animation-play-state: running;
+}
+
+html.motion-enabled .hero-art.is-motion-active .hero-orbits .orbit-counter {
+  animation: ember-orbit-drift 96s linear infinite reverse;
+  animation-play-state: running;
+}
+
+html.motion-enabled .hero-art.is-motion-active .hero-orbits .orbit-slow :is(path, circle, ellipse),
+html.motion-enabled .hero-art.is-motion-active .hero-orbits .orbit-counter :is(path, circle, ellipse) {
+  animation: ember-line-glide 28s ease-in-out infinite alternate;
+  animation-play-state: running;
+}
+
+html.motion-enabled .hero-art.is-motion-active .hero-orbits .orbit-counter :is(path, circle, ellipse) {
+  animation-duration: 36s;
+  animation-direction: alternate-reverse;
+}
+
+.journey-sigil {
+  color: #168096;
+  flex: 0 0 auto;
+  width: clamp(42px, 5vw, 64px);
+  height: auto;
+  overflow: visible;
+  position: absolute;
+  top: 22px;
+  right: 22px;
+}
+
+.journey-sigil :is(path, circle, ellipse, line, polyline, polygon) {
+  vector-effect: non-scaling-stroke;
+}
+
+html.motion-enabled .journey-sigil {
+  animation: ember-sigil-glow 9s ease-in-out infinite;
+}
+
+.journey-steps > li:nth-child(2) .journey-sigil {
+  animation-delay: -2.7s;
+}
+
+.journey-steps > li:nth-child(3) .journey-sigil {
+  animation-delay: -5.4s;
+}
+
+.journey-steps li {
+  position: relative;
+  padding-right: 96px;
+  transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
+}
+
+.motion-toggle { transition: color 180ms ease, background-color 180ms ease, border-color 180ms ease; }
+.motion-toggle[aria-pressed="true"] {
+  color: var(--ink, #061a29);
+  background: var(--lime, #c8fc37);
+  border-color: var(--lime, #c8fc37);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .journey-steps li:hover {
+    transform: translateY(-3px);
+    border-color: #79b5ae;
+    box-shadow: 0 12px 28px #061a2914;
+  }
+}
+
+/* The runtime updates only small visual layers; the separate translate
+   property preserves any layout transforms already applied by the design. */
+[data-depth] {
+  translate: 0 var(--depth-shift, var(--ember-motion-depth)) !important;
+}
+
+[data-depth].is-motion-active {
+  will-change: translate;
+}
+
+.motion-toggle {
+  position: absolute;
+  z-index: 4;
+  left: clamp(22px, 4.5vw, 72px);
+  bottom: 24px;
+  min-width: 44px;
+  min-height: 44px;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  padding: 9px 14px;
+  color: inherit;
+  background: transparent;
+  font: inherit;
+  cursor: pointer;
+}
+
+.motion-toggle[hidden] { display: none !important; }
+
+.motion-toggle:hover {
+  color: var(--ink, #061a29);
+  background: var(--lime, #c8fc37);
+  border-color: var(--lime, #c8fc37);
+}
+
+.motion-toggle:focus-visible {
+  outline: 3px solid var(--cyan, #3de7ff);
+  outline-offset: 4px;
+}
+
+.progress {
+  width: 100%;
+  height: 2px;
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+
+html.motion-paused [data-depth] {
+  --depth-shift: 0px;
+  translate: 0 0 !important;
+}
+
+html.motion-paused { scroll-behavior: auto !important; }
+
+html.motion-paused *,
+html.motion-paused *::before,
+html.motion-paused *::after {
+  animation-play-state: paused !important;
+  transition: none !important;
+  scroll-behavior: auto !important;
+}
+
+@keyframes ember-orbit-drift {
+  from { rotate: 0deg; }
+  to { rotate: 360deg; }
+}
+
+@keyframes ember-line-glide {
+  from { stroke-dashoffset: 0; }
+  to { stroke-dashoffset: -1; }
+}
+
+@keyframes ember-sigil-glow {
+  0%, 100% { opacity: .82; }
+  50% { opacity: 1; }
+}
+
+@media (min-width: 761px) {
+  [data-depth] {
+    translate: 0 clamp(-28px, var(--depth-shift, 0px), 28px) !important;
+  }
+}
+
+@media (max-width: 760px) {
+  .hero-orbits {
+    opacity: .38;
+  }
+
+  html.motion-enabled .hero-art.is-motion-active .hero-orbits .orbit-slow { animation-duration: 120s; }
+  html.motion-enabled .hero-art.is-motion-active .hero-orbits .orbit-counter { animation-duration: 144s; }
+  html.motion-enabled .hero-art.is-motion-active .hero-orbits .orbit-slow :is(path, circle, ellipse),
+  html.motion-enabled .hero-art.is-motion-active .hero-orbits .orbit-counter :is(path, circle, ellipse) { animation-duration: 48s; }
+
+  .journey-sigil { width: 42px; }
+  .journey-steps li { padding-right: 82px; transition-duration: 150ms; }
+
+  [data-depth] {
+    translate: 0 clamp(-8px, var(--depth-shift, 0px), 8px) !important;
+  }
+
+  .hero { padding-bottom: 100px; }
+  .motion-toggle { left: 22px; bottom: 20px; min-height: 48px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-orbits *,
+  .journey-sigil *,
+  [data-depth] {
+    animation: none !important;
+    transition: none !important;
+    translate: 0 0 !important;
+  }
+}
+
+@media (max-width: 760px) and (prefers-reduced-motion: no-preference) {
+  html.motion-enabled .hero-art.is-motion-active .hero-orbits .orbit-counter,
+  html.motion-enabled .hero-art.is-motion-active .hero-orbits .orbit-counter :is(path, circle, ellipse),
+  html.motion-enabled .journey-sigil {
+    animation-play-state: paused;
+  }
+}
+
+/* Keep the marquee still unless the runtime confirms motion is available. */
+.marquee div { animation: none; }
+html.motion-enabled .marquee div { animation: 45s linear infinite marquee; }
+
+.mobile-nav, .ember-guide-panel {
+  transition: opacity 180ms ease, translate 280ms cubic-bezier(.22,1,.36,1), visibility 180ms;
+}
+.mobile-nav { translate: 0 -8px; }
+.mobile-nav.is-open { translate: 0 0; }
+.hero-actions a > span, .closing-cta > span {
+  display: inline-block;
+  transition: transform 240ms cubic-bezier(.22,1,.36,1);
+}
+@media (hover: hover) and (pointer: fine) {
+  .hero-actions a:hover > span, .closing-cta:hover > span { transform: translateX(4px); }
+}
+.hero-actions a:focus-visible > span, .closing-cta:focus-visible > span { transform: translateX(4px); }
+
+/* A short signature opening, never a loading gate. All content is already present. */
+.intro-screen[hidden] { display: none !important; }
+html.intro-preparing .intro-composition { visibility: hidden; }
+.intro-screen { position: fixed; inset: 0; z-index: 400; display: grid; place-items: center; background: #081c28; color: #f1f5ef; pointer-events: auto; overflow: clip; }
+.intro-composition { width: min(620px, 82vw); text-align: center; }
+.intro-symbol { width: clamp(76px, 12vw, 130px); margin: 0 auto 28px; stroke: #74dfff; stroke-width: 1.5; }
+.intro-symbol path:first-child { stroke: #cff752; }
+.intro-wordmark { font-size: clamp(42px, 8.5vw, 112px); line-height: 1; letter-spacing: -.06em; font-weight: 600; }
+.intro-caption { margin-top: 20px; font-size: 13px; letter-spacing: .12em; color: #b9d1d6; }
+.intro-line { height: 2px; width: 100%; margin-top: 34px; background: linear-gradient(90deg, #74dfff, #cff752, #ff9060); transform-origin: left; }
+html.intro-playing .intro-symbol { animation: ember-intro-mark 850ms cubic-bezier(.22,1,.36,1) both; }
+html.intro-playing .intro-line { animation: ember-intro-line 900ms cubic-bezier(.22,1,.36,1) both; }
+html.intro-playing .intro-wordmark { animation: ember-intro-type 650ms cubic-bezier(.22,1,.36,1) both; }
+.hero-objects { position: absolute; inset: 0; z-index: 3; pointer-events: none; }
+.hero-art.art-frame { overflow: visible; }
+.flying-object { position: absolute; width: clamp(72px, 8vw, 130px); filter: drop-shadow(0 18px 20px #03122280); }
+.object-prism { left: -7%; top: 12%; }
+.object-ring { right: -7%; bottom: 12%; width: clamp(90px, 10vw, 150px); }
+.object-star { right: 5%; top: 3%; width: 55px; opacity: .8; }
+/* Each object has its own path; the parent retains the bounded scroll translation. */
+html.motion-enabled .hero-art.is-motion-active .object-prism { animation: ember-prism-float 7s ease-in-out infinite; }
+html.motion-enabled .hero-art.is-motion-active .object-ring { animation: ember-ring-float 9s ease-in-out infinite; }
+html.motion-enabled .hero-art.is-motion-active .object-star { animation: ember-star-turn 18s linear infinite; }
+.hero-art:not(.is-motion-active) .flying-object { animation-play-state: paused; }
+html.motion-enabled .hero-art.is-motion-active .hero-orbits .orbit-slow { animation-duration: 34s; }
+html.motion-enabled .hero-art.is-motion-active .hero-orbits .orbit-counter { animation-duration: 48s; }
+@keyframes ember-intro-mark { from { transform: rotate(-45deg) scale(.5); opacity: .15; } to { transform: rotate(0) scale(1); opacity: 1; } }
+@keyframes ember-intro-type { from { transform: translateY(24px); letter-spacing: .04em; opacity: .2; } to { transform: translateY(0); letter-spacing: -.06em; opacity: 1; } }
+@keyframes ember-intro-line { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@keyframes ember-prism-float { 0%,100% { transform: translate3d(0,0,0) rotate(-8deg); } 50% { transform: translate3d(12px,-22px,0) rotate(7deg); } }
+@keyframes ember-ring-float { 0%,100% { transform: translate3d(0,0,0) rotate(10deg); } 50% { transform: translate3d(-16px,18px,0) rotate(-12deg); } }
+@keyframes ember-star-turn { from { transform: rotate(0); } to { transform: rotate(360deg); } }
+@media(max-width:760px) {
+  .flying-object { width: 70px; }
+  .object-prism { left: -4%; top: 10%; }
+  .object-ring { right: -3%; bottom: 8%; width: 90px; }
+  .object-star { width: 35px; }
+  html.motion-enabled .hero-art.is-motion-active .object-prism { animation-duration: 10s; }
+  html.motion-enabled .hero-art.is-motion-active .object-ring { animation-duration: 12s; }
+  html.motion-enabled .hero-art.is-motion-active .hero-orbits .orbit-slow { animation-duration: 56s; }
+}
+@media(prefers-reduced-motion:reduce) {
+  .intro-screen { display: none !important; }
+  .flying-object, .intro-composition * { animation: none !important; transition: none !important; }
+}
+
+/* Art direction: illuminated faces, a metallic orbit and a restrained glass finish. */
+.motion-controls { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+.hero .motion-controls .motion-toggle, .intro-replay { position: static; margin: 0; padding: 9px 14px; min-height: 44px; border: 1px solid #91aeb965; border-radius: 99px; font-size: 11px; color: #bdd0d5; background: transparent; }
+.intro-replay { display: inline-flex; align-items: center; gap: 12px; cursor: pointer; }
+.intro-replay[hidden] { display: none !important; }
+.intro-replay:disabled { opacity: .45; cursor: default; }
+.intro-replay:not(:disabled):hover { color: #cff752; border-color: #cff752; }
+.art-light { position: absolute; inset: 0; z-index: 2; border-radius: inherit; pointer-events: none; background: radial-gradient(circle at var(--art-light-x,50%) var(--art-light-y,50%), #b2efff22, transparent 48%); }
+.art-image { width: 100%; height: 100%; border-radius: inherit; overflow: clip; }
+.art-image img { width: 100%; height: 100%; object-fit: cover; border-radius: inherit; }
+.studio-stamp { position: absolute; bottom: 24px; left: 24px; z-index: 4; display: flex; align-items: center; gap: 12px; border: 1px solid #a6d2dc40; border-radius: 99px; padding: 9px 14px; background: #081c28e6; color: #d3e6e8; font: 10px/1.5 Mono,monospace; letter-spacing: .03em; }
+.studio-stamp i { width: 6px; height: 6px; border-radius: 50%; background: #cff752; box-shadow: 0 0 10px #cff75260; }
+@media(hover:hover) and (pointer:fine) {
+  html.motion-enabled .hero-art.is-motion-active .art-image img { transform: perspective(1100px) rotateX(var(--art-tilt-x,0deg)) rotateY(var(--art-tilt-y,0deg)) scale(1.025); transition: transform 350ms cubic-bezier(.22,1,.36,1); }
+  html.motion-enabled .hero-art.is-motion-active .hero-objects { transform: perspective(1100px) rotateX(var(--art-tilt-x,0deg)) rotateY(var(--art-tilt-y,0deg)); transition: transform 450ms cubic-bezier(.22,1,.36,1); }
+  .card, .concept-card, .package-card { transition: border-color 250ms ease, box-shadow 250ms ease, translate 250ms ease; }
+  .card:hover, .concept-card:hover, .package-card:hover { border-color: #72a5a5; box-shadow: 0 14px 32px #03122212; translate: 0 -3px; }
+}
+@media(max-width:760px) { .studio-stamp { bottom: 15px; left: 15px; padding: 7px 10px; font-size: 9px; } }
+html.motion-paused .hero-art .art-image img, html.motion-paused .hero-objects { transform: none !important; }
+@media(prefers-reduced-motion:reduce) { .hero-art .art-image img, .hero-objects { transform: none !important; } .intro-replay { display: none !important; } }

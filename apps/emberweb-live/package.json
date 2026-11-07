@@ -1,0 +1,10 @@
+{
+  "name": "emberweb-live-site",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "node build.mjs",
+    "lint": "node lint.mjs",
+    "preview": "node preview.mjs"
+  }
+}

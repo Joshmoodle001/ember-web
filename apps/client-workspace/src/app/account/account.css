@@ -1,0 +1,23 @@
+.account-shell{max-width:1120px;margin:auto;padding:28px 24px 70px}.account-top{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;margin-bottom:40px}.account-top nav{display:flex;gap:18px;align-items:center;flex-wrap:wrap}.account-heading{max-width:740px;margin-bottom:32px}.account-heading h1{font-size:clamp(2rem,5vw,3.6rem);line-height:1.08;margin:12px 0}.account-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,310px),1fr));gap:20px}.account-card{border:1px solid var(--line,#333);border-radius:20px;padding:24px;background:var(--panel,#11151d);margin-bottom:20px;overflow-wrap:anywhere}.account-card h2,.account-card h3{margin-top:0}.account-card ul{padding-left:20px}.account-card li{margin:12px 0}.account-status{font-size:.8rem;text-transform:uppercase;letter-spacing:.08em;color:#a4e3d6}.account-note{color:var(--muted,#aab5c4);line-height:1.6}.account-auth{max-width:520px;margin:35px auto}.account-tabs{display:flex;gap:12px;margin-bottom:24px}.account-tabs button{flex:1;min-height:44px}.account-progress{width:100%;height:12px;accent-color:#e4a15a}.account-card input,.account-card select,.account-card textarea{max-width:100%;width:100%}.account-card .field{margin-bottom:16px}.account-links{display:flex;gap:14px;flex-wrap:wrap}.account-links a{min-height:44px;display:inline-flex;align-items:center}.account-shell button{min-height:44px}.account-table{width:100%;border-collapse:collapse}.account-table td,.account-table th{padding:12px;text-align:left;border-bottom:1px solid #333}.account-table-wrap{overflow:auto}.account-error{color:#ffb7aa}.account-message{padding:14px;border:1px solid #455260;border-radius:10px;margin:18px 0}.account-list{display:grid;gap:12px}.account-row{display:flex;justify-content:space-between;gap:16px;align-items:center;padding:16px;border:1px solid #333;border-radius:12px;flex-wrap:wrap}.account-row span{overflow-wrap:anywhere}@media(max-width:600px){.account-shell{padding:20px 16px 48px}.account-card{padding:20px}.account-top{margin-bottom:28px}}
+.account-top a{display:inline-flex;align-items:center;min-height:44px}.account-card h4{margin-top:24px}.account-card progress{display:block;margin-top:8px}
+.account-auth h1{font-size:clamp(2rem,5vw,2.75rem);line-height:1.12;letter-spacing:-.035em;margin:12px 0 18px}
+.account-shell input,.account-shell select{min-height:44px}
+
+/* Account forms stay readable on touch screens, including tablet Safari. */
+.account-grid>* , .account-card, .account-card .field, .account-top>*, .account-row>*{min-width:0}
+.account-heading,.account-top,.account-message{overflow-wrap:anywhere}
+.account-card input,.account-card select,.account-card textarea{font-size:16px;min-height:44px;min-width:0}
+.account-card textarea{min-height:140px}
+.account-card select{max-width:100%;text-overflow:ellipsis}
+.account-tabs button{border:1px solid var(--line);border-radius:8px;padding:12px;background:var(--canvas);color:var(--ink);cursor:pointer}
+.account-tabs button[aria-pressed=true]{border-color:var(--ember);background:var(--ember);color:var(--canvas);font-weight:700}
+.account-tabs button:disabled{cursor:wait;opacity:.65}
+.account-card a:not(.button){text-decoration:underline;text-underline-offset:4px}
+.account-card button,.account-row button{max-width:100%;white-space:normal;overflow-wrap:anywhere}
+.account-row>span{max-width:100%}
+.account-table-wrap{max-width:100%;overscroll-behavior-x:contain}
+.account-table caption{text-align:left;color:var(--muted);padding:12px}
+.account-card :focus-visible{outline:2px solid var(--ember-soft);outline-offset:4px}
+@media(max-width:480px){.account-tabs{gap:8px}.account-tabs button{font-size:14px}.account-row{padding:12px}.account-row button{width:100%}}
+.client-create-toggle { display:flex;align-items:center;min-height:44px;cursor:pointer;font-weight:650;margin-bottom:12px; }
+.client-create-toggle:focus-visible { outline:2px solid var(--ember,#ff773d);outline-offset:3px; }

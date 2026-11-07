@@ -1,0 +1,20 @@
+.request-center { margin-top:24px;min-width:0; }
+.request-center h2,.request-center h3 { overflow-wrap:anywhere; }
+.request-create { border:1px solid var(--line,#333);border-radius:12px;padding:14px;margin:18px 0; }
+.request-create summary { cursor:pointer;min-height:44px;display:flex;align-items:center;font-weight:650; }
+.request-create[open] summary { margin-bottom:14px; }
+.request-layout { display:grid;grid-template-columns:minmax(180px,0.7fr) minmax(0,1.5fr);gap:24px;margin-top:20px; }
+.request-thread { min-width:0; }
+.request-thread header { margin-bottom:18px; }
+.request-thread header h3 { margin:8px 0; }
+.request-message { border:1px solid var(--line,#333);border-radius:12px;padding:16px;margin-bottom:12px;overflow-wrap:anywhere; }
+.request-message-staff { border-left:3px solid var(--ember,#ff773d); }
+.request-message time { display:block;color:var(--muted,#aaa);font-size:13px;margin-top:5px; }
+.request-message p { white-space:pre-wrap;line-height:1.65;margin-bottom:0; }
+.request-center input,.request-center select,.request-center textarea { min-width:0;max-width:100%;font-size:16px; }
+.request-center textarea { resize:vertical;min-height:100px; }
+.request-center button,.request-center select { min-height:44px; }
+.request-center button:focus-visible,.request-center summary:focus-visible { outline:2px solid var(--ember,#ff773d);outline-offset:3px; }
+.request-filters { display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px; }
+.request-count { color:var(--muted,#aaa);font-size:14px; }
+@media(max-width:760px) { .request-layout,.request-filters { grid-template-columns:minmax(0,1fr); }.request-message { padding:12px; } }
