@@ -215,8 +215,6 @@ await cp(path.join(appRoot, "site.js"), path.join(outputDirectory, "site.js"));
 await cp(path.join(appRoot, "motion.js"), path.join(outputDirectory, "motion.js"));
 await cp(path.join(appRoot, "experience.js"), path.join(outputDirectory, "experience.js"));
 await cp(path.join(appRoot, "galaxy.mjs"), path.join(outputDirectory, "galaxy.mjs"));
-await cp(path.join(appRoot, "galaxy-motion.mjs"), path.join(outputDirectory, "galaxy-motion.mjs"));
-await cp(path.join(appRoot, "galaxy-renderer.mjs"), path.join(outputDirectory, "galaxy-renderer.mjs"));
 await cp(path.join(appRoot, "galaxy-boot.js"), path.join(outputDirectory, "galaxy-boot.js"));
 await cp(path.join(appRoot, "mission-control.js"), path.join(outputDirectory, "mission-control.js"));
 await cp(path.join(appRoot, "robots.txt"), path.join(outputDirectory, "robots.txt"));

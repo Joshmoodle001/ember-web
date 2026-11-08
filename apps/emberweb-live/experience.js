@@ -29,6 +29,7 @@
     light.className = "section-stage-light";
     light.setAttribute("aria-hidden", "true");
     section.classList.add("has-stage-light");
+    light.style.setProperty("--light-hue", String(195 + index % 3 * 24));
     light.innerHTML = '<div class="stage-beam"></div><div class="stage-grid"></div>';
     section.prepend(light);
     return { section, light, index };
@@ -46,7 +47,6 @@
       travel = Math.sign(travel) * travel * travel;
       light.style.setProperty("--light-x", ((index % 2 ? -1 : 1) * travel * 85).toFixed(3) + "%");
       light.style.setProperty("--light-turn", ((index % 2 ? 1 : -1) * (12 + travel * 24)).toFixed(3) + "deg");
-      light.style.setProperty("--light-hue", String(195 + index % 3 * 24));
     }
   }
   function request() {

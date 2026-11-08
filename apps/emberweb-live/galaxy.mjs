@@ -1,5 +1,3 @@
-import { chapterAt } from "./galaxy-motion.mjs?v=studio-film";
-import { createUniverseRenderer } from "./galaxy-renderer.mjs?v=studio-film";
 
 const stage = document.querySelector(".galaxy-stage");
 const entry = document.querySelector(".universe-entry");
@@ -17,13 +15,6 @@ const arrivalAnchor = window.location?.hash;
 let session = 0;
 let returnFocus;
 let deadline;
-let renderer;
-let frame = 0;
-let lastPaint = 0;
-let geometry = [];
-
-let needsMeasure = true;
-
 function finishIntro() {
   if (entry.hidden) return;
   session++;
@@ -41,13 +32,12 @@ function finishIntro() {
   if (!returnFocus && arrivalAnchor) {
     document.getElementById(arrivalAnchor.slice(1))?.scrollIntoView({ behavior: "instant", block: "start" });
   }
-  requestPaint();
+
 }
 
 function playIntro() {
   if (!moving()) {
     root.classList.remove("cosmos-gated");
-    requestPaint();
     return;
   }
   const generation = ++session;
@@ -62,7 +52,10 @@ function playIntro() {
   entry.hidden = false;
   root.classList.add("cosmos-gated", "cosmos-opening");
   skip.focus({ preventScroll: true });
-  if (!film.getAttribute("src")) film.src = compact.matches ? film.dataset.mobileSrc : film.dataset.src;
+  if (!film.getAttribute("src")) {
+    const lowPower = navigator.connection?.saveData || (navigator.deviceMemory && navigator.deviceMemory <= 2) || (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 2);
+    film.src = compact.matches ? (lowPower ? film.dataset.economySrc : film.dataset.mobileSrc) : (lowPower ? film.dataset.economyDesktopSrc : film.dataset.src);
+  }
   film.muted = true;
   film.currentTime = 0;
   // A stalled stream must never leave the visitor behind the opening.
@@ -72,42 +65,6 @@ function playIntro() {
   }
 }
 
-function measure() {
-  renderer.resize(innerWidth, innerHeight, compact.matches);
-  const box = element => {
-    let top = 0;
-    for (let node = element; node; node = node.offsetParent) top += node.offsetTop;
-    return { element, top, height: element.offsetHeight };
-  };
-  geometry = [...main.querySelectorAll("[data-cosmos-scene]")].map(element => ({
-    ...box(element), scene: Number(element.dataset.cosmosScene)
-  }));
-  needsMeasure = false;
-}
-let previousScroll = -1;
-let previousMotion;
-function paint(now) {
-  frame = 0;
-  if (document.hidden || !entry.hidden) return;
-  if (!renderer) {
-    renderer = createUniverseRenderer(stage.querySelector(".universe-canvas"), stage.querySelector(".universe-particles"), () => { stage.dataset.fallback = "true"; });
-  }
-  const resized = needsMeasure;
-  if (resized) measure();
-  const active = moving();
-  const changed = resized || scrollY !== previousScroll || active !== previousMotion;
-  const scene = chapterAt(scrollY, innerHeight, geometry);
-  if (changed || now - lastPaint >= (compact.matches ? 60 : 42)) {
-    renderer.draw({ time: active ? now / 1000 : 0, scene: 1.72 + scene * .65, pointerX: 0, pointerY: 0, velocity: 0, entry: 0, reveal: 1, collapse: 0, tunnel: 0, explosion: 0, expansion: 0 });
-    lastPaint = now;
-  }
-  previousScroll = scrollY;
-  previousMotion = active;
-  if (active && !compact.matches) requestPaint();
-}
-function requestPaint() {
-  if (!frame && entry.hidden && !document.hidden) frame = requestAnimationFrame(paint);
-}
 entry.addEventListener("click", finishIntro);
 entry.addEventListener("wheel", finishIntro, { passive: true });
 entry.addEventListener("touchmove", finishIntro, { passive: true });
@@ -127,7 +84,7 @@ document.addEventListener("keydown", event => {
   if (["Escape","Enter"," ","ArrowDown","PageDown"].includes(event.key)) { event.preventDefault(); finishIntro(); }
 });
 document.addEventListener("visibilitychange", () => {
-  if (entry.hidden) { requestPaint(); return; }
+  if (entry.hidden) return;
   if (document.hidden) {
     film.pause();
     entry.classList.remove("film-playing");
@@ -139,18 +96,18 @@ document.addEventListener("visibilitychange", () => {
 });
 function updateMotion() {
   if (!moving()) finishIntro();
-  requestPaint();
+
 }
 new MutationObserver(updateMotion).observe(root, { attributes: true, attributeFilter: ["class"] });
 reduced.addEventListener("change", updateMotion);
-window.addEventListener("scroll", requestPaint, { passive: true });
-window.addEventListener("resize", () => { needsMeasure = true; requestPaint(); });
+
+window.addEventListener("pagehide", () => { film.pause(); clearTimeout(deadline); });
 window.addEventListener("pageshow", event => {
   if (event.persisted) {
     root.style.setProperty("--film-arrival", "0");
     playIntro();
-  } else requestPaint();
+  }
 });
-document.fonts?.ready.then(() => { needsMeasure = true; requestPaint(); });
-if (root.classList.contains("cosmos-gated")) playIntro(); else requestPaint();
+
+if (root.classList.contains("cosmos-gated")) playIntro();
 document.dispatchEvent(new Event("ember:cosmos-ready"));

@@ -5,7 +5,7 @@ import vm from "node:vm";
 
 const source = (await readFile(new URL("../galaxy.mjs", import.meta.url), "utf8")).replace(/^import .*;\r?\n/gm,"");
 
-function mount({ gated = true, reduced = false, denied = false, hidden = false } = {}) {
+function mount({ gated = true, reduced = false, denied = false, hidden = false, compact = false, saveData = false } = {}) {
   const events = new Map();
   const state = { plays: 0, scrolls: 0, stored: false, focus: null };
   const element = () => ({
@@ -20,6 +20,7 @@ function mount({ gated = true, reduced = false, denied = false, hidden = false }
   entry.hidden = true;
   entry.querySelector = selector => selector === "video" ? film : skip;
   main.querySelector = () => heading;
+  film.dataset = {src:'desktop',mobileSrc:'mobile',economySrc:'lite',economyDesktopSrc:'lite-desktop'};
   film.getAttribute = () => film.src;
   film.play = () => { state.plays++; return denied ? Promise.reject(new Error("Autoplay disabled")) : Promise.resolve(); };
   film.pause = () => {};
@@ -30,9 +31,9 @@ function mount({ gated = true, reduced = false, denied = false, hidden = false }
   };
   const window = { addEventListener(type, fn){events.set(type,fn);}, scrollTo(){state.scrolls++;} };
   const media = { matches:reduced, addEventListener(){} };
-  vm.runInNewContext(source,{window,document,matchMedia:()=>media,MutationObserver:class{observe(){}},Event:class{},
+  vm.runInNewContext(source,{window,document,matchMedia:query=>query.includes('max-width') ? {matches:compact,addEventListener(){}} : media,MutationObserver:class{observe(){}},Event:class{},
     requestAnimationFrame:()=>1,setTimeout:fn=>{state.timeout=fn;return 1;},clearTimeout(){},
-    sessionStorage:{setItem(){state.stored=true;}}});
+    navigator:{connection:{saveData}},sessionStorage:{setItem(){state.stored=true;}}});
   return { ...elements, document, state, events, trigger:(type,event)=>events.get(type)?.(event) };
 }
 
@@ -82,4 +83,12 @@ test("every homepage load gates the opening even after an earlier visit or pause
 test("opening a homepage in a background tab waits until it becomes visible",()=>{
   const m=mount({hidden:true});assert.equal(m.state.plays,0);assert.equal(m.entry.hidden,false);
   m.document.hidden=false;m.trigger("visibilitychange");assert.equal(m.state.plays,1);
+});
+test("native playback selects compact and data-saving encodes before requesting media",()=>{
+  for(const [options,expected] of [[{},"desktop"],[{compact:true},"mobile"],[{compact:true,saveData:true},"lite"],[{saveData:true},"lite-desktop"]]){
+    const m=mount(options);assert.equal(m.film.src,expected);
+  }
+});
+test("playback script does not schedule frames or create a live graphics renderer",()=>{
+  assert.doesNotMatch(source,/requestAnimationFrame|createUniverseRenderer|WebGLRenderingContext/);
 });
