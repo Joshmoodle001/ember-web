@@ -5,7 +5,7 @@ import vm from "node:vm";
 
 const source = (await readFile(new URL("../galaxy.mjs", import.meta.url), "utf8")).replace(/^import .*;\r?\n/gm,"");
 
-function mount({ gated = true, reduced = false, denied = false } = {}) {
+function mount({ gated = true, reduced = false, denied = false, hidden = false } = {}) {
   const events = new Map();
   const state = { plays: 0, scrolls: 0, stored: false, focus: null };
   const element = () => ({
@@ -24,11 +24,11 @@ function mount({ gated = true, reduced = false, denied = false } = {}) {
   film.play = () => { state.plays++; return denied ? Promise.reject(new Error("Autoplay disabled")) : Promise.resolve(); };
   film.pause = () => {};
   const document = {
-    documentElement:root, body:{children:[stage,entry,main,header]}, activeElement:null,
+    hidden, documentElement:root, body:{children:[stage,entry,main,header]}, activeElement:null,
     querySelector:s=>({".galaxy-stage":stage,".universe-entry":entry,".universe-replay":replay,main})[s],
     querySelectorAll:()=>[main,header].filter(el=>el.inert), addEventListener:(k,fn)=>events.set(k,fn), dispatchEvent(){}
   };
-  const window = { addEventListener(){}, scrollTo(){state.scrolls++;} };
+  const window = { addEventListener(type, fn){events.set(type,fn);}, scrollTo(){state.scrolls++;} };
   const media = { matches:reduced, addEventListener(){} };
   vm.runInNewContext(source,{window,document,matchMedia:()=>media,MutationObserver:class{observe(){}},Event:class{},
     requestAnimationFrame:()=>1,setTimeout:fn=>{state.timeout=fn;return 1;},clearTimeout(){},
@@ -41,7 +41,7 @@ test("first arrival starts the film without input and completion releases naviga
   assert.equal(m.state.plays,1); assert.equal(m.main.inert,true);
   m.trigger("film:ended");
   assert.equal(m.entry.hidden,true); assert.equal(m.main.inert,false); assert.equal(m.state.focus,m.heading);
-  assert.equal(m.state.stored,true);
+  assert.equal(m.state.stored,false);
 });
 for(const event of ["entry:click","entry:wheel","entry:touchmove","film:error"]) {
   test(event+" releases the page during playback",()=>{
@@ -61,4 +61,25 @@ test("Escape during replay returns focus to replay",()=>{
 test("stalled and blocked playback both fail open", async()=>{
   const stalled=mount();stalled.state.timeout();assert.equal(stalled.entry.hidden,true);
   const denied=mount({denied:true});await Promise.resolve();await Promise.resolve();assert.equal(denied.entry.hidden,true);
+});
+test("restoring the homepage from browser history replays the film",()=>{
+  const m=mount();m.trigger("film:ended");m.trigger("pageshow",{persisted:true});
+  assert.equal(m.state.plays,2);assert.equal(m.entry.hidden,false);
+});
+test("a background tab pauses and resumes without dismissing the film",()=>{
+  const m=mount();m.document.hidden=true;m.trigger("visibilitychange");
+  assert.equal(m.entry.hidden,false);m.document.hidden=false;m.trigger("visibilitychange");
+  assert.equal(m.state.plays,2);assert.equal(m.entry.hidden,false);
+});
+const boot=await readFile(new URL("../galaxy-boot.js",import.meta.url),"utf8");
+test("every homepage load gates the opening even after an earlier visit or pause",()=>{
+  for(let visit=0;visit<2;visit++){
+    let gated=false;
+    vm.runInNewContext(boot,{matchMedia:()=>({matches:false}),document:{documentElement:{classList:{add(){gated=true}}},addEventListener(){}},setTimeout(){return 1},clearTimeout(){},sessionStorage:{getItem:()=>"true"},location:{hash:"#explore"}});
+    assert.equal(gated,true);
+  }
+});
+test("opening a homepage in a background tab waits until it becomes visible",()=>{
+  const m=mount({hidden:true});assert.equal(m.state.plays,0);assert.equal(m.entry.hidden,false);
+  m.document.hidden=false;m.trigger("visibilitychange");assert.equal(m.state.plays,1);
 });

@@ -1,7 +1,6 @@
 // Fail open if the cinematic module cannot load. The website never depends on WebGL.
 (() => {
-  if (location.hash || matchMedia("(prefers-reduced-motion: reduce)").matches || navigator.connection?.saveData) return;
-  try { if (sessionStorage.getItem("ember:visited-atlas") || sessionStorage.getItem("ember-motion-paused") === "true") return; } catch {}
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
   document.documentElement.classList.add("cosmos-gated");
   const watchdog = setTimeout(() => {

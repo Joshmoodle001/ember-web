@@ -31,7 +31,9 @@
   let depthObserver;
   let frame = 0;
   let paused = false;
-  try { paused = sessionStorage.getItem("ember-motion-paused") === "true"; } catch { /* Optional preference only. */ }
+  if (document.body?.dataset?.motionScope !== "background") {
+    try { paused = sessionStorage.getItem("ember-motion-paused") === "true"; } catch {}
+  }
   const enabled = () => !paused && !reducedMotion.matches;
 
   const backgroundOnly = document.body?.dataset?.motionScope === "background";

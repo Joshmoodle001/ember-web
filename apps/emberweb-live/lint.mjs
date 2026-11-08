@@ -299,12 +299,7 @@ for (const route of routes) {
     const heroActions = html.match(/<div class="hero-actions">([\s\S]*?)<\/div>/i)?.[1] ?? "";
     assert.match(heroActions, /href="\/start"[^>]*>\s*Start a project/i, "The home hero should offer a clear project-request action");
     assert.match(html, /href="\/book"[^>]*>\s*Book a discovery call/i, "The homepage should offer a clear booking action");
-    const motionToggle = html.match(/<button\b[^>]*class="[^"]*\bmotion-toggle\b[^"]*"[^>]*>[\s\S]*?<\/button>/i)?.[0];
-    assert.ok(motionToggle, "The home page should expose a motion preference control");
-    assert.equal(attribute(motionToggle, "type"), "button", "The motion toggle must not submit a form");
-    assert.ok(hasAttribute(motionToggle, "aria-pressed"), "The motion toggle should expose its state to assistive technology");
-    assert.match(motionToggle, /\bhidden\b/i, "The motion toggle should be hidden until its state is initialized");
-    assert.ok(attribute(motionToggle, "aria-label") || motionToggle.replace(/<[^>]+>/g, "").trim(), "The motion toggle should have an accessible name");
+    assert.doesNotMatch(html, /<button[^>]*class="[^"]*motion-toggle/, "Public pages do not show motion controls");
     const stage = html.match(/<div\b[^>]*class="galaxy-stage"[^>]*>/i)?.[0];
     assert.ok(stage, "The rendered universe should be present");
     assert.equal(attribute(stage, "aria-hidden"), "true", "The rendered universe should be decorative");

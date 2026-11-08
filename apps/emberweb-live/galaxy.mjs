@@ -13,6 +13,7 @@ const compact = matchMedia("(max-width: 760px)");
 const reduced = matchMedia("(prefers-reduced-motion: reduce)");
 const moving = () => !reduced.matches && root.classList.contains("motion-enabled");
 
+const arrivalAnchor = window.location?.hash;
 let session = 0;
 let returnFocus;
 let deadline;
@@ -34,9 +35,12 @@ function finishIntro() {
     element.inert = false;
     delete element.dataset.cosmosInert;
   }
-  try { sessionStorage.setItem("ember:visited-atlas", "1"); } catch {}
+
   heading.tabIndex = -1;
   (returnFocus || heading).focus({ preventScroll: true });
+  if (!returnFocus && arrivalAnchor) {
+    document.getElementById(arrivalAnchor.slice(1))?.scrollIntoView({ behavior: "instant", block: "start" });
+  }
   requestPaint();
 }
 
@@ -59,10 +63,13 @@ function playIntro() {
   root.classList.add("cosmos-gated", "cosmos-opening");
   skip.focus({ preventScroll: true });
   if (!film.getAttribute("src")) film.src = compact.matches ? film.dataset.mobileSrc : film.dataset.src;
+  film.muted = true;
   film.currentTime = 0;
   // A stalled stream must never leave the visitor behind the opening.
-  deadline = setTimeout(finishIntro, 8000);
-  film.play().catch(() => { if (session === generation) finishIntro(); });
+  if (!document.hidden) {
+    deadline = setTimeout(finishIntro, 12000);
+    film.play().catch(() => { if (session === generation && !document.hidden) finishIntro(); });
+  }
 }
 
 function measure() {
@@ -120,7 +127,15 @@ document.addEventListener("keydown", event => {
   if (["Escape","Enter"," ","ArrowDown","PageDown"].includes(event.key)) { event.preventDefault(); finishIntro(); }
 });
 document.addEventListener("visibilitychange", () => {
-  if (document.hidden) finishIntro(); else requestPaint();
+  if (entry.hidden) { requestPaint(); return; }
+  if (document.hidden) {
+    film.pause();
+    entry.classList.remove("film-playing");
+    clearTimeout(deadline);
+  } else {
+    deadline = setTimeout(finishIntro, 12000);
+    film.play().catch(() => { if (!document.hidden) finishIntro(); });
+  }
 });
 function updateMotion() {
   if (!moving()) finishIntro();
@@ -130,7 +145,12 @@ new MutationObserver(updateMotion).observe(root, { attributes: true, attributeFi
 reduced.addEventListener("change", updateMotion);
 window.addEventListener("scroll", requestPaint, { passive: true });
 window.addEventListener("resize", () => { needsMeasure = true; requestPaint(); });
-window.addEventListener("pageshow", requestPaint);
+window.addEventListener("pageshow", event => {
+  if (event.persisted) {
+    root.style.setProperty("--film-arrival", "0");
+    playIntro();
+  } else requestPaint();
+});
 document.fonts?.ready.then(() => { needsMeasure = true; requestPaint(); });
 if (root.classList.contains("cosmos-gated")) playIntro(); else requestPaint();
 document.dispatchEvent(new Event("ember:cosmos-ready"));
