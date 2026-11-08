@@ -1,0 +1,121 @@
+:root { --crafted-blue:#1558c9;--crafted-lime:#d4ff24;--crafted-line:#9ab9f333; }
+body { background:#040914; }
+.galaxy-stage { background:radial-gradient(ellipse at 85% 25%,#174176,transparent 60%),#040914; }
+body .site-header { background:#050b16f5; border-bottom:1px solid var(--crafted-line); }
+body .site-nav { padding-block:18px; }
+body .site-nav-links a { font-size:13px; }
+body .site-nav-cta,body .button { border-radius:5px; }
+body .atlas-arrival { background:#040914; isolation:isolate; }
+body .atlas-arrival-inner { min-height:690px; padding-block:85px 100px; }
+.crafted-hero-art { position:absolute;inset:0 -8vw 0 22%;z-index:-1;background:url('/visuals/ember-intelligence-v1.webp') 70% 50%/cover no-repeat;mask-image:linear-gradient(90deg,transparent,#000 36%,#000 85%,transparent); }
+.atlas-arrival::after { content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,#040914 0%,#040914cc 30%,transparent 72%);pointer-events:none; }
+body .atlas-copy { max-width:72%; }
+body .atlas-copy h1 { font-size:clamp(72px,7.8vw,116px);line-height:.98;letter-spacing:-.065em;margin:25px 0; }
+body .atlas-copy h1 em { color:#dbff80; }
+.crafted-services { color:#b4c7e4;font-size:13px!important;letter-spacing:.055em; }
+body .atlas-copy>p:not(.crafted-services) { color:#d0d9e9;font-size:18px;max-width:420px;line-height:1.7; }
+body .atlas-copy .hero-actions { gap:24px;margin-top:30px; }
+body .atlas-edge { border-color:#94b4e337; }
+body .atlas-directory { background:linear-gradient(150deg,#101d36f5,#040a16fa);padding-block:65px 70px; }
+body .atlas-directory>.container { display:grid;grid-template-columns:.72fr 1.28fr;column-gap:60px; }
+body .atlas-directory h2 { font-size:clamp(45px,4.8vw,70px);margin:8px 0 25px;line-height:1.04; }
+body .atlas-routes { border:0;grid-template-columns:1fr 1fr;gap:15px; }
+body .atlas-route { display:flex;align-items:flex-start;flex-direction:column;gap:16px;min-height:220px;padding:26px;isolation:isolate;background:linear-gradient(145deg,#203c60c9,#0b1629f5);border:1px solid #91b5e04d;border-radius:12px;overflow:hidden; }
+.atlas-route::before { content:"";position:absolute;inset:0;z-index:-1;background:url('/visuals/ember-intelligence-v1.webp') center/cover;opacity:.13;pointer-events:none; }
+body .atlas-route strong { font-size:32px;line-height:1.1; }
+body .atlas-route .atlas-description { font-size:14px;line-height:1.65;max-width:28ch;color:#d1dded; }
+body .atlas-arrow { align-self:flex-end;margin-top:auto; }
+body .atlas-route:hover,body .atlas-route:focus-visible { background:#16325c;border-color:#b1d5fc; }
+body .route-02 { background:linear-gradient(145deg,#173f68,#0d2034); }
+body .route-03,body .route-04 { min-height:185px; }
+body .route-03::before { background-position:100% 60%; }
+body .route-04::before { background-position:20% 0; }
+body .atlas-shortcuts { grid-column:1 / -1;padding-top:25px;margin-top:35px;border-top:1px solid var(--crafted-line); }
+body:not([data-page="/"]) { background-image:radial-gradient(ellipse at 85% 0,#1e3d63,transparent 65%);background-attachment:scroll; }
+body:not([data-page="/"]) .sub-hero { color:#f2f6fd;background:#071120; }
+body:not([data-page="/"]) .sub-hero::before { inset:0 0 0 35%;background:linear-gradient(90deg,#071120,transparent),url('/visuals/ember-intelligence-v1.webp') 70% 50%/cover;mask-image:none;opacity:.9; }
+body:not([data-page="/"]) .sub-hero h1 { color:#f3f6fc;max-width:17ch; }
+body:not([data-page="/"]) .sub-hero :is(.lead,.eyebrow) { color:#c7d7eb; }
+body:not([data-page="/"]) .sub-hero .lead { max-width:50ch; }
+body:not([data-page="/"]) .atlas-return { background:#080f1c; border-color:var(--crafted-line); }
+body:not(:is([data-page="/start"],[data-page="/audit"],[data-page="/book"])) .section-light:not(.cta-panel) { background:linear-gradient(145deg,#0e1c31,#08111e);color:#f0f5ff; }
+body:not(:is([data-page="/start"],[data-page="/audit"],[data-page="/book"])) .section-light .card:not(.card-featured) { background:linear-gradient(145deg,#182c46,#0a1729);color:#f0f5ff;border-color:#9cbbdf3d;box-shadow:0 16px 45px #0002; }
+body:not(:is([data-page="/start"],[data-page="/audit"],[data-page="/book"])) .section-light .card:not(.card-featured) :is(h2,h3,h4,strong) { color:#eff5ff; }
+body:not(:is([data-page="/start"],[data-page="/audit"],[data-page="/book"])) .section-light .card:not(.card-featured) :is(p,li,small,.eyebrow) { color:#c1d0e5; }
+body:not(:is([data-page="/start"],[data-page="/audit"],[data-page="/book"])) .section-light :is(.section-note,.lead,.eyebrow) { color:#becfe4; }
+body:not(:is([data-page="/start"],[data-page="/audit"],[data-page="/book"])) .section-light .card:not(.card-featured) .text-link { color:#d7fa99; }
+body[data-page="/work"] .solution-card { background:#11233b;border-color:#7fadd048;box-shadow:0 25px 50px #0003; }
+body[data-page="/work"] .solution-copy { background:linear-gradient(145deg,#142a44,#0c192c);color:#f1f6ff; }
+body[data-page="/work"] .solution-copy h2 { color:#f1f6ff; }
+body[data-page="/work"] .solution-copy p { color:#c7d5e7; }
+body[data-page="/work"] .solution-copy li { color:#d7e3f1;background:#accaff0c;border-color:#91b8e042; }
+body[data-page="/work"] .solution-copy a { color:#d4ff88; }
+body[data-page="/portfolio"] .portfolio-disclosure { color:#b8cbe5; }
+body[data-page="/portfolio"] .portfolio-card { background:#10213a;border-color:#82b2e354;box-shadow:0 22px 50px #0004; }
+body[data-page="/portfolio"] .portfolio-figure { background:linear-gradient(130deg,#152b49,#050d1b); }
+body[data-page="/packages"] .package-card { border-radius:12px;padding:28px; }
+body[data-page="/packages"] .package-card.card-featured { border:1px solid #d4ff24;box-shadow:0 0 50px #d4ff2415; }
+body .section-light.faq details { border-color:#7f9dbb55; }
+body .section-light.faq details p,body .section-light.faq details p a { color:#c4d4e7; }
+body .section-light .film-credit { color:#c2d4e9; }
+body .casebook { background:linear-gradient(140deg,#142d4b,#081323); }
+body .case-study summary { padding-block:25px; }
+body .ember-homeworld { background:linear-gradient(110deg,#071322eb,#08152be8),url('/visuals/ember-intelligence-v1.webp') center/cover; }
+body .cta-panel { background:linear-gradient(115deg,#d4ff24,#c0ec38); }
+body .site-footer { background:#030712; }
+@media(min-width:1000px) { body .solution-grid { gap:30px; } }
+@media(max-width:1000px) { body .atlas-directory>.container{grid-template-columns:1fr;gap:15px;}body .atlas-directory h2{max-width:18ch;} }
+@media(max-width:760px) {
+ body .atlas-arrival-inner{min-height:610px;padding-block:48px 65px;display:block;}
+ body .atlas-copy{max-width:none;}
+ body .atlas-copy h1{font-size:clamp(46px,11.6vw,74px);margin-block:20px;}
+ body .atlas-copy>p:not(.crafted-services){font-size:16px;max-width:31ch;}
+ .crafted-services{font-size:11px!important;}
+ .crafted-hero-art{inset:30% -20vw 0 0;mask-image:linear-gradient(0deg,#000 40%,transparent);background-position:80% 70%;opacity:.8;}
+ .atlas-arrival::after{background:linear-gradient(180deg,#040914 0%,#040914d9 30%,#04091455 68%,#04091455);}
+ body .atlas-copy .hero-actions{gap:20px;}
+ body .atlas-directory{padding-block:38px 50px;}
+ body .atlas-directory h2{font-size:44px;margin-bottom:12px;}
+ body .atlas-routes{gap:12px;}
+ body .atlas-route{padding:22px 18px;min-height:230px;}
+ body .atlas-route strong{font-size:27px;}
+ body .atlas-route .atlas-description{font-size:13px;}
+ body .route-03,body .route-04{min-height:195px;}
+ body .atlas-shortcuts{margin-top:15px;gap:12px 20px;}
+ body:not([data-page="/"]) .sub-hero::before{inset:0;opacity:.4;}
+ body:not([data-page="/"]) .sub-hero .lead{max-width:34ch;}
+}
+@media(max-width:360px) { body .atlas-routes{grid-template-columns:1fr;} body .atlas-route{min-height:175px;}body .atlas-copy h1{font-size:43px;} }
+body .workflow-panel { background:#10223a;border:1px solid #8dadd644;color:#f0f6ff; }
+body .workflow-story h3 { color:#f0f6ff; }
+body .workflow-story p { color:#c5d5e9; }
+body .workflow-story .text-link { color:#dbff88; }
+body .workflow-story .demo-label { color:#c9dcf3;border-color:#8db0d555; }
+body .workflow-switch button { background:#14253c;color:#cbdcf0;border-color:#92b4dc44; }
+body .workflow-switch button[aria-pressed="true"] { background:#d4ff24;color:#102018; }
+body[data-page="/packages"] .package-card:not(.card-featured) .package-prices span { color:#c1d1e7; }
+body[data-page="/packages"] .package-card.card-featured { background:#d4ff24;color:#112017; }
+body[data-page="/packages"] .package-card.card-featured :is(h3,p,li,strong,small,.eyebrow,.package-prices span) { color:#112017; }
+body[data-page="/packages"] .package-card.card-featured .button-primary { background:#071321;color:#f4f8ff;border-color:#071321; }
+body[data-page="/process"] .step-number { color:#ddf1ff;background:#15375a;padding:5px 9px;border-radius:4px; }
+/* A single native movie carries the artwork motion behind the reading surfaces. */
+body { isolation:isolate; }
+.crafted-backdrop { position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none;background:#040914 url('/visuals/ember-intelligence-v1.webp') center/cover;contain:paint; }
+.crafted-background-film { width:100%;height:100%;object-fit:cover;transform:translate3d(var(--backdrop-x,0%),var(--backdrop-y,0%),0) scale(var(--backdrop-scale,1.12));transition:transform .45s ease-out; }
+.crafted-backdrop-tint { position:absolute;inset:0;background:linear-gradient(90deg,#040914bb,transparent 75%),radial-gradient(ellipse at 80% 40%,hsla(var(--backdrop-accent,205),75%,30%,.12),transparent 65%); }
+body .galaxy-stage { display:none; }
+body .atlas-arrival { background:transparent; }
+body .crafted-hero-art { display:none; }
+body .atlas-directory { background:linear-gradient(145deg,#0e1b30e6,#040a16ed); }
+body:not([data-page="/"]) .sub-hero { background:linear-gradient(90deg,#071120f5,#07112060); }
+body:not([data-page="/"]) .sub-hero::before { background:none; }
+body:not(:is([data-page="/start"],[data-page="/audit"],[data-page="/book"])) .section-light:not(.cta-panel) { background:linear-gradient(145deg,#0e1c31ed,#08111ef0); }
+body .ember-homeworld { background:linear-gradient(110deg,#071322e8,#08152bd1); }
+@media(prefers-reduced-motion:reduce) { .crafted-background-film { transition:none;transform:none; } }
+body .atlas-edge .universe-replay { background:#071321e6;border:1px solid #8cadd34d;border-radius:20px;padding:0 16px;margin-bottom:12px;color:#d6e5f7;font-size:11px;letter-spacing:.02em; }
+@media(max-width:600px) {
+ body .atlas-routes { grid-template-columns:1fr; }
+ body .atlas-route { min-height:165px;padding:23px;gap:12px; }
+ body .atlas-route .atlas-description { max-width:29ch;font-size:14px;padding-right:22px; }
+ body .atlas-arrow { position:absolute;right:23px;bottom:23px; }
+}
