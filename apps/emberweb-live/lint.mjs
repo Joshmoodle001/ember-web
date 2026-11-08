@@ -13,7 +13,7 @@ assert.ok(
   "EXPECT_WORKSPACE_CONNECTION must be connected or disconnected when supplied",
 );
 const routes = [
-  "index",
+  "index", "ai-lab", "planet-ember",
   "work",
   "portfolio",
   "packages",
@@ -25,7 +25,7 @@ const routes = [
   "policies",
 ];
 const routePaths = Object.freeze({
-  index: "/",
+  index: "/", "ai-lab": "/ai-lab", "planet-ember": "/planet-ember",
   work: "/work",
   portfolio: "/portfolio",
   packages: "/packages",
@@ -237,6 +237,8 @@ assert.match(siteScript, /website\.required\s*=\s*required/, "Audit website requ
 assert.match(siteScript, /auditFocus\.value\s*===\s*["']Website audit["']/, "Only website audits should require a website URL");
 const motionScript = await readFile(path.join(outputDirectory, "motion.js"), "utf8");
 new vm.Script(motionScript, { filename: "motion.js" });
+const experienceScript = await readFile(path.join(outputDirectory, "experience.js"), "utf8");
+new vm.Script(experienceScript, { filename: "experience.js" });
 const motionCss = await readFile(path.join(outputDirectory, "motion.css"), "utf8");
 assert.match(motionCss, /html\.motion-enabled/i, "Ambient motion should run only when the controller enables it");
 assert.match(motionCss, /html\.motion-paused/i, "The motion preference should pause CSS motion");
@@ -295,21 +297,21 @@ for (const route of routes) {
   responsiveImageCandidateCount += [...html.matchAll(/\bsrcset\s*=/gi)].length;
   if (route === "index") {
     const heroActions = html.match(/<div class="hero-actions">([\s\S]*?)<\/div>/i)?.[1] ?? "";
-    assert.match(heroActions, /href="\/start"[^>]*>\s*Start a project/i, "The home hero should offer a clear project-request action");
-    assert.match(heroActions, /href="\/book"[^>]*>\s*Book a discovery call/i, "The home hero should offer a clear booking action");
+    assert.match(heroActions, /href="\/start"[^>]*>\s*Build with Ember/i, "The home hero should offer a clear project-request action");
+    assert.match(html, /href="\/book"[^>]*>\s*Book a discovery call/i, "The homepage should offer a clear booking action");
     const motionToggle = html.match(/<button\b[^>]*class="[^"]*\bmotion-toggle\b[^"]*"[^>]*>[\s\S]*?<\/button>/i)?.[0];
     assert.ok(motionToggle, "The home page should expose a motion preference control");
     assert.equal(attribute(motionToggle, "type"), "button", "The motion toggle must not submit a form");
     assert.ok(hasAttribute(motionToggle, "aria-pressed"), "The motion toggle should expose its state to assistive technology");
     assert.match(motionToggle, /\bhidden\b/i, "The motion toggle should be hidden until its state is initialized");
     assert.ok(attribute(motionToggle, "aria-label") || motionToggle.replace(/<[^>]+>/g, "").trim(), "The motion toggle should have an accessible name");
-    const heroArt = html.match(/<svg\b[^>]*class="[^"]*\bhero-orbits\b[^"]*"[^>]*>/i)?.[0];
-    assert.ok(heroArt, "The orbital hero artwork should be present");
-    assert.equal(attribute(heroArt, "aria-hidden"), "true", "Decorative hero artwork should be hidden from assistive technology");
-    assert.equal(attribute(heroArt, "focusable"), "false", "Decorative hero artwork should not enter the focus order");
-    const sigils = [...html.matchAll(/<svg\b[^>]*class="[^"]*\bjourney-sigil\b[^"]*"[^>]*>/gi)].map((match) => match[0]);
-    assert.equal(sigils.length, 3, "Each journey step should have its decorative sigil");
-    assert.ok(sigils.every((tag) => attribute(tag, "aria-hidden") === "true" && attribute(tag, "focusable") === "false"), "Journey sigils should be decorative and unfocusable");
+    const stage = html.match(/<div\b[^>]*class="galaxy-stage"[^>]*>/i)?.[0];
+    assert.ok(stage, "The rendered universe should be present");
+    assert.equal(attribute(stage, "aria-hidden"), "true", "The rendered universe should be decorative");
+    assert.match(html, /class="universe-ignite"[^>]*aria-label="Ignite the Ember universe"/, "The opening must have a keyboard-accessible trigger");
+    assert.match(html, /class="universe-skip"/, "The opening must have a visible escape route");
+    assert.match(html, /class="universe-entry"[^>]*hidden/, "The entry must fail open without JavaScript");
+    for (const path of ["/work", "/ai-lab", "/portfolio", "/planet-ember"]) assert.ok(html.match(/<nav class="atlas-routes"[\s\S]*?<\/nav>/)?.[0].includes('href="'+path+'"'), "Directory must link directly to "+path);
   }
   if (route === "start" || route === "audit") {
     assertInquiryContract(html, filename, route, workspaceConnected);

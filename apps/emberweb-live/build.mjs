@@ -43,6 +43,8 @@ if (!outputDirectory.startsWith(appRoot + path.sep)) {
 }
 
 const pages = [
+  { file: "ai-lab.html", path: "/ai-lab", title: "AI Lab | EmberWeb", description: "Explore six interactive examples of AI for business planning, customer enquiries, learning and everyday tasks." },
+  { file: "planet-ember.html", path: "/planet-ember", title: "Planet Ember | Meet the studio", description: "Meet your Ember crew and choose a starting point for your idea, business or personal project." },
   {
     file: "index.html",
     path: "/",
@@ -211,6 +213,12 @@ await cp(assetDirectory, outputDirectory, { recursive: true });
 await cp(path.join(appRoot, "journeys.js"), path.join(outputDirectory, "journeys.js"));
 await cp(path.join(appRoot, "site.js"), path.join(outputDirectory, "site.js"));
 await cp(path.join(appRoot, "motion.js"), path.join(outputDirectory, "motion.js"));
+await cp(path.join(appRoot, "experience.js"), path.join(outputDirectory, "experience.js"));
+await cp(path.join(appRoot, "galaxy.mjs"), path.join(outputDirectory, "galaxy.mjs"));
+await cp(path.join(appRoot, "galaxy-motion.mjs"), path.join(outputDirectory, "galaxy-motion.mjs"));
+await cp(path.join(appRoot, "galaxy-renderer.mjs"), path.join(outputDirectory, "galaxy-renderer.mjs"));
+await cp(path.join(appRoot, "galaxy-boot.js"), path.join(outputDirectory, "galaxy-boot.js"));
+await cp(path.join(appRoot, "mission-control.js"), path.join(outputDirectory, "mission-control.js"));
 await cp(path.join(appRoot, "robots.txt"), path.join(outputDirectory, "robots.txt"));
 await cp(path.join(appRoot, "sitemap.xml"), path.join(outputDirectory, "sitemap.xml"));
 

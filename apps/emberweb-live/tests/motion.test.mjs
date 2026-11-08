@@ -7,7 +7,7 @@ import { renderBody } from "../design2-pages.mjs";
 const motionSource = await readFile(new URL("../motion.js", import.meta.url), "utf8");
 const motionCss = await readFile(new URL("../assets/motion.css", import.meta.url), "utf8");
 
-function createHarness({ reduced = false, compact = false, finePointer = false, hasIntersectionObserver = true, storedPaused = null, storedIntroSeen = null, introPresent = false, initialHidden = false, fontsReady = null, imageReady = null } = {}) {
+function createHarness({ reduced = false, compact = false, finePointer = false, hasIntersectionObserver = true, storedPaused = null, storedIntroSeen = null, introPresent = false, introDisabled = false, initialHidden = false, fontsReady = null, imageReady = null } = {}) {
   const events = [];
   const observers = [];
   const animations = [];
@@ -166,6 +166,7 @@ function createHarness({ reduced = false, compact = false, finePointer = false, 
   const root = makeElement("document-root");
   root.scrollHeight = 3000;
   const document = {
+    body: { dataset: { intro: introDisabled ? "off" : "" } },
     documentElement: root,
     activeElement: makeElement("active-element"),
     hidden: initialHidden,
@@ -374,12 +375,17 @@ const deferred = () => {
   return { promise, resolve, reject };
 };
 
-test("the decorative opening has no visible or focusable Skip control", () => {
+test("the reference-led homepage opens immediately without a blocking film", () => {
+  const harness = createHarness({ introPresent: true, introDisabled: true });
+  assert.equal(harness.intro.hidden, true);
+  assert.equal(harness.animations.length, 0);
+  assert.equal(harness.root.classList.contains("intro-playing"), false);
+  assert.equal(harness.replay.hidden, true);
+});
+
+test("the homepage contains no blocking opening film", () => {
   const home = renderBody("/");
-  const intro = home.match(/<div class="intro-screen"[\s\S]+?<section/)[0];
-  assert.doesNotMatch(intro, /intro-skip|Skip intro/);
-  assert.match(intro, /aria-hidden="true"/);
-  assert.doesNotMatch(intro, /<button|<a\s|tabindex="0"/);
+  assert.doesNotMatch(home, /class="intro-screen"/);
 });
 
 test("every fresh homepage receives a complete opening, including old seen sessions", async () => {

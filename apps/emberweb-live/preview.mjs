@@ -8,6 +8,8 @@ const appRoot = path.dirname(fileURLToPath(import.meta.url));
 const outputDirectory = path.resolve(appRoot, "dist");
 const routes = new Map([
   ["/", "index.html"],
+  ["/ai-lab", "ai-lab.html"],
+  ["/planet-ember", "planet-ember.html"],
   ["/work", "work.html"],
   ["/portfolio", "portfolio.html"],
   ["/packages", "packages.html"],
@@ -23,8 +25,10 @@ const types = new Map([
   [".css", "text/css; charset=utf-8"],
   [".html", "text/html; charset=utf-8"],
   [".js", "text/javascript; charset=utf-8"],
+  [".mjs", "text/javascript; charset=utf-8"],
   [".json", "application/json; charset=utf-8"],
   [".png", "image/png"],
+  [".jpg", "image/jpeg"],
   [".webp", "image/webp"],
   [".svg", "image/svg+xml"],
   [".txt", "text/plain; charset=utf-8"],

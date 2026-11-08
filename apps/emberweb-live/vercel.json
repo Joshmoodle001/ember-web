@@ -106,6 +106,15 @@
       ]
     },
     {
+      "source": "/ai-lab",
+      "headers": [
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self' 'sha256-EosdZ/prRhuoJfq3P+tCgb9d2Val2xz7/bvcJUOYpsM='; style-src 'self'; style-src-attr 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-src https://calendar.google.com; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'"
+        }
+      ]
+    },
+    {
       "source": "/audit",
       "headers": [
         {
@@ -152,6 +161,15 @@
     },
     {
       "source": "/packages",
+      "headers": [
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self' 'sha256-EosdZ/prRhuoJfq3P+tCgb9d2Val2xz7/bvcJUOYpsM='; style-src 'self'; style-src-attr 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-src https://calendar.google.com; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'"
+        }
+      ]
+    },
+    {
+      "source": "/planet-ember",
       "headers": [
         {
           "key": "Content-Security-Policy",

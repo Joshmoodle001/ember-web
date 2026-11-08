@@ -1,6 +1,8 @@
+import { aiLab } from "./ember-lab.mjs";
+import { cosmosHome } from "./cosmos-home.mjs";
+import { emberPlanet } from "./ember-planet.mjs";
 import { clientPathCards, clientStart } from "./client-paths.mjs";
 import { renderPortfolio } from "./portfolio.mjs";
-import { introFilm } from "./intro-film.mjs";
 import { signalStudio } from "./signal-studio.mjs";
 import { capabilityOverview, workflowExplorer, solutionGallery, connectedSystems, customBuildOptions, studioPrinciples } from "./solutions.mjs";
 
@@ -82,31 +84,15 @@ function journey(art) {
 }
 
 function priceSnapshot() {
-  return `<section class="section section-ink"><div class="container">${sectionHead("Straightforward pricing", "Choose a useful starting point.", "One-off launch fees and monthly EmberCare are shown separately. Final scope is agreed in writing.")}<div class="package-grid package-grid-compact">${PACKAGE_PLANS.map((plan) => `<article class="card package-card"><p class="eyebrow">${plan.audience}</p><h3>${plan.name}</h3><p class="package-price-line"><span>Once-off launch</span><strong>${plan.launch}</strong></p><p class="package-price-line"><span>EmberCare monthly</span><strong>${plan.care}</strong></p><a class="text-link" href="/start?package=${encodeURIComponent(plan.slug)}">Discuss ${plan.name} <span aria-hidden="true">→</span></a></article>`).join("")}</div><p class="section-note">A private invoice is shared only after you have reviewed and accepted the proposal. There is no public checkout.</p><div class="actions">${button("/packages", "Compare all packages", true)}</div></div></section>`;
+  return `<section class="section section-ink pricing-section"><div class="container">${sectionHead("Straightforward pricing", "Choose a useful starting point.", "One-off launch fees and monthly EmberCare are shown separately. Final scope is agreed in writing.")}<div class="package-grid package-grid-compact">${PACKAGE_PLANS.map((plan) => `<article class="card package-card"><p class="eyebrow">${plan.audience}</p><h3>${plan.name}</h3><p class="package-price-line"><span>Once-off launch</span><strong>${plan.launch}</strong></p><p class="package-price-line"><span>EmberCare monthly</span><strong>${plan.care}</strong></p><a class="text-link" href="/start?package=${encodeURIComponent(plan.slug)}">Discuss ${plan.name} <span aria-hidden="true">→</span></a></article>`).join("")}</div><p class="section-note">A private invoice is shared only after you have reviewed and accepted the proposal. There is no public checkout.</p><div class="actions">${button("/packages", "Compare all packages", true)}</div></div></section>`;
 }
 
 function finalCta(title = "Ready for a clear next step?", copy = "Tell us what you are trying to do. We will help you work out what makes sense.") {
   return `<section class="cta-panel section"><div class="container"><p class="eyebrow">Start with a conversation</p><h2>${title}</h2><p class="lead">${copy}</p><div class="actions">${button("/start", "Start a project", true)}${button("/book", "Book a discovery call")}</div></div></section>`;
 }
 
-function home(art) {
-  const heroOrbits = typeof art?.heroOrbits === "string" ? art.heroOrbits : "";
-  return `<main id="main-content" class="page page-home">
-    ${introFilm}
-    <section class="hero section" id="top" aria-labelledby="home-title"><div class="container hero-grid">
-      <div class="hero-copy"><p class="eyebrow">Websites · Apps · AI systems · South Africa</p><h1 id="home-title" aria-label="Better websites. Smarter systems."><span class="typed-line">Better websites.</span><span class="typed-line"><em>Smarter systems.</em></span></h1><div class="hero-foot"><p class="lead">An idea from the ground up, or a business ready for its next chapter. Websites, apps and useful AI, shaped around you.</p><div class="hero-actions">${button("/start", "Start a project", true)}${button("/book", "Book a discovery call")}</div><p class="hero-reassurance">Start with one useful idea. Build it into something that works.</p><div class="motion-controls"><button class="motion-toggle" type="button" aria-pressed="false" hidden>Pause motion</button><button class="intro-replay" type="button" hidden>Replay intro <span aria-hidden="true">↻</span></button></div></div></div>
-      <div class="hero-art art-frame" aria-hidden="true"><div class="art-image"><img src="/visuals/ember-engine.svg" alt=""></div>${heroOrbits}<div class="art-light"></div><div class="hero-objects"><svg class="flying-object object-prism" viewBox="0 0 140 140" fill="none" focusable="false"><defs><linearGradient id="prism-light" x2="1" y2="1"><stop stop-color="#8eafff"/><stop offset="1" stop-color="#d4ff24"/></linearGradient></defs><path d="m70 12 52 30v56l-52 30-52-30V42Z" fill="#092536" stroke="url(#prism-light)" stroke-width="2"/><path d="m70 12 52 30-52 30-52-30Z" fill="url(#prism-light)" opacity=".75"/><path d="m18 42 52 30v56l-52-30Z" fill="#8eafff" opacity=".12"/><path d="m70 72 52-30v56l-52 30Z" fill="#d4ff24" opacity=".18"/><path d="m18 42 52 30 52-30M70 72v56M70 12v60" stroke="url(#prism-light)" stroke-width="2"/></svg><svg class="flying-object object-ring" viewBox="0 0 160 160" fill="none" focusable="false"><defs><linearGradient id="ring-metal" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#d5e2ff"/><stop offset=".32" stop-color="#1558c9"/><stop offset=".68" stop-color="#071837"/><stop offset="1" stop-color="#8eafff"/></linearGradient><radialGradient id="orb-light" cx=".3" cy=".25"><stop stop-color="#f2ffbc"/><stop offset=".55" stop-color="#d4ff24"/><stop offset="1" stop-color="#557915"/></radialGradient></defs><ellipse cx="80" cy="80" rx="65" ry="27" transform="rotate(-35 80 80)" stroke="url(#ring-metal)" stroke-width="16"/><ellipse cx="80" cy="80" rx="65" ry="27" transform="rotate(-35 80 80)" stroke="#8eafff" stroke-width="2"/><circle cx="80" cy="80" r="19" fill="url(#orb-light)"/><ellipse cx="74" cy="73" rx="7" ry="4" fill="#fff" opacity=".55" transform="rotate(-35 74 73)"/></svg><svg class="flying-object object-star" viewBox="0 0 100 100" fill="none" focusable="false"><path d="M50 8v84M8 50h84M20 20l60 60M20 80l60-60" stroke="#8eafff" stroke-width="3"/><circle cx="50" cy="50" r="19" stroke="#8eafff"/></svg></div><span class="studio-stamp">Design in motion <i></i></span></div>
-    </div><a class="hero-scroll" href="#services">Explore what we build <span aria-hidden="true">↓</span></a></section>
-    ${clientPathCards()}
-    ${signalStudio()}
-    ${capabilityOverview()}
-    ${workflowExplorer()}
-    ${journey(art)}
-    ${connectedSystems()}
-    ${priceSnapshot()}
-    ${studioPrinciples()}
-    ${finalCta()}
-  </main>`;
+function home() {
+  return cosmosHome();
 }
 
 function workPage() {
@@ -214,6 +200,8 @@ export function renderBody(path, { connected = false, calendarUrl = null, art = 
   let markup;
   switch (route) {
     case "/": markup = home(art); break;
+    case "/ai-lab": markup = `<main id="main-content" class="page page-lab">${aiLab()}</main>`; break;
+    case "/planet-ember": markup = `<main id="main-content" class="page page-planet">${emberPlanet()}</main>`; break;
     case "/work": markup = workPage(); break;
     case "/portfolio": markup = renderPortfolio(); break;
     case "/packages": markup = packagesPage(); break;

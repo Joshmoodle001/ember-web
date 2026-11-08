@@ -8,7 +8,7 @@
   const toggle = document.querySelector(".motion-toggle");
   const toggles = [toggle, document.querySelector(".page-motion-toggle")].filter(Boolean);
   const progress = document.querySelector(".progress");
-  const intro = document.querySelector(".intro-screen");
+  const intro = document.body?.dataset?.intro === "off" ? null : document.querySelector(".intro-screen");
   const heroArt = document.querySelector(".hero-art");
   const replay = document.querySelector(".intro-replay");
   let pointer = null;
@@ -44,7 +44,7 @@
     ".section-head h2, .section-head > p:last-child, .split-art, .feature-grid > article, .metric-strip > div, .cta-panel h2, .cta-panel .lead",
     ".studio-heading h2, .studio-heading .lead, .capability-card, .solution-card, .workflow-story, .connection-art, .build-options article, .principle-grid article",
   ];
-  const targets = [...new Set(groups.flatMap(selector => [...document.querySelectorAll(selector)]))];
+  const targets = [...new Set(groups.flatMap(selector => [...document.querySelectorAll(selector)]))].filter(element => !element.closest?.("[data-galaxy-card], .cosmos-home, body[data-page='/'] .hero"));
   targets.forEach((element, index) => {
     element.dataset.motion = "reveal";
     element.dataset.motionOrder = String(index % 3);
