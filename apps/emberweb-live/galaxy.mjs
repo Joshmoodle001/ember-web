@@ -54,10 +54,11 @@ function playIntro() {
     element.dataset.cosmosInert = "";
   }
   window.scrollTo({ top: 0, behavior: "instant" });
+  entry.classList.remove("film-playing");
   entry.hidden = false;
   root.classList.add("cosmos-gated", "cosmos-opening");
   skip.focus({ preventScroll: true });
-  if (!film.getAttribute("src")) film.src = film.dataset.src;
+  if (!film.getAttribute("src")) film.src = compact.matches ? film.dataset.mobileSrc : film.dataset.src;
   film.currentTime = 0;
   // A stalled stream must never leave the visitor behind the opening.
   deadline = setTimeout(finishIntro, 8000);
@@ -107,9 +108,10 @@ function paint(now) {
     renderer.draw({ time: active ? now / 1000 : 0, scene: 1.72 + scene * .65, pointerX: 0, pointerY: 0, velocity: 0, entry: 0, reveal: 1, collapse: 0, tunnel: 0, explosion: 0, expansion: 0 });
     lastPaint = now;
   }
+  root.style.setProperty("--studio-scroll", Math.min(1, scrollY / innerHeight).toFixed(4));
   previousScroll = scrollY;
   previousMotion = active;
-  if (active) requestPaint();
+  if (active && !compact.matches) requestPaint();
 }
 function requestPaint() {
   if (!frame && entry.hidden && !document.hidden) frame = requestAnimationFrame(paint);
@@ -117,6 +119,7 @@ function requestPaint() {
 entry.addEventListener("click", finishIntro);
 entry.addEventListener("wheel", finishIntro, { passive: true });
 entry.addEventListener("touchmove", finishIntro, { passive: true });
+film.addEventListener("playing", () => entry.classList.add("film-playing"));
 film.addEventListener("ended", finishIntro);
 film.addEventListener("error", finishIntro);
 film.addEventListener("timeupdate", () => {

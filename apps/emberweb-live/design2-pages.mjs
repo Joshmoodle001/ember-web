@@ -201,7 +201,7 @@ export function renderBody(path, { connected = false, calendarUrl = null, art = 
   switch (route) {
     case "/": markup = home(art); break;
     case "/ai-lab": markup = `<main id="main-content" class="page page-lab">${aiLab()}</main>`; break;
-    case "/planet-ember": markup = `<main id="main-content" class="page page-planet">${emberPlanet()}</main>`; break;
+    case "/studio": markup = `<main id="main-content" class="page page-planet">${emberPlanet()}</main>`; break;
     case "/work": markup = workPage(); break;
     case "/portfolio": markup = renderPortfolio(); break;
     case "/packages": markup = packagesPage(); break;

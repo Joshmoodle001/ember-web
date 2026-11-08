@@ -13,7 +13,7 @@ assert.ok(
   "EXPECT_WORKSPACE_CONNECTION must be connected or disconnected when supplied",
 );
 const routes = [
-  "index", "ai-lab", "planet-ember",
+  "index", "ai-lab", "studio",
   "work",
   "portfolio",
   "packages",
@@ -25,7 +25,7 @@ const routes = [
   "policies",
 ];
 const routePaths = Object.freeze({
-  index: "/", "ai-lab": "/ai-lab", "planet-ember": "/planet-ember",
+  index: "/", "ai-lab": "/ai-lab", "studio": "/studio",
   work: "/work",
   portfolio: "/portfolio",
   packages: "/packages",
@@ -311,7 +311,7 @@ for (const route of routes) {
     assert.match(html, /<video[^>]*muted[^>]*playsinline/, "The film must support silent inline playback");
     assert.match(html, /class="universe-skip"/, "The opening must have a visible escape route");
     assert.match(html, /class="universe-entry"[^>]*hidden/, "The entry must fail open without JavaScript");
-    for (const path of ["/work", "/ai-lab", "/portfolio", "/planet-ember"]) assert.ok(html.match(/<nav class="atlas-routes"[\s\S]*?<\/nav>/)?.[0].includes('href="'+path+'"'), "Directory must link directly to "+path);
+    for (const path of ["/work", "/ai-lab", "/portfolio", "/studio"]) assert.ok(html.match(/<nav class="atlas-routes"[\s\S]*?<\/nav>/)?.[0].includes('href="'+path+'"'), "Directory must link directly to "+path);
   }
   if (route === "start" || route === "audit") {
     assertInquiryContract(html, filename, route, workspaceConnected);

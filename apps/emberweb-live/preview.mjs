@@ -9,7 +9,7 @@ const outputDirectory = path.resolve(appRoot, "dist");
 const routes = new Map([
   ["/", "index.html"],
   ["/ai-lab", "ai-lab.html"],
-  ["/planet-ember", "planet-ember.html"],
+  ["/studio", "studio.html"],
   ["/work", "work.html"],
   ["/portfolio", "portfolio.html"],
   ["/packages", "packages.html"],

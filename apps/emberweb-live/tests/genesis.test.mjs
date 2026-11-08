@@ -9,7 +9,7 @@ function mount({ gated = true, reduced = false, denied = false } = {}) {
   const events = new Map();
   const state = { plays: 0, scrolls: 0, stored: false, focus: null };
   const element = () => ({
-    dataset: {}, style: { setProperty() {} },
+    dataset: {}, classList: { add() {}, remove() {} }, style: { setProperty() {} },
     addEventListener(type, fn) { events.set(this.id + ":" + type, fn); },
     focus() { state.focus = this; }
   });

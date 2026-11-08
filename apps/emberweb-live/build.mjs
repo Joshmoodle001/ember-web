@@ -44,7 +44,7 @@ if (!outputDirectory.startsWith(appRoot + path.sep)) {
 
 const pages = [
   { file: "ai-lab.html", path: "/ai-lab", title: "AI Lab | EmberWeb", description: "Explore six interactive examples of AI for business planning, customer enquiries, learning and everyday tasks." },
-  { file: "planet-ember.html", path: "/planet-ember", title: "Planet Ember | Meet the studio", description: "Meet your Ember crew and choose a starting point for your idea, business or personal project." },
+  { file: "studio.html", path: "/studio", title: "AI development studio | EmberWeb", description: "AI tools, custom apps and websites. Meet the Ember studio and see how we plan, build and support your project." },
   {
     file: "index.html",
     path: "/",
