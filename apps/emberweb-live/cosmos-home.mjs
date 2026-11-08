@@ -15,5 +15,5 @@ export function cosmosHome() {
   <section class="atlas-directory" id="explore" data-cosmos-scene="3.2" aria-labelledby="atlas-title"><div class="container"><h2 id="atlas-title">A better way<br><em>to work.</em></h2>
   <nav class="atlas-routes" aria-label="Choose a destination">${worlds.map(([href,title,description,image,number])=>`<a class="atlas-route route-${number}" href="${href}"><strong>${title}</strong><span class="atlas-description">${description}</span><span class="atlas-arrow" aria-hidden="true">↗</span></a>`).join("")}</nav>
   <div class="atlas-shortcuts"><span>Ready to plan?</span><a href="/packages">Compare pricing →</a><a href="/process">How projects work →</a><a href="/book">Book a discovery call →</a></div></div></section>
-  </main>`;
+  <section class="library-closing" aria-labelledby="library-closing-title"><img src="/visuals/library/closing-home.webp" alt="" width="1536" height="1024" loading="lazy"><div class="container"><h2 id="library-closing-title">Have a task in mind?</h2><p>Let’s work out what would help.</p><a class="button button-primary" href="/start">Tell us about it ↗</a></div></section></main>`;
 }

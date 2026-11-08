@@ -1,0 +1,52 @@
+/* Each image has one context; native pixels stay unwarped and unscaled beyond their source. */
+body .crafted-backdrop { background:radial-gradient(ellipse at 90% 20%,#102d4e,#040914 65%); }
+body .crafted-background-film { display:none; }
+body [data-page-art] { position:relative;isolation:isolate;overflow:clip; }
+body .page-artwork { position:absolute;z-index:-1;right:0;top:0;width:min(67vw,1100px);height:100%;max-height:735px;pointer-events:none;mask-image:linear-gradient(90deg,transparent,#000 25%,#000 92%,transparent); }
+body .page-artwork img { width:100%;height:100%;object-fit:contain;object-position:right center;transform:none;filter:none; }
+body .atlas-arrival .page-artwork { width:min(83vw,1280px);max-height:740px; }
+body .atlas-arrival { background:#040914; }
+body .atlas-arrival::after { background:linear-gradient(90deg,#040914 7%,#040914c0 34%,transparent 74%); }
+body:not([data-page="/"]) .sub-hero { background:#071120; }
+body:not([data-page="/"]) .sub-hero::before { background:none; }
+body .casebook { background:#0a182b; }
+body .casebook .page-artwork { height:470px;width:min(70vw,1000px); }
+body .casebook-intro { position:relative;z-index:1;padding-right:35%; }
+body .casebook-list { position:relative;z-index:1; }
+body .case-study { background:#0a182bd9; }
+body .ember-homeworld { background:#071322; }
+body .ember-homeworld .page-artwork { height:520px;width:min(75vw,1000px); }
+body .homeworld-heading { max-width:65%; }
+body .service-artwork { display:block;aspect-ratio:3/2;background:#040914;overflow:hidden;border-bottom:1px solid #91b5e033; }
+body .service-artwork img { width:100%;height:100%;object-fit:contain;transform:none;filter:none; }
+body .process-artwork { display:block;width:100%;height:auto;aspect-ratio:3/2;object-fit:contain;margin:0 0 22px;border-radius:8px;background:#030913; }
+body .process-steps { align-items:stretch; }
+body .library-closing { position:relative;isolation:isolate;overflow:clip;background:#040914;padding:75px 0; }
+body .library-closing>img { position:absolute;right:0;top:0;height:100%;width:min(75%,900px);object-fit:contain;z-index:-1;mask-image:linear-gradient(90deg,transparent,#000 30%); }
+body .library-closing h2 { font-size:clamp(36px,4.5vw,64px);max-width:12ch;margin:0 0 18px; }
+body .library-closing p { color:#c4d6ee;margin:0 0 24px; }
+body [data-page-art] .section-stage-light { opacity:.35; }
+@media(max-width:760px) {
+ body .atlas-arrival-inner { min-height:590px; }
+ body .atlas-arrival .page-artwork { top:auto;bottom:0;width:100%;height:65%;mask-image:linear-gradient(0deg,#000 65%,transparent); }
+ body .atlas-arrival .page-artwork img { object-position:right bottom; }
+ body .atlas-arrival::after { background:linear-gradient(180deg,#040914 15%,#040914cc 50%,#04091430); }
+ body .page-artwork { width:100%;height:100%;opacity:.5;mask-image:linear-gradient(90deg,transparent 10%,#000); }
+ body .page-artwork img { object-position:right center; }
+ body .casebook .page-artwork { height:330px;width:100%; }
+ body .casebook-intro { padding-right:0; }
+ body .homeworld-heading { max-width:none; }
+ body .ember-homeworld .page-artwork { height:360px;width:100%;opacity:.22; }
+ body .library-closing { padding-block:45px; }
+ body .library-closing>img { width:100%;opacity:.5;object-position:right center; }
+}
+body .page-artwork { mask-image:none; }
+body .page-artwork img { width:auto;max-width:100%;height:100%;margin-left:auto;mask-image:linear-gradient(90deg,transparent,#000 25%,#000 96%,transparent); }
+@media(max-width:760px) {
+ body .atlas-arrival .page-artwork { mask-image:linear-gradient(0deg,#000 65%,transparent); }
+ body .page-artwork img { mask-image:linear-gradient(90deg,transparent,#000 24%,#000); }
+}
+body .route-01::before { background-image:url('/visuals/library/hero-solutions-768.webp'); }
+body .route-02::before { background-image:url('/visuals/library/hero-ai-lab-768.webp'); }
+body .route-03::before { background-image:url('/visuals/library/hero-portfolio-768.webp'); }
+body .route-04::before { background-image:url('/visuals/library/hero-studio-768.webp'); }

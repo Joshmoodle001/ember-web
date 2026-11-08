@@ -47,6 +47,16 @@ for (const image of Object.values(imageManifest.images)) {
   }
 }
 
+const artworkManifest = JSON.parse(await readFile(path.join(appRoot, "artwork-manifest.json"), "utf8"));
+assert.equal(Object.keys(artworkManifest.images).length, 24, "The contextual artwork collection must contain 24 originals");
+for (const image of Object.values(artworkManifest.images)) {
+  for (const variant of image.variants) {
+    assert.match(variant.url, /^\/visuals\/library\/[a-z0-9-]+\.webp$/);
+    assert.ok(variant.width <= image.width && variant.height <= image.height, "Artwork must not be upscaled");
+    responsiveImageWidths.set(variant.url, variant.width);
+  }
+}
+
 function attribute(tag, name) {
   const match = tag.match(new RegExp("(?:^|\\s)" + name + "\\s*=\\s*([\"'])(.*?)\\1", "i"));
   return match?.[2] ?? null;

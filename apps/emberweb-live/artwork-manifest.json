@@ -1,0 +1,413 @@
+{
+  "version": 1,
+  "images": {
+    "hero-home": {
+      "width": 1536,
+      "height": 1024,
+      "src": "/visuals/library/hero-home.webp",
+      "variants": [
+        {
+          "url": "/visuals/library/hero-home-768.webp",
+          "width": 768,
+          "height": 512
+        },
+        {
+          "url": "/visuals/library/hero-home.webp",
+          "width": 1536,
+          "height": 1024
+        }
+      ]
+    },
+    "hero-solutions": {
+      "width": 1536,
+      "height": 1024,
+      "src": "/visuals/library/hero-solutions.webp",
+      "variants": [
+        {
+          "url": "/visuals/library/hero-solutions-768.webp",
+          "width": 768,
+          "height": 512
+        },
+        {
+          "url": "/visuals/library/hero-solutions.webp",
+          "width": 1536,
+          "height": 1024
+        }
+      ]
+    },
+    "hero-portfolio": {
+      "width": 1536,
+      "height": 1024,
+      "src": "/visuals/library/hero-portfolio.webp",
+      "variants": [
+        {
+          "url": "/visuals/library/hero-portfolio-768.webp",
+          "width": 768,
+          "height": 512
+        },
+        {
+          "url": "/visuals/library/hero-portfolio.webp",
+          "width": 1536,
+          "height": 1024
+        }
+      ]
+    },
+    "hero-pricing": {
+      "width": 1536,
+      "height": 1024,
+      "src": "/visuals/library/hero-pricing.webp",
+      "variants": [
+        {
+          "url": "/visuals/library/hero-pricing-768.webp",
+          "width": 768,
+          "height": 512
+        },
+        {
+          "url": "/visuals/library/hero-pricing.webp",
+          "width": 1536,
+          "height": 1024
+        }
+      ]
+    },
+    "hero-process": {
+      "width": 1536,
+      "height": 1024,
+      "src": "/visuals/library/hero-process.webp",
+      "variants": [
+        {
+          "url": "/visuals/library/hero-process-768.webp",
+          "width": 768,
+          "height": 512
+        },
+        {
+          "url": "/visuals/library/hero-process.webp",
+          "width": 1536,
+          "height": 1024
+        }
+      ]
+    },
+    "hero-industries": {
+      "width": 1536,
+      "height": 1024,
+      "src": "/visuals/library/hero-industries.webp",
+      "variants": [
+        {
+          "url": "/visuals/library/hero-industries-768.webp",
+          "width": 768,
+          "height": 512
+        },
+        {
+          "url": "/visuals/library/hero-industries.webp",
+          "width": 1536,
+          "height": 1024
+        }
+      ]
+    },
+    "hero-care": {
+      "width": 1536,
+      "height": 1024,
+      "src": "/visuals/library/hero-care.webp",
+      "variants": [
+        {
+          "url": "/visuals/library/hero-care-768.webp",
+          "width": 768,
+          "height": 512
+        },
+        {
+          "url": "/visuals/library/hero-care.webp",
+          "width": 1536,
+          "height": 1024
+        }
+      ]
+    },
+    "hero-start": {
+      "width": 1536,
+      "height": 1024,
+      "src": "/visuals/library/hero-start.webp",
+      "variants": [
+        {
+          "url": "/visuals/library/hero-start-768.webp",
+          "width": 768,
+          "height": 512
+        },
+        {
+          "url": "/visuals/library/hero-start.webp",
+          "width": 1536,
+          "height": 1024
+        }
+      ]
+    },
+    "hero-audit": {
+      "width": 1536,
+      "height": 1024,
+      "src": "/visuals/library/hero-audit.webp",
+      "variants": [
+        {
+          "url": "/visuals/library/hero-audit-768.webp",
+          "width": 768,
+          "height": 512
+        },
+        {
+          "url": "/visuals/library/hero-audit.webp",
+          "width": 1536,
+          "height": 1024
+        }
+      ]
+    },
+    "hero-book": {
+      "width": 1536,
+      "height": 1024,
+      "src": "/visuals/library/hero-book.webp",
+      "variants": [
+        {
+          "url": "/visuals/library/hero-book-768.webp",
+          "width": 768,
+          "height": 512
+        },
+        {
+          "url": "/visuals/library/hero-book.webp",
+          "width": 1536,
+          "height": 1024
+        }
+      ]
+    },
+    "hero-policies": {
+      "width": 1536,
+      "height": 1024,
+      "src": "/visuals/library/hero-policies.webp",
+      "variants": [
+        {
+          "url": "/visuals/library/hero-policies-768.webp",
+          "width": 768,
+          "height": 512
+        },
+        {
+          "url": "/visuals/library/hero-policies.webp",
+          "width": 1536,
+          "height": 1024
+        }
+      ]
+    },
+    "hero-ai-lab": {
+      "width": 1536,
+      "height": 1024,
+      "src": "/visuals/library/hero-ai-lab.webp",
+      "variants": [
+        {
+          "url": "/visuals/library/hero-ai-lab-768.webp",
+          "width": 768,
+          "height": 512
+        },
+        {
+          "url": "/visuals/library/hero-ai-lab.webp",
+          "width": 1536,
+          "height": 1024
+        }
+      ]
+    },
+    "hero-studio": {
+      "width": 1536,
+      "height": 1024,
+      "src": "/visuals/library/hero-studio.webp",
+      "variants": [
+        {
+          "url": "/visuals/library/hero-studio-768.webp",
+          "width": 768,
+          "height": 512
+        },
+        {
+          "url": "/visuals/library/hero-studio.webp",
+          "width": 1536,
+          "height": 1024
+        }
+      ]
+    },
+    "service-website": {
+      "width": 1536,
+      "height": 1024,
+      "src": "/visuals/library/service-website.webp",
+      "variants": [
+        {
+          "url": "/visuals/library/service-website-768.webp",
+          "width": 768,
+          "height": 512
+        },
+        {
+          "url": "/visuals/library/service-website.webp",
+          "width": 1536,
+          "height": 1024
+        }
+      ]
+    },
+    "service-app": {
+      "width": 1536,
+      "height": 1024,
+      "src": "/visuals/library/service-app.webp",
+      "variants": [
+        {
+          "url": "/visuals/library/service-app-768.webp",
+          "width": 768,
+          "height": 512
+        },
+        {
+          "url": "/visuals/library/service-app.webp",
+          "width": 1536,
+          "height": 1024
+        }
+      ]
+    },
+    "service-knowledge": {
+      "width": 1536,
+      "height": 1024,
+      "src": "/visuals/library/service-knowledge.webp",
+      "variants": [
+        {
+          "url": "/visuals/library/service-knowledge-768.webp",
+          "width": 768,
+          "height": 512
+        },
+        {
+          "url": "/visuals/library/service-knowledge.webp",
+          "width": 1536,
+          "height": 1024
+        }
+      ]
+    },
+    "service-workflow": {
+      "width": 1536,
+      "height": 1024,
+      "src": "/visuals/library/service-workflow.webp",
+      "variants": [
+        {
+          "url": "/visuals/library/service-workflow-768.webp",
+          "width": 768,
+          "height": 512
+        },
+        {
+          "url": "/visuals/library/service-workflow.webp",
+          "width": 1536,
+          "height": 1024
+        }
+      ]
+    },
+    "service-research": {
+      "width": 1536,
+      "height": 1024,
+      "src": "/visuals/library/service-research.webp",
+      "variants": [
+        {
+          "url": "/visuals/library/service-research-768.webp",
+          "width": 768,
+          "height": 512
+        },
+        {
+          "url": "/visuals/library/service-research.webp",
+          "width": 1536,
+          "height": 1024
+        }
+      ]
+    },
+    "service-care": {
+      "width": 1536,
+      "height": 1024,
+      "src": "/visuals/library/service-care.webp",
+      "variants": [
+        {
+          "url": "/visuals/library/service-care-768.webp",
+          "width": 768,
+          "height": 512
+        },
+        {
+          "url": "/visuals/library/service-care.webp",
+          "width": 1536,
+          "height": 1024
+        }
+      ]
+    },
+    "stage-brief": {
+      "width": 1536,
+      "height": 1024,
+      "src": "/visuals/library/stage-brief.webp",
+      "variants": [
+        {
+          "url": "/visuals/library/stage-brief-768.webp",
+          "width": 768,
+          "height": 512
+        },
+        {
+          "url": "/visuals/library/stage-brief.webp",
+          "width": 1536,
+          "height": 1024
+        }
+      ]
+    },
+    "stage-scope": {
+      "width": 1536,
+      "height": 1024,
+      "src": "/visuals/library/stage-scope.webp",
+      "variants": [
+        {
+          "url": "/visuals/library/stage-scope-768.webp",
+          "width": 768,
+          "height": 512
+        },
+        {
+          "url": "/visuals/library/stage-scope.webp",
+          "width": 1536,
+          "height": 1024
+        }
+      ]
+    },
+    "stage-approve": {
+      "width": 1536,
+      "height": 1024,
+      "src": "/visuals/library/stage-approve.webp",
+      "variants": [
+        {
+          "url": "/visuals/library/stage-approve-768.webp",
+          "width": 768,
+          "height": 512
+        },
+        {
+          "url": "/visuals/library/stage-approve.webp",
+          "width": 1536,
+          "height": 1024
+        }
+      ]
+    },
+    "stage-launch": {
+      "width": 1536,
+      "height": 1024,
+      "src": "/visuals/library/stage-launch.webp",
+      "variants": [
+        {
+          "url": "/visuals/library/stage-launch-768.webp",
+          "width": 768,
+          "height": 512
+        },
+        {
+          "url": "/visuals/library/stage-launch.webp",
+          "width": 1536,
+          "height": 1024
+        }
+      ]
+    },
+    "closing-home": {
+      "width": 1536,
+      "height": 1024,
+      "src": "/visuals/library/closing-home.webp",
+      "variants": [
+        {
+          "url": "/visuals/library/closing-home-768.webp",
+          "width": 768,
+          "height": 512
+        },
+        {
+          "url": "/visuals/library/closing-home.webp",
+          "width": 1536,
+          "height": 1024
+        }
+      ]
+    }
+  }
+}

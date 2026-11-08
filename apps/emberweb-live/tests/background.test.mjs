@@ -1,19 +1,25 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import fs from "node:fs";
-import vm from "node:vm";
-const source=fs.readFileSync(new URL("../experience.js",import.meta.url),"utf8");
-const player=source.slice(source.indexOf("(() => {", source.indexOf("request();")));
-function setup(saveData=false){
-  let gated=true,changed;
-  const movie={dataset:{src:"artwork.mp4"},paused:true,play(){this.paused=false;return Promise.resolve()},pause(){this.paused=true},getAttribute(){return this.src},addEventListener(){}};
-  const document={hidden:false,documentElement:{classList:{contains:()=>gated}},querySelector:()=>movie,addEventListener(){}};
-  vm.runInNewContext(player,{document,navigator:{connection:{saveData}},matchMedia:()=>({matches:false,addEventListener(){}}),MutationObserver:class{constructor(fn){changed=fn}observe(){}},window:{addEventListener(){}}});
-  return{movie,release(){gated=false;changed()},hide(){document.hidden=true;changed()}};
-}
-test("background film waits for the intro to release the page and pauses in a hidden tab",()=>{
- const h=setup();assert.equal(h.movie.src,undefined);h.release();assert.equal(h.movie.src,"artwork.mp4");assert.equal(h.movie.paused,false);h.hide();assert.equal(h.movie.paused,true);
+import {renderDocument} from "../design2.mjs";
+import {renderBody} from "../design2-pages.mjs";
+const routes=["/","/work","/portfolio","/packages","/process","/industries","/care","/start","/audit","/book","/policies","/ai-lab","/studio"];
+test("each public page uses a unique hero and no repeated background movie",()=>{
+ const heroes=routes.map(path=>{
+  const html=renderDocument({path,title:"Page"},renderBody(path));
+  assert.doesNotMatch(html,/crafted-background-film|ember-intelligence-motion-v1/);
+  const hero=html.match(/class="page-artwork"[\s\S]*?<img src="([^"]+)"/)?.[1];
+  assert.ok(hero,path);
+  assert.ok(fs.existsSync(new URL("../assets"+hero,import.meta.url)),hero);
+  return hero;
+ });
+ assert.equal(new Set(heroes).size,routes.length);
 });
-test("data-saving mode keeps the poster without downloading the artwork film",()=>{
- const h=setup(true);h.release();assert.equal(h.movie.src,undefined);assert.equal(h.movie.paused,true);
+test("service and process illustrations are dedicated to their contexts",()=>{
+ const work=renderBody("/work"),process=renderBody("/process");
+ const services=[...work.matchAll(/<img src="([^"]*service-[^"]+)"/g)].map(m=>m[1]);
+ const stages=[...process.matchAll(/class="process-artwork" src="([^"]+)"/g)].map(m=>m[1]);
+ assert.equal(new Set(services).size,6);
+ assert.equal(new Set(stages).size,4);
+ for(const asset of [...services,...stages])assert.ok(fs.existsSync(new URL("../assets"+asset,import.meta.url)),asset);
 });
