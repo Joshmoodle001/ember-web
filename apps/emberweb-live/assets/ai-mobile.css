@@ -97,3 +97,16 @@ body .homeworld-heading { max-width:850px; }
     }
   }
 }
+/* Content remains stable throughout scroll. */
+body[data-motion-scope="background"] .studio-engine { transform:none; }
+html.motion-enabled body[data-motion-scope="background"] [data-galaxy-card].is-galaxy-active { transform:none;opacity:1;filter:none;will-change:auto; }
+html.motion-enabled body[data-motion-scope="background"] :is(.solution-card .product-preview,.portfolio-card .portfolio-art) { animation:none;clip-path:none;transform:none; }
+body[data-motion-scope="background"] [data-art-parallax] { transform:none!important; }
+.has-stage-light { position:relative;isolation:isolate; }
+.section-stage-light { position:absolute;inset:0;z-index:-1;overflow:hidden;pointer-events:none;contain:paint; }
+.stage-beam { position:absolute;inset:-25% -20%;background:radial-gradient(ellipse at 75% 50%,hsla(var(--light-hue,210),80%,55%,.25),transparent 55%),linear-gradient(115deg,transparent 35%,hsla(var(--light-hue,210),80%,60%,.08) 50%,transparent 65%);transform:translateX(var(--light-x,0%)) rotate(var(--light-turn,12deg)); }
+.stage-grid { position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0 79px,#8ab8e410 80px),repeating-linear-gradient(0deg,transparent 0 79px,#8ab8e410 80px);mask-image:linear-gradient(90deg,transparent 15%,#0008 80%); }
+.section-light .stage-beam { opacity:.34; }
+.section-light .stage-grid { opacity:.35; }
+@media(prefers-reduced-motion:reduce) { .stage-beam { transform:rotate(12deg); } }
+html.motion-enabled body[data-motion-scope="background"] .crew-role img { animation:none; }

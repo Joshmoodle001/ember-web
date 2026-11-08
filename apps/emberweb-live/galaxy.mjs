@@ -1,4 +1,4 @@
-import { cardFlight, chapterAt, celestialPose } from "./galaxy-motion.mjs?v=studio-film";
+import { chapterAt } from "./galaxy-motion.mjs?v=studio-film";
 import { createUniverseRenderer } from "./galaxy-renderer.mjs?v=studio-film";
 
 const stage = document.querySelector(".galaxy-stage");
@@ -20,7 +20,7 @@ let renderer;
 let frame = 0;
 let lastPaint = 0;
 let geometry = [];
-let cards = [];
+
 let needsMeasure = true;
 
 function finishIntro() {
@@ -72,13 +72,11 @@ function measure() {
     for (let node = element; node; node = node.offsetParent) top += node.offsetTop;
     return { element, top, height: element.offsetHeight };
   };
-  cards = [...document.querySelectorAll("[data-galaxy-card]")].map(box);
   geometry = [...main.querySelectorAll("[data-cosmos-scene]")].map(element => ({
     ...box(element), scene: Number(element.dataset.cosmosScene)
   }));
   needsMeasure = false;
 }
-const units = { x:"px", y:"px", z:"px", yaw:"deg", pitch:"deg", roll:"deg", blur:"px" };
 let previousScroll = -1;
 let previousMotion;
 function paint(now) {
@@ -92,23 +90,10 @@ function paint(now) {
   const active = moving();
   const changed = resized || scrollY !== previousScroll || active !== previousMotion;
   const scene = chapterAt(scrollY, innerHeight, geometry);
-  if (changed) {
-    for (const [index, { element, top, height }] of cards.entries()) {
-      element.classList.toggle("is-galaxy-active", active);
-      if (!active) continue;
-      const pose = cardFlight(top - scrollY, height, innerHeight, index, compact.matches);
-      for (const [name, value] of Object.entries(pose)) element.style.setProperty("--card-" + name, value.toFixed(4) + (units[name] || ""));
-    }
-    for (const [key, value] of Object.entries(celestialPose(scene))) {
-      const name = key.replace(/[A-Z]/g, letter => "-" + letter.toLowerCase());
-      stage.style.setProperty("--" + name, value.toFixed(4) + (/[XY]$/.test(key) ? "%" : ""));
-    }
-  }
   if (changed || now - lastPaint >= (compact.matches ? 60 : 42)) {
     renderer.draw({ time: active ? now / 1000 : 0, scene: 1.72 + scene * .65, pointerX: 0, pointerY: 0, velocity: 0, entry: 0, reveal: 1, collapse: 0, tunnel: 0, explosion: 0, expansion: 0 });
     lastPaint = now;
   }
-  root.style.setProperty("--studio-scroll", Math.min(1, scrollY / innerHeight).toFixed(4));
   previousScroll = scrollY;
   previousMotion = active;
   if (active && !compact.matches) requestPaint();

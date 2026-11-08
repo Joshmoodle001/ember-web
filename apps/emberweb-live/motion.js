@@ -34,6 +34,7 @@
   try { paused = sessionStorage.getItem("ember-motion-paused") === "true"; } catch { /* Optional preference only. */ }
   const enabled = () => !paused && !reducedMotion.matches;
 
+  const backgroundOnly = document.body?.dataset?.motionScope === "background";
   const groups = [
     ".hero-copy > .eyebrow, .hero-copy .typed-line, .hero-foot > p:first-child, .hero-actions, .hero-reassurance",
     ".journey-heading h2, .journey-heading > p:last-child, .journey-steps > li",
@@ -44,16 +45,16 @@
     ".section-head h2, .section-head > p:last-child, .split-art, .feature-grid > article, .metric-strip > div, .cta-panel h2, .cta-panel .lead",
     ".studio-heading h2, .studio-heading .lead, .capability-card, .solution-card, .workflow-story, .connection-art, .build-options article, .principle-grid article",
   ];
-  const targets = [...new Set(groups.flatMap(selector => [...document.querySelectorAll(selector)]))].filter(element => !element.closest?.("[data-galaxy-card], .cosmos-home, body[data-page='/'] .hero"));
+  const targets = backgroundOnly ? [] : [...new Set(groups.flatMap(selector => [...document.querySelectorAll(selector)]))].filter(element => !element.closest?.("[data-galaxy-card], .cosmos-home, body[data-page='/'] .hero"));
   targets.forEach((element, index) => {
     element.dataset.motion = "reveal";
     element.dataset.motionOrder = String(index % 3);
   });
   // Animate the image inside its clipped frame, never the surrounding text.
-  const depthTargets = [...document.querySelectorAll(".hero-art, .human-photo > img, .creative-card > img, .closing > img"), ...document.querySelectorAll("[data-art-parallax]")];
+  const depthTargets = backgroundOnly ? [] : [...document.querySelectorAll(".hero-art, .human-photo > img, .creative-card > img, .closing > img"), ...document.querySelectorAll("[data-art-parallax]")];
   depthTargets.forEach(element => { element.dataset.depth = "true"; });
-  const sceneTargets = [...document.querySelectorAll("[data-scroll-scene]")];
-  const observedTargets = [...new Set([...depthTargets, ...sceneTargets, ...document.querySelectorAll("[data-ambient], .journey-sigil, .marquee")])];
+  const sceneTargets = backgroundOnly ? [] : [...document.querySelectorAll("[data-scroll-scene]")];
+  const observedTargets = backgroundOnly ? [] : [...new Set([...depthTargets, ...sceneTargets, ...document.querySelectorAll("[data-ambient], .journey-sigil, .marquee")])];
   const depthSet = new Set(depthTargets);
   const sceneSet = new Set(sceneTargets);
   const sceneProperties = ["--signal-progress", "--signal-turn", "--signal-rise", "--signal-spread", "--signal-core-scale", "--signal-cable", "--signal-shard-y"];
