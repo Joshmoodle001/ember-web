@@ -84,7 +84,9 @@
     const needField = projectForm.elements.namedItem("need");
     const context = [search.get("service"), search.get("goal"), search.get("package")].filter(Boolean).join(" ");
     if (needField && context) {
-      needField.value = /ongoing care|EmberCare/i.test(context) ? "Ongoing care"
+      const explicitService = search.get("service");
+      const hasExplicitService = [...(needField.options || [])].some(option => option.value === explicitService);
+      needField.value = hasExplicitService ? explicitService : /ongoing care|EmberCare/i.test(context) ? "Ongoing care"
         : /task force|\bagents?\b/i.test(context) ? "AI agent task force"
         : /knowledge|document.*engine/i.test(context) ? "AI knowledge engine"
         : /automation|workflow|Systems/i.test(context) ? "Workflow automation"

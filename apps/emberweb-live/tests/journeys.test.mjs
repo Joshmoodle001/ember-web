@@ -70,7 +70,7 @@ test("a starting idea gets its own questions and does not require a company name
   assert.equal(app.businessLabel.textContent, "Project / working name (optional)");
   assert.match(app.heading.textContent, /shape your idea/);
   assert.match(app.briefLabel.textContent, /idea/);
-  assert.match(app.fields.notes.placeholder, /who is it for/);
+  assert.match(app.fields.notes.placeholder, /customers to book/);
   assert.deepEqual(app.plans.map((plan) => plan.hidden), [true, false, true]);
   assert.equal(app.choices[0].classList.contains("is-selected"), true);
   assert.ok(app.radios.every((radio) => radio.required), "the native path choice remains required");
@@ -82,7 +82,7 @@ test("an existing business receives improvement questions and requires its busin
   assert.equal(app.fields.business.required, true);
   assert.equal(app.businessLabel.textContent, "Business name *");
   assert.match(app.heading.textContent, /business work better/);
-  assert.match(app.fields.notes.placeholder, /What happens today/);
+  assert.match(app.fields.notes.placeholder, /order from WhatsApp/);
   assert.deepEqual(app.plans.map((plan) => plan.hidden), [true, true, false]);
 });
 

@@ -220,7 +220,7 @@ function assertPublicPricing(html) {
     assert.ok(card.includes("<span>EmberCare · monthly</span><strong>" + plan.care + "<small> / month</small></strong>"), plan.name + " should show the confirmed monthly care price");
   }
   assert.match(html, /private invoice link/i, "Pricing should explain that payment follows an agreed proposal");
-  assert.match(html, /No surprise checkout/i, "Pricing should make clear that there is no immediate public checkout");
+  assert.match(html, /You review and accept the proposal; a private invoice link is then shared/i, "Pricing should make clear that there is no immediate public checkout");
 }
 
 const siteScript = await readFile(path.join(outputDirectory, "site.js"), "utf8");
@@ -297,7 +297,7 @@ for (const route of routes) {
   responsiveImageCandidateCount += [...html.matchAll(/\bsrcset\s*=/gi)].length;
   if (route === "index") {
     const heroActions = html.match(/<div class="hero-actions">([\s\S]*?)<\/div>/i)?.[1] ?? "";
-    assert.match(heroActions, /href="\/start"[^>]*>\s*Build with Ember/i, "The home hero should offer a clear project-request action");
+    assert.match(heroActions, /href="\/start"[^>]*>\s*Start a project/i, "The home hero should offer a clear project-request action");
     assert.match(html, /href="\/book"[^>]*>\s*Book a discovery call/i, "The homepage should offer a clear booking action");
     const motionToggle = html.match(/<button\b[^>]*class="[^"]*\bmotion-toggle\b[^"]*"[^>]*>[\s\S]*?<\/button>/i)?.[0];
     assert.ok(motionToggle, "The home page should expose a motion preference control");
@@ -308,7 +308,7 @@ for (const route of routes) {
     const stage = html.match(/<div\b[^>]*class="galaxy-stage"[^>]*>/i)?.[0];
     assert.ok(stage, "The rendered universe should be present");
     assert.equal(attribute(stage, "aria-hidden"), "true", "The rendered universe should be decorative");
-    assert.match(html, /class="universe-ignite"[^>]*aria-label="Ignite the Ember universe"/, "The opening must have a keyboard-accessible trigger");
+    assert.match(html, /<video[^>]*muted[^>]*playsinline/, "The film must support silent inline playback");
     assert.match(html, /class="universe-skip"/, "The opening must have a visible escape route");
     assert.match(html, /class="universe-entry"[^>]*hidden/, "The entry must fail open without JavaScript");
     for (const path of ["/work", "/ai-lab", "/portfolio", "/planet-ember"]) assert.ok(html.match(/<nav class="atlas-routes"[\s\S]*?<\/nav>/)?.[0].includes('href="'+path+'"'), "Directory must link directly to "+path);
@@ -358,16 +358,16 @@ assertPageStructure(bookingPage, "book.html");
 await assertResponsiveImages(bookingPage, "book.html");
 assert.match(bookingPage, /<title>Book a discovery call \| EmberWeb<\/title>/i, "book.html should have a page title");
 assert.match(bookingPage, /rel="canonical" href="https:\/\/emberweb\.co\.za\/book"/i, "book.html should have a canonical URL");
-const bookingFrame = bookingPage.match(/<iframe\b[^>]*>/i);
-if (bookingFrame) {
-  const bookingSource = bookingFrame[0].match(/\bsrc="([^"]+)"/i)?.[1];
-  assert.ok(bookingSource, "The calendar iframe should have a source URL");
+const bookingLink = bookingPage.match(/<a\b[^>]*data-calendar-link[^>]*>/i);
+if (bookingLink) {
+  const bookingSource = bookingLink[0].match(/\bhref="([^"]+)"/i)?.[1];
+  assert.ok(bookingSource, "The booking link should have a destination");
   const calendar = new URL(bookingSource.replaceAll("&amp;", "&"));
   assert.equal(calendar.protocol, "https:", "The booking calendar must use HTTPS");
   assert.equal(calendar.hostname, "calendar.google.com", "The booking calendar must use Google Calendar");
   assert.equal(calendar.searchParams.get("gv"), "true", "The booking calendar must use Google's public guest embed view");
-  assert.match(calendar.pathname, /^\/calendar\/appointments\/schedules\/[A-Za-z0-9_-]+$/, "The booking page must embed an appointment schedule");
-  assert.match(bookingFrame[0], /\breferrerpolicy="no-referrer"/i, "The calendar embed should not receive a referrer");
+  assert.match(calendar.pathname, /^\/calendar\/appointments\/schedules\/[A-Za-z0-9_-]+$/, "The booking page must open an appointment schedule");
+  assert.doesNotMatch(bookingPage, /<iframe\b/i, "Booking opens at the verified calendar");
   const directCalendarLink = [...bookingPage.matchAll(/<a\b[^>]*href="(https:\/\/calendar\.google\.com\/calendar\/appointments\/schedules\/[A-Za-z0-9_-]+[^" ]*)"[^>]*>/gi)].find((match) => match[1].replaceAll("&amp;", "&") === calendar.href);
   assert.ok(directCalendarLink, "The booking page should offer a direct link to the same calendar schedule");
   assert.match(directCalendarLink[0], /\btarget="_blank"/i, "The direct calendar link should open in a new tab");

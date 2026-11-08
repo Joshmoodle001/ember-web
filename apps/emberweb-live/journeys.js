@@ -4,18 +4,18 @@
   const paths = {
     startup: {
       heading: "Let's shape your idea.",
-      intro: "No company name, website or technical plan needed. Tell us what you would like to make possible.",
+      intro: "An early idea is enough. A project name is optional.",
       businessLabel: "Project / working name (optional)",
       briefLabel: "Tell us about your idea *",
-      placeholder: "What would you offer, who is it for, and what would a useful first version do?",
+      placeholder: "For example, I want customers to book a repair and choose a collection time.",
       booking: "For your first call: bring your idea, who it could help and any questions. You do not need a company name or finished plan.",
     },
     business: {
       heading: "What would make your business work better?",
-      intro: "Start with the outcome you want. We will help you decide what to improve, connect or build first.",
+      intro: "Tell us where the work slows down.",
       businessLabel: "Business name *",
       briefLabel: "What would you like to change? *",
-      placeholder: "What happens today, what feels difficult, and what would a better result look like?",
+      placeholder: "For example, we copy every order from WhatsApp into a spreadsheet.",
       booking: "For your discovery call: bring your priorities and a short outline of the tools or processes you use.",
     },
   };
@@ -51,7 +51,7 @@
       if (intro) intro.textContent = copy?.intro || "Choose the path that fits you. You can change it without losing what you have entered.";
       if (businessLabel) businessLabel.textContent = copy?.businessLabel || "Project or business name (optional)";
       if (briefLabel) briefLabel.textContent = copy?.briefLabel || "What would you like to make possible? *";
-      if (notes) notes.placeholder = copy?.placeholder || "Tell us about the idea or improvement, and what a useful first step would look like.";
+      if (notes) notes.placeholder = copy?.placeholder || "Describe the job in your own words.";
     }
 
     if (requestedPath) radios.forEach((radio) => { radio.checked = radio.value === requestedPath; });

@@ -63,6 +63,7 @@ function createHarness({ formPresent = true, valid = true, consent = true, journ
     ...fieldValues,
   };
   const fields = Object.fromEntries(Object.entries(values).map(([name, value]) => [name, Object.assign(element(name), { value })]));
+  fields.need.options = ['Custom web app','Business planning','Workflow automation'].map(value => ({value}));
   fields.contact_consent = Object.assign(element("contact_consent"), { checked: consent, required: true });
   // An already-disabled control must stay disabled after a recoverable submission failure.
   fields.package.disabled = true;
@@ -322,6 +323,14 @@ test("selected package and service remain part of the brief for either client pa
     await pending;
     assert.equal(app.status.adjacent.node.href, "/book?journey=" + journey);
   }
+});
+
+test("an explicit planning service survives AI and workflow keywords in a referral", async () => {
+  const app = createHarness({search:"?service=Business%20planning&goal=Plan%20an%20AI%20workflow"});
+  const pending = app.submitForm();
+  assert.match(app.requests[0].payload.brief, /What is needed: Business planning/);
+  app.respond(0,{success:true});
+  await pending;
 });
 
 test("oversized referral context is bounded and cannot displace consent or the chosen client path", async () => {
