@@ -11,9 +11,9 @@ export function cosmosHome() {
   <div class="atlas-copy"><p class="crafted-services">AI development · Apps · Websites</p><h1 id="arrival-title">Build what’s next.<br><em>With AI.</em></h1>
   <p>Turn a business idea into working software. We design AI tools, custom apps and websites that make everyday work easier.</p>
   <div class="hero-actions"><a class="button button-primary" href="/start">Start a project ↗</a><a class="atlas-link" href="/portfolio">See our work →</a></div></div>
-  <div class="atlas-edge"><button type="button" class="universe-replay">↻ &nbsp; Replay opening</button></div></div></section>
+  <div class="atlas-edge"><a class="atlas-scroll-cue" href="#explore">Find your next step <span aria-hidden="true">↓</span></a><button type="button" class="universe-replay">↻ &nbsp; Replay opening</button></div></div></section>
   <section class="atlas-directory" id="explore" data-cosmos-scene="3.2" aria-labelledby="atlas-title"><div class="container"><h2 id="atlas-title">A better way<br><em>to work.</em></h2>
-  <nav class="atlas-routes" aria-label="Choose a destination">${worlds.map(([href,title,description,image,number])=>`<a class="atlas-route route-${number}" href="${href}"><strong>${title}</strong><span class="atlas-description">${description}</span><span class="atlas-arrow" aria-hidden="true">↗</span></a>`).join("")}</nav>
+  <nav class="atlas-routes" aria-label="Choose a destination">${worlds.map(([href,title,description,image,number])=>`<a class="atlas-route route-${number}" href="${href}"><span class="route-index" aria-hidden="true">${number}</span><strong>${title}</strong><span class="atlas-description">${description}</span><span class="atlas-arrow" aria-hidden="true">↗</span></a>`).join("")}</nav>
   <div class="atlas-shortcuts"><span>Ready to plan?</span><a href="/packages">Compare pricing →</a><a href="/process">How projects work →</a><a href="/book">Book a discovery call →</a></div></div></section>
   <section class="library-closing" aria-labelledby="library-closing-title"><img src="/visuals/library/closing-home.webp" alt="" width="1536" height="1024" loading="lazy"><div class="container"><h2 id="library-closing-title">Have a task in mind?</h2><p>Let’s work out what would help.</p><a class="button button-primary" href="/start">Tell us about it ↗</a></div></section></main>`;
 }
