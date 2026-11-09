@@ -8,7 +8,7 @@ const nextConfig: NextConfig = {
   turbopack: { root: workspaceRoot },
   outputFileTracingRoot: workspaceRoot,
   async headers() {
-    return [{ source: "/:path*", headers: [
+    return [{source:"/account/sw.js",headers:[{key:"Service-Worker-Allowed",value:"/account"},{key:"Cache-Control",value:"no-cache"}]},{ source: "/:path*", headers: [
       { key: "X-Content-Type-Options", value: "nosniff" },
       { key: "Referrer-Policy", value: "no-referrer" },
       { key: "X-Frame-Options", value: "DENY" },

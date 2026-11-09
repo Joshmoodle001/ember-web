@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import AuthHashBridge from "@/components/auth-hash-bridge";
 import "./globals.css";
+import "./control-center.css";
 
 export const metadata: Metadata = {
   title: "EmberWeb Workspace",

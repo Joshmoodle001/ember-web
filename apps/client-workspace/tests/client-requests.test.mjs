@@ -51,9 +51,10 @@ test("isolation denial, conflicting idempotency and missing schema return safe e
     assert.equal(result.status, status); assert.doesNotMatch(JSON.stringify(result.body), /sensitive/);
   }
 });
-async function loadClientRoute(user) {
+async function loadClientRoute(user, role = "client") {
   const calls = [];
   const mocks = {
+    "@/lib/workspace-identity": { workspaceIdentity: async () => role ? { id: actor, role } : null },
     "next/server": { NextResponse: { json: (body, init = {}) => ({ body, status: init.status ?? 200, headers: new Headers(init.headers) }) } },
     "@/lib/supabase/server": { createClient: async () => ({ auth: { getUser: async () => ({ data: { user }, error: null }) } }) },
     "@/lib/supabase/service": { createServiceClient: () => ({ rpc: async (name, args) => { calls.push({ name, args }); return { data: { requests: [], clients: [] }, error: null }; } }) },
@@ -73,4 +74,12 @@ test("client list uses verified actor and false staff mode with no-store", async
   const { routes, calls } = await loadClientRoute({ id: actor, email_confirmed_at: "2026-10-23" });
   const response = await routes.GET(); assert.equal(response.status, 200); assert.equal(calls[0].name, "list_client_requests");
   assert.equal(calls[0].args.p_actor_id, actor); assert.equal(calls[0].args.p_staff, false); assert.equal(response.headers.get("cache-control"), "private, no-store");
+});
+
+test("revoked and staff identities cannot use the client request API", async () => {
+  for (const role of [null, "admin", "super_admin"]) {
+    const { routes, calls } = await loadClientRoute({ id: actor, email_confirmed_at: "2026-10-23" }, role);
+    assert.equal((await routes.GET()).status, 401);
+    assert.equal(calls.length, 0);
+  }
 });

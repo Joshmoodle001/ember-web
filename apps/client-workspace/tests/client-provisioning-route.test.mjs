@@ -22,7 +22,7 @@ async function route(options = {}) {
   const chain = { select: () => chain, eq: () => chain, maybeSingle: async () => ({ data: options.clientMissing ? null : { id: clientId }, error: null }) };
   const mocks = {
     "next/server": { NextResponse: { json: (body, init = {}) => ({ body, status: init.status ?? 200 }) } },
-    "@/lib/admin": { requireAdmin: async () => options.denied ? { ok: false, response: { status: 401 } } : { ok: true, user: { id: actorId, email_confirmed_at: options.unconfirmed ? null : "now" }, supabase: { from: () => chain } } },
+    "@/lib/admin": { requireSuperAdmin: async () => options.denied || options.adminOnly ? { ok: false, response: { status: options.adminOnly ? 403 : 401 } } : { ok: true, user: { id: actorId, email_confirmed_at: options.unconfirmed ? null : "now" }, supabase: { from: () => chain } } },
     "@/lib/client-account": { isUuid: (s) => typeof s === "string" && /^[0-9a-f-]{36}$/.test(s) },
     "@/lib/rate-limit": { checkRateLimits: async () => !options.rateLimited },
     "@/lib/request-body": { readLimitedText: (request) => request.text() },
@@ -38,7 +38,7 @@ async function route(options = {}) {
 }
 
 test("only a confirmed staff session from an allowed origin can start provisioning", async () => {
-  for (const [options, status] of [[{ denied: true }, 401], [{ unconfirmed: true }, 403], [{ badOrigin: true }, 403], [{ clientMissing: true }, 404], [{ rateLimited: true }, 429]]) {
+  for (const [options, status] of [[{ denied: true }, 401], [{ adminOnly: true }, 403], [{ unconfirmed: true }, 403], [{ badOrigin: true }, 403], [{ clientMissing: true }, 404], [{ rateLimited: true }, 429]]) {
     const t = await route(options);
     assert.equal((await t.post(t.request())).status, status);
     assert.equal(t.calls.length, 0);

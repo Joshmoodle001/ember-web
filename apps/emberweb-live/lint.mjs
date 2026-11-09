@@ -437,6 +437,7 @@ const expectedPortalRewrites = new Map([
   ["/admin/:path*", "https://portal.emberweb.co.za/admin/:path*"],
   ["/auth/:path*", "https://portal.emberweb.co.za/auth/:path*"],
   ["/api/admin/:path*", "https://portal.emberweb.co.za/api/admin/:path*"],
+  ["/api/workspace/:path*", "https://portal.emberweb.co.za/api/workspace/:path*"],
   ["/api/auth/:path*", "https://portal.emberweb.co.za/api/auth/:path*"],
   ["/_next/:path*", "https://portal.emberweb.co.za/_next/:path*"],
   ["/demo", "https://portal.emberweb.co.za/demo"],

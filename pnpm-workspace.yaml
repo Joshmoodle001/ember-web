@@ -4,3 +4,5 @@ packages:
 allowBuilds:
   sharp: true
   unrs-resolver: true
+minimumReleaseAgeExclude:
+  - fake-indexeddb@6.2.8

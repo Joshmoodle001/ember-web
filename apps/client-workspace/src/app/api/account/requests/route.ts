@@ -1,3 +1,4 @@
+import { workspaceIdentity } from "@/lib/workspace-identity";
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { createServiceClient } from "@/lib/supabase/service";
@@ -9,7 +10,7 @@ const headers = { "Cache-Control": "private, no-store" };
 async function clientIdentity() {
   const supabase = await createClient();
   const { data, error } = await supabase.auth.getUser();
-  return !error && data.user?.email_confirmed_at ? data.user : null;
+  return !error && data.user?.email_confirmed_at && (await workspaceIdentity(data.user.id))?.role==="client" ? data.user : null;
 }
 export async function GET() {
   try {

@@ -5,6 +5,7 @@ import { isAllowedPasswordLoginOrigin } from "@/lib/password-login";
 import { readLimitedText } from "@/lib/request-body";
 import { checkRateLimits, getTrustedClientIp } from "@/lib/rate-limit";
 import { sendPasswordSetup } from "@/lib/account-email";
+import { logAccountEvent } from "@/lib/workspace-identity";
 const headers = { "Cache-Control": "private, no-store", "Referrer-Policy": "no-referrer" };
 export async function GET() {
   try {
@@ -36,6 +37,7 @@ export async function PATCH(request: Request) {
     if (typeof body.password !== "string" || body.password.length < 12 || body.password.length > 128) return NextResponse.json({ error: "Use a password between 12 and 128 characters." }, { status: 400, headers });
     const update = await supabase.auth.updateUser({ password: body.password });
     if (update.error) return NextResponse.json({ error: "The password could not be changed. Try a different password or request a fresh link." }, { status: 400, headers });
+    await logAccountEvent(data.user.id,"password_changed");
     return NextResponse.json({ next: "/login" }, { headers });
   } catch { return NextResponse.json({ error: "Your password could not be saved. Please retry." }, { status: 503, headers }); }
 }

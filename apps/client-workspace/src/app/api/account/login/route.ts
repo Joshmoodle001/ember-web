@@ -7,8 +7,7 @@ import { checkRateLimits, getTrustedClientIp } from "@/lib/rate-limit";
 import { handleClientLogin } from "@/lib/client-login";
 import { isAllowedPasswordLoginOrigin } from "@/lib/password-login";
 import { matchesUsernameLoginIdentity, parseClientLoginCredentials, resolveUsernameLogin } from "@/lib/username-login";
-import { dashboardDestination } from "@/lib/login-destination";
-import { getAdminEmails } from "@/lib/supabase/env";
+import { workspaceIdentity,logAccountEvent } from "@/lib/workspace-identity";
 
 export async function POST(request: NextRequest) {
   const result = await handleClientLogin(request, {
@@ -46,7 +45,10 @@ export async function POST(request: NextRequest) {
         if (data.user) await supabase.auth.signOut();
         return null;
       }
-      return dashboardDestination(data.user, getAdminEmails());
+      const identity=await workspaceIdentity(data.user.id);
+      if(!identity){await supabase.auth.signOut();return null;}
+      await logAccountEvent(identity.id,"sign_in");
+      return identity.role==="client"?"/account":"/admin";
     },
   });
   return NextResponse.json(result.body, { status: result.status, headers: { "Cache-Control": "private, no-store" } });

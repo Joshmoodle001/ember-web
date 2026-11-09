@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import { useWorkspace } from "./workspace-runtime";
 import ClientRequestCenter from "./client-request-center";
 type Resource = { id: string; title: string; url: string | null; description: string; kind: string };
 type Project = { id: string; title: string; status: string; progress: number; due_on: string | null; milestones: { id: string; title: string; status: string; due_on: string | null }[]; resources: Resource[] };
@@ -7,22 +8,22 @@ type Account = { client: { id: string; full_name: string; company: string | null
 function safeLink(value: string | null) { try { const url = new URL(value ?? ""); return url.protocol === "https:" && !url.username && !url.password ? url.href : null; } catch { return null; } }
 const label = (value: string) => value.replaceAll("_", " ");
 export default function ClientDashboard() {
+  const {read,revision,online}=useWorkspace();
+  const [updates,setUpdates]=useState<{id:string;title:string;summary:string;published_at:string}[]>([]);
   const [accounts, setAccounts] = useState<Account[] | null>(null);
   const [error, setError] = useState("");
   useEffect(() => {
     const controller = new AbortController();
-    void fetch("/api/account", { signal: controller.signal, cache: "no-store" }).then(async (response) => {
-      if (response.status === 401) { window.location.replace("/account/login"); return; }
-      const data = await response.json();
-      if (!response.ok || !Array.isArray(data.accounts)) throw new Error("Your dashboard could not be loaded. Please refresh or contact EmberWeb.");
-      setAccounts(data.accounts);
-    }).catch((failure) => { if (!controller.signal.aborted) setError(failure instanceof Error ? failure.message : "Please try again later."); });
+    void read<{accounts:Account[];updates:typeof updates}>("/api/account","dashboard",data=>({...data,accounts:data.accounts.map(account=>({...account,client:{...account.client,email:""},invoices:[]}))})).then(data=>{
+      if(controller.signal.aborted)return;
+      setAccounts(data.accounts);setUpdates(data.updates??[]);setError("");
+    }).catch(failure=>{if(!controller.signal.aborted)setError(failure instanceof Error?failure.message:"Your dashboard could not be loaded.");});
     return () => controller.abort();
-  }, []);
+  }, [read,revision]);
   if (error) return <section className="account-card"><p className="account-message account-error" role="alert">{error}</p><button className="button" onClick={() => window.location.reload()}>Retry loading dashboard</button></section>;
   if (!accounts) return <p role="status">Loading your dashboard…</p>;
   if (!accounts.length) return <section className="account-card"><h2>Access pending</h2><p className="account-note">Your email is confirmed. EmberWeb still needs to link your account to your business and projects. Your details remain private while access is arranged.</p><a className="button" href="/start">Discuss your project</a></section>;
-  return <>{accounts.map((account) => <section key={account.client.id} aria-label={account.client.company ?? account.client.full_name}>
+  return <><section className="account-card"><h2>Project updates</h2>{updates.length?updates.map(update=><article className="client-progress-update" key={update.id}><strong>{update.title}</strong><time>{new Date(update.published_at).toLocaleString()}</time><p>{update.summary}</p></article>):<p className="account-note">Approved progress updates will appear here as your project moves forward.</p>}{!online&&<p className="account-note">Offline project copy. Connect for current invoices and progress.</p>}</section>{accounts.map((account) => <section key={account.client.id} aria-label={account.client.company ?? account.client.full_name}>
     <div className="account-heading"><p className="eyebrow">YOUR BUSINESS</p><h2>{account.client.company ?? account.client.full_name}</h2><p className="account-note">{account.client.full_name} · {account.client.email}</p></div>
     <h2>Websites, apps & delivery</h2>
     {!account.projects.length ? <p className="account-note">Your projects will appear here once agreed with EmberWeb.</p> : <div className="account-grid">{account.projects.map((project) => <article className="account-card" key={project.id}><p className="account-status">{label(project.status)}</p><h3>{project.title}</h3><label>Delivery progress: {project.progress}%<progress className="account-progress" max={100} value={project.progress} /></label>{project.due_on ? <p className="account-note">Target date: {project.due_on}</p> : null}<h4>Milestones</h4>{project.milestones.length ? <ul>{project.milestones.map((milestone) => <li key={milestone.id}>{milestone.title} <span className="account-note">· {label(milestone.status)}{milestone.due_on ? ` · ${milestone.due_on}` : ""}</span></li>)}</ul> : <p className="account-note">Delivery milestones will appear when your plan is ready.</p>}<h4>Your sites & features</h4>{project.resources.length ? project.resources.map((resource) => { const href = safeLink(resource.url); return <div key={resource.id}><strong>{resource.title}</strong><p className="account-note">{resource.description}</p>{href ? <div className="account-links"><a href={href} target="_blank" rel="noopener noreferrer">Open {label(resource.kind)} <span className="sr-only">{resource.title} (opens in a new tab)</span><span aria-hidden="true"> ↗</span></a></div> : null}</div>; }) : <p className="account-note">Live links and feature details will be added as your project progresses.</p>}</article>)}</div>}

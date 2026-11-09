@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { requireAdmin } from "@/lib/admin";
+import { requireSuperAdmin } from "@/lib/admin";
 import { isUuid } from "@/lib/client-account";
 import { checkRateLimits } from "@/lib/rate-limit";
 import { readLimitedText } from "@/lib/request-body";
@@ -11,7 +11,7 @@ const fail = (error: string, status = 400) => NextResponse.json({ error }, { sta
 
 // A client login is created only by an already authenticated workspace admin.
 export async function POST(request: Request) {
-  const admin = await requireAdmin();
+  const admin = await requireSuperAdmin();
   if (!admin.ok) return admin.response;
   if (!admin.user.email_confirmed_at) return fail("A confirmed staff account is required.", 403);
   if (!hasAllowedStaffOrigin(request, true)) return fail("Request could not be completed.", 403);

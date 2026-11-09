@@ -1,5 +1,63 @@
 # EmberWeb Client Workspace
 
+## Control centre — 9 November 2026
+
+The current staff home is the shared **seed pipeline** at `/admin`. Legacy finance, enquiry and outreach tools remain available under **Business overview** and their navigation links. The first super admin is `joshmoodley01@gmail.com`; roles come from the database, never editable user metadata.
+
+- **Super admin:** shared pipeline, account invitations and roles, client/site access, activity and immutable audit history, and the separate `/admin/leads` research dashboard.
+- **Admin:** shared seeds and internal history; self-allocation; delivery edits for assigned work. Account administration, audit analytics and lead research are owner-only.
+- **Client:** invitation-only account, restricted to active business memberships, its projects, published resources, approved progress summaries and support tickets. Public signup is disabled.
+
+Create a client business in **Clients & sites**, then invite its contact from **Accounts & roles**. Invitations and password resets use Supabase single-use hashes delivered through Resend; recipients verify their inbox and choose their own passwords at `https://portal.emberweb.co.za/password`. Passwords and email-link credentials are never returned to the dashboard. The owner's role cannot be removed or downgraded from account management. Existing username accounts remain compatible; new accounts use private email invitations.
+
+### Seeds and project agents
+
+Website enquiries automatically create seeds. Staff can also capture a query manually. A seed has its own seed UUID and **no project ID until self-allocation**. Claiming it atomically creates and retains one project UUID. Delivery stages are Starting → Allocated → Discussion → Development → Building → Testing → Final quality checks → Live. Progress is an explicit percentage; stages do not invent progress.
+
+Assigned admins or the owner can issue a 30-day agent credential from the project card. The bearer credential is displayed once and stored as a SHA-256 hash. Use the canonical URL returned by the dashboard:
+
+```http
+GET /api/agent/projects/{projectUUID}
+Authorization: Bearer {projectCredential}
+```
+
+The response contains that project's brief, stage, version and recent internal history. `POST` accepts `{submissionId, body, clientSummary?, stage?, version?}`. Submission IDs are UUIDs and exact retries are idempotent. A stage change requires the current version. Reusing a submission for different content is rejected. Keys cannot access other projects, accounts, billing or the pipeline. Revocation is immediate on the next request.
+
+All problems and comments belong in internal history. An agent's client summary is a **draft**: only the assigned admin or owner can publish a truthful summary. Unpublished/internal content never appears in the client response.
+
+### Client PWA and device storage
+
+Only `/account` advertises a manifest and registers the client worker. Staff use the responsive browser workspace. Client installation works through the browser's supported install/Add to Home Screen flow; iOS may require the browser menu. Sessions use Supabase persistent SSR cookies, with fresh server-side role checks for sensitive requests.
+
+The worker caches **public shell assets only**. Approved client snapshots and supported edits use owner-scoped IndexedDB buckets. Invoices are excluded from the offline snapshot. Offline cold launch shows saved project information and a request form. Staff can queue supported edits in an already-open workspace; there is no installable staff app or offline staff HTML shell.
+
+Create/reply tickets and create/edit/stage/comment pipeline actions can queue. Allocation, access changes, publishing, credentials and financial operations require a connection. Writes sync serially after online identity verification; stable submission IDs prevent duplicates. A newer server version yields a retained conflict for review instead of an overwrite. Authentication errors, network failures and rate limits preserve pending work. Browser Background Sync support varies; opening/returning to the app also flushes the outbox. Keep the app installed on a trusted device; signed-out users' snapshots and pending changes are removed from that device. Offline logout clears local access; server session revocation requires connectivity.
+
+### ScrapeGraphAI lead research
+
+`/admin/leads` uses the official [ScrapeGraphAI](https://scrapegraphai.com/) `scrapegraph-js` SDK (2.2.1), server-side only. Set **SGAI_API_KEY** as a Production Vercel Secret on **emberweb-workspace**, then redeploy. A separate ScrapeGraphAI account and provider credits are required; installing the SDK does not provision or fund an account. No key is committed or sent to browsers.
+
+Search returns at most five source pages. Single-site extraction first uses the existing bounded public-site reader, including DNS pinning and robots checks, then passes inert text to ScrapeGraphAI for structured extraction. The app stores bounded plain-text business records and source URLs, not executable HTML. Unknown details remain blank and require operator verification. Save a reviewed result as a lead; an agreed enquiry and verified contact can then become a seed. No automatic messages are sent.
+
+Runs persist before provider calls. Repeated submissions reuse their recorded run and do not charge for a second call. Provider failures remain visible; interrupted runs must be checked against provider history before a new run is started. There are eight new-run requests per owner per hour and at most two recent concurrent runs. There is no automatic paid retry. Scrape and saved-lead changes are audited.
+
+### Verification and database changes
+
+The November migrations are additive and already recorded against **hbdxhbwufgkrwqxpieds**. Inspect migration history before applying anything; do not replay the entire historical schema or target another project's database. New internal tables have RLS and no public/authenticated table grants. Service-only RPCs also validate the verified actor's current role. Private Auth lookups use narrowly scoped private functions; the runtime key does not get broad SELECT access to `auth.users`.
+
+```powershell
+node node_modules/typescript/lib/tsc.js --noEmit
+node node_modules/eslint/bin/eslint.js src
+node --experimental-strip-types --test tests/*.test.mjs
+node node_modules/next/dist/bin/next build
+supabase db query --remote=hbdxhbwufgkrwqxpieds --file supabase/tests/workspace_control_center.sql --yes
+supabase db query --remote=hbdxhbwufgkrwqxpieds --file supabase/tests/workspace_service_role.sql --yes
+```
+
+Both SQL suites roll back all fixtures. The second exercises the actual `service_role`, including ticket creation and lead-to-seed promotion. Browser verification covered desktop and 390px navigation, client sign-in persistence, install availability, offline cold launch, a queued request, reconnection and logout. A temporary QA account was revoked and its test business/project/ticket removed; its audit trail remains. Existing payment-link security-definer and leaked-password-protection advisor warnings predate this release; no new advisor warnings were introduced.
+
+The older implementation notes below describe the retained business and outreach modules; the role, invitation and pipeline rules above supersede their earlier allowlist and public-registration guidance.
+
 An isolated Next.js workspace for EmberWeb's inquiry pipeline, discovery scheduling, proposals, invoices, PayFast reconciliation, and delivery tracking. The public marketing site remains a separate Vercel project.
 
 ## Local setup

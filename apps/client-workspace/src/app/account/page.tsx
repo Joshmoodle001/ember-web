@@ -1,14 +1,15 @@
+import type { Metadata } from "next";
 import { redirect } from "next/navigation";
-import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
-import { dashboardDestination } from "@/lib/login-destination";
-import { getAdminEmails } from "@/lib/supabase/env";
+import { workspaceIdentity } from "@/lib/workspace-identity";
 import ClientDashboard from "@/components/client-dashboard";
-export default async function AccountPage() {
-  let email: string | undefined;
-  let destination: "/admin" | "/account" | null = null;
-  try { const supabase = await createClient(); const { data, error } = await supabase.auth.getUser(); if (!error && data.user?.email_confirmed_at) { email = data.user.email; destination = dashboardDestination(data.user, getAdminEmails()); } } catch { /* Show sign-in if authentication is unavailable. */ }
-  if (!email) redirect("/login");
-  if (destination === "/admin") redirect("/admin");
-  return <main className="account-shell"><header className="account-top"><Link className="brand" href="/">EMBER<span>WEB</span></Link><nav aria-label="Client dashboard"><a href="/book">Book a meeting</a><form action="/api/account/logout" method="post"><button>Sign out</button></form></nav></header><section className="account-heading"><p className="eyebrow">YOUR PRIVATE DASHBOARD</p><h1>Everything you’re building, together.</h1><p className="account-note">Signed in as {email}. View the projects and resources shared with your business.</p></section><ClientDashboard /></main>;
+import WorkspaceRuntime,{WorkspaceLogout} from "@/components/workspace-runtime";
+export const metadata:Metadata={title:"Your projects | EmberWeb Client Portal",manifest:"/account/manifest.webmanifest",appleWebApp:{capable:true,title:"EmberWeb",statusBarStyle:"default"},icons:{apple:"/account/icon-192.png"}};
+export default async function AccountPage(){
+ const {data,error}=await(await createClient()).auth.getUser();
+ if(error||!data.user?.email_confirmed_at)redirect("/login");
+ const identity=await workspaceIdentity(data.user.id);
+ if(!identity)redirect("/login?error=access");
+ if(identity.role!=="client")redirect("/admin");
+ return <WorkspaceRuntime identity={identity}><main className="account-shell client-workspace"><header className="account-top"><a className="brand" href="/account">EMBER<span>WEB</span></a><nav aria-label="Client workspace"><a href="/book">Book a meeting</a><WorkspaceLogout/></nav></header><section className="account-heading"><p className="eyebrow">YOUR CLIENT WORKSPACE</p><h1>Your projects.<br/>Your next steps.</h1><p className="account-note">Your sites, delivery updates and support conversations, together. Signed in as {identity.email}.</p></section><ClientDashboard/></main></WorkspaceRuntime>;
 }

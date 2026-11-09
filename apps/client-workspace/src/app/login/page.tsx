@@ -2,10 +2,8 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import LoginForm from "@/components/login-form";
 import ClientAccountLogin from "@/components/client-account-login";
-import { isClientRegistrationEnabled } from "@/lib/client-registration";
-import { dashboardDestination } from "@/lib/login-destination";
+import { workspaceIdentity } from "@/lib/workspace-identity";
 import { createClient } from "@/lib/supabase/server";
-import { getAdminEmails } from "@/lib/supabase/env";
 import "../account/account.css";
 
 export default async function LoginPage({ searchParams }: {
@@ -16,11 +14,11 @@ export default async function LoginPage({ searchParams }: {
   try {
     const supabase = await createClient();
     const { data, error } = await supabase.auth.getUser();
-    if (!error) destination = dashboardDestination(data.user, getAdminEmails());
+    if (!error && data.user?.email_confirmed_at) {const identity=await workspaceIdentity(data.user.id);destination=identity?(identity.role==="client"?"/account":"/admin"):null;}
   } catch { /* Keep sign-in available while authentication is unavailable. */ }
   if (destination) redirect(destination);
   const emailRecovery = params.method === "email";
-  const registrationEnabled = isClientRegistrationEnabled(process.env.CLIENT_REGISTRATION_ENABLED);
+  const registrationEnabled = false;
   return (
     <main className="account-shell">
       <header className="account-top"><Link className="brand" href="/">EMBER<span>WEB</span></Link><Link href="/">Back to website</Link></header>

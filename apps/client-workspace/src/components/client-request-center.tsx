@@ -1,11 +1,13 @@
 "use client";
 
 import { useEffect, useRef, useState, type FormEvent } from "react";
+import { useWorkspace } from "./workspace-runtime";
 import RequestThread, { requestStatusLabel, type ClientRequest } from "./request-thread";
 import "./request-center.css";
 
 type ProjectChoice = { id: string; title: string };
 export default function ClientRequestCenter({ clientId, projects }: { clientId: string; projects: ProjectChoice[] }) {
+  const {read,commit,revision}=useWorkspace();
   const [requests, setRequests] = useState<ClientRequest[] | null>(null);
   const [selectedId, setSelectedId] = useState("");
   const [attempt, setAttempt] = useState(0);
@@ -20,14 +22,13 @@ export default function ClientRequestCenter({ clientId, projects }: { clientId: 
     const controller = new AbortController();
     void (async () => {
       try {
-        const response = await fetch(`/api/account/requests?clientId=${encodeURIComponent(clientId)}`, { cache: "no-store", signal: controller.signal });
-        const result = await response.json();
-        if (!response.ok || !Array.isArray(result.requests)) throw new Error(typeof result.error === "string" ? result.error : "Requests could not be loaded.");
+        const result = await read<{requests:ClientRequest[]}>(`/api/account/requests?clientId=${encodeURIComponent(clientId)}`,`requests:${clientId}`);
+        if(!Array.isArray(result.requests))throw Error("Requests could not be loaded.");
         if (!controller.signal.aborted) { setRequests((result.requests as ClientRequest[]).filter((request) => request.client_id === clientId)); setError(""); }
       } catch (failure) { if (!controller.signal.aborted) setError(failure instanceof Error ? failure.message : "Requests are temporarily unavailable."); }
     })();
     return () => controller.abort();
-  }, [clientId, attempt]);
+  }, [clientId, attempt, read, revision]);
 
   async function send(event: FormEvent<HTMLFormElement>, action: "create" | "reply") {
     event.preventDefault();
@@ -41,13 +42,10 @@ export default function ClientRequestCenter({ clientId, projects }: { clientId: 
       : { action, requestId: selectedId, body: fields.get("body"), submissionId: identity.current };
     setBusy(true); setNotice("");
     try {
-      const response = await fetch("/api/account/requests", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
-      const result = await response.json();
-      if (!response.ok) throw new Error(typeof result.error === "string" ? result.error : "Your request could not be saved.");
+      const result = await commit("/api/account/requests", payload);
       identity.current = null;
       form.reset();
-      if (typeof result.requestId === "string") setSelectedId(result.requestId);
-      setNotice(action === "create" ? "Request saved. EmberWeb will review it here. Additional work and costs need a separate agreement." : "Reply saved to your request.");
+      setNotice(result.queued ? "Saved on this device. Your request will sync when your account reconnects." : action === "create" ? "Request saved. EmberWeb will review it here. Additional work and costs need a separate agreement." : "Reply saved to your request.");
       setAttempt((value) => value + 1);
     } catch (failure) { setNotice(failure instanceof Error ? failure.message : "Please try again later."); }
     finally { setBusy(false); }

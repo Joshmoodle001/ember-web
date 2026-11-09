@@ -2,6 +2,8 @@ import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
 export async function proxy(request: NextRequest) {
+  // Public offline assets must work without an Auth refresh or a live connection.
+  if (/^\/account\/(?:sw\.js|store\.js|offline\.(?:html|css|js)|manifest\.webmanifest|icon-(?:192|512)\.png)$/.test(request.nextUrl.pathname)) return NextResponse.next({ request });
   if (request.nextUrl.pathname.startsWith("/pay/")) {
     const response = NextResponse.next({ request });
     response.headers.set("Referrer-Policy", "no-referrer");

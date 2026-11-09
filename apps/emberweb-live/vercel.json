@@ -6,6 +6,10 @@
   "trailingSlash": false,
   "rewrites": [
     {
+      "source": "/api/workspace/:path*",
+      "destination": "https://portal.emberweb.co.za/api/workspace/:path*"
+    },
+    {
       "source": "/api/account",
       "destination": "https://portal.emberweb.co.za/api/account"
     },

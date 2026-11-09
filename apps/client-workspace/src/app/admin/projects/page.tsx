@@ -1,5 +1,2 @@
-import ProjectsWorkspace from "@/components/projects-workspace";
-
-export default function ProjectsPage() {
-  return <ProjectsWorkspace />;
-}
+import PipelineWorkspace from "@/components/pipeline-workspace";
+export default function ProjectsPage(){return <PipelineWorkspace allocatedOnly/>;}

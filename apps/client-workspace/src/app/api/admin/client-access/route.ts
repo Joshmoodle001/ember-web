@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { requireAdmin } from "@/lib/admin";
+import { requireSuperAdmin } from "@/lib/admin";
 import { createServiceClient } from "@/lib/supabase/service";
 import { hasAllowedStaffOrigin } from "@/lib/staff-origin";
 import { readLimitedText } from "@/lib/request-body";
@@ -8,7 +8,7 @@ import { parseNewClient } from "@/lib/client-management";
 const headers = { "Cache-Control": "private, no-store" };
 function failure(message: string, status=400) { return NextResponse.json({ error: message }, { status, headers }); }
 export async function GET() {
- const auth=await requireAdmin(); if(!auth.ok) return auth.response;
+ const auth=await requireSuperAdmin(); if(!auth.ok) return auth.response;
  const [clients,memberships,resources,projects]=await Promise.all([
  auth.supabase.from("clients").select("id,full_name,company,email").order("full_name"),
  auth.supabase.from("client_portal_memberships").select("id,client_id,user_id,active,created_at"),
@@ -18,7 +18,7 @@ export async function GET() {
  return NextResponse.json({clients:clients.data,memberships:memberships.data,resources:resources.data,projects:projects.data},{headers});
 }
 export async function POST(request: Request) {
- const auth=await requireAdmin(); if(!auth.ok) return auth.response;
+ const auth=await requireSuperAdmin(); if(!auth.ok) return auth.response;
  if(!hasAllowedStaffOrigin(request,true)) return failure("Request could not be completed.",403);
  let body: Record<string,unknown>;
  try { const parsed: unknown=JSON.parse(await readLimitedText(request,6000)); if(!parsed||typeof parsed!=="object"||Array.isArray(parsed)) return failure("Invalid request."); body=parsed as Record<string,unknown>; } catch {return failure("Invalid request.");}
@@ -35,7 +35,7 @@ export async function POST(request: Request) {
   if(clientError||!client) return failure("Client not found.",404);
   const service=createServiceClient(); let userId: string|null=null;
   for(let page=1;page<=20;page++) {const {data,error}=await service.auth.admin.listUsers({page,perPage:100}); if(error) return failure("Registered accounts could not be checked.",503); const user=data.users.find(u=>u.email?.toLowerCase()===email&&u.email_confirmed_at); if(user){userId=user.id;break;} if(data.users.length<100)break;}
-  if(!userId)return failure("Ask the client to register and confirm their email first. If already confirmed, contact the workspace owner.");
+  if(!userId)return failure("Invite the client from Accounts & roles and ask them to verify their email first.");
   const {error}=await auth.supabase.from("client_portal_memberships").upsert({client_id:body.clientId,user_id:userId,active:true},{onConflict:"client_id,user_id"});
   if(error)return failure("Access could not be granted.",503);
  } else if(body.action==="revoke") {

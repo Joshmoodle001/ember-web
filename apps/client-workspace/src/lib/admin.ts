@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
-import { getAdminEmails } from "@/lib/supabase/env";
+import { workspaceIdentity } from "@/lib/workspace-identity";
 
 export async function requireAdmin() {
   let supabase;
@@ -15,10 +15,19 @@ export async function requireAdmin() {
     return { ok: false as const, response: NextResponse.json({ error: "Sign in is required." }, { status: 401 }) };
   }
 
-  const approvedEmails = getAdminEmails();
-  if (!approvedEmails.includes(user.email.toLowerCase())) {
+  let identity;
+  try { identity = await workspaceIdentity(user.id); }
+  catch { return { ok: false as const, response: NextResponse.json({error:"Account permissions are temporarily unavailable."},{status:503}) }; }
+  if (!identity || !["super_admin","admin"].includes(identity.role)) {
     return { ok: false as const, response: NextResponse.json({ error: "This account is not approved for the workspace." }, { status: 403 }) };
   }
 
-  return { ok: true as const, supabase, user };
+  return { ok: true as const, supabase, user, identity };
+}
+
+export async function requireSuperAdmin() {
+  const auth = await requireAdmin();
+  if(!auth.ok) return auth;
+  if(auth.identity.role!=="super_admin") return {ok:false as const,response:NextResponse.json({error:"Super admin access is required."},{status:403})};
+  return auth;
 }
