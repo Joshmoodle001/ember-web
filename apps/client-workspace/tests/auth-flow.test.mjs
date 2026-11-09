@@ -25,9 +25,10 @@ test("keeps only same-site return paths", () => {
   assert.equal(getSafeNextPath(null), "/admin");
 });
 
-test("accepts only the email and invite token-hash verification types", () => {
+test("accepts only email, invite and recovery token-hash verification types", () => {
   assert.equal(isSupportedEmailOtpType("email"), true);
   assert.equal(isSupportedEmailOtpType("invite"), true);
+  assert.equal(isSupportedEmailOtpType("recovery"), true);
   assert.equal(isSupportedEmailOtpType("magiclink"), false);
   assert.equal(isSupportedEmailOtpType(null), false);
 });
@@ -77,10 +78,12 @@ test("token-hash callback accepts email/invite and rejects other types without v
 
   assert.equal(await completeAuthCallback(auth, { code: null, tokenHash: "synthetic-email", type: "email" }), "completed");
   assert.equal(await completeAuthCallback(auth, { code: null, tokenHash: "synthetic-invite", type: "invite" }), "completed");
-  assert.equal(await completeAuthCallback(auth, { code: null, tokenHash: "synthetic-other", type: "recovery" }), "invalid");
+  assert.equal(await completeAuthCallback(auth, { code: null, tokenHash: "synthetic-recovery", type: "recovery" }), "completed");
+  assert.equal(await completeAuthCallback(auth, { code: null, tokenHash: "synthetic-other", type: "magiclink" }), "invalid");
   assert.deepEqual(calls, [
     { token_hash: "synthetic-email", type: "email" },
     { token_hash: "synthetic-invite", type: "invite" },
+    { token_hash: "synthetic-recovery", type: "recovery" },
   ]);
 });
 

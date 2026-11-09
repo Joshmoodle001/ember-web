@@ -11,8 +11,8 @@ export function getSafeNextPath(value: string | null | undefined) {
   }
 }
 
-export function isSupportedEmailOtpType(value: string | null): value is "email" | "invite" {
-  return value === "email" || value === "invite";
+export function isSupportedEmailOtpType(value: string | null): value is "email" | "invite" | "recovery" {
+  return value === "email" || value === "invite" || value === "recovery";
 }
 
 export type LegacyAuthFragment =
@@ -40,7 +40,7 @@ type AuthErrorResult = { error: unknown | null };
 export async function completeAuthCallback(
   auth: {
     exchangeCodeForSession: (code: string) => Promise<AuthErrorResult>;
-    verifyOtp: (params: { token_hash: string; type: "email" | "invite" }) => Promise<AuthErrorResult>;
+    verifyOtp: (params: { token_hash: string; type: "email" | "invite" | "recovery" }) => Promise<AuthErrorResult>;
   },
   params: { code: string | null; tokenHash: string | null; type: string | null },
 ): Promise<"completed" | "invalid" | "legacy"> {

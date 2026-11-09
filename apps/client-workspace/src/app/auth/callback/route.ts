@@ -26,7 +26,7 @@ export async function GET(request: NextRequest) {
 
   if (code || tokenHash) {
     try {
-      const shouldCreateClient = Boolean(code) || type === "email" || type === "invite";
+      const shouldCreateClient = Boolean(code) || type === "email" || type === "invite" || type === "recovery";
       const callbackOutcome = shouldCreateClient
         ? await completeAuthCallback((await createClient()).auth, { code, tokenHash, type })
         : "invalid";

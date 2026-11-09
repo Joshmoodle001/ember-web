@@ -30,7 +30,7 @@ export default async function LoginPage({ searchParams }: {
         <p className="account-note">{emailRecovery ? "An approved EmberWeb team account can request a one-time email link. Complete this recovery option on the portal domain in the same browser." : "Clients and the EmberWeb team sign in here. Your account automatically opens the dashboard you have permission to use."}</p>
         {emailRecovery ? <><LoginForm mode="email" /><p className="account-note"><Link href="/login">Back to Customer Login</Link></p></> : <>
           <ClientAccountLogin confirmationError={params.error === "link"} register={registrationEnabled && params.register === "1"} registrationEnabled={registrationEnabled} />
-          <p className="account-note"><a href="https://portal.emberweb.co.za/login?method=email">Need an email link for an existing team account?</a></p>
+          <p className="account-note"><a href="https://portal.emberweb.co.za/password">Create or reset your password</a></p>
         </>}
       </section>
     </main>
