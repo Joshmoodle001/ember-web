@@ -1,0 +1,51 @@
+/* Contact and resources form one compact, readable finish on every page. */
+body .site-footer.studio-footer{position:relative;isolation:isolate;overflow:clip;background:#050c17;border-top:1px solid #7199c633;padding:0 max(32px,calc((100% - 1240px)/2));color:#edf4ff;max-width:none;margin:0}
+.studio-footer::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(ellipse at 100% 0,#17498260,transparent 57%)}
+.footer-contact{display:flex;justify-content:space-between;align-items:center;gap:32px;padding:48px 0 36px;border-bottom:1px solid #91b0d52e}
+.footer-contact h2{font-size:clamp(32px,3.3vw,46px);margin:10px 0 12px;letter-spacing:-.045em}
+.footer-contact p:not(.eyebrow){font-size:15px;line-height:1.65;color:#b9cbe2}
+.footer-contact-actions{display:grid;justify-items:center;gap:10px;flex-shrink:0}
+.footer-phone{font-size:13px;color:#c5d6ec;padding:5px 12px}
+.footer-resources{display:grid;grid-template-columns:1.1fr .7fr .8fr 1.4fr;gap:40px;padding:36px 0}
+.footer-about>p{font-size:14px;line-height:1.7;color:#b9cbe2;margin:17px 0 12px}
+.footer-location{font-size:12px;color:#90a9c7}
+.footer-resources h3{font:600 12px/1.5 Space,system-ui,sans-serif;letter-spacing:.03em;color:#e1edff;margin:0 0 14px}
+.footer-column{display:flex;flex-direction:column;align-items:flex-start;gap:2px}
+.footer-column h3{margin-bottom:10px}
+.footer-column a{font-size:13px;min-height:32px;display:flex;align-items:center;color:#b9cbe2}
+.footer-downloads .download-link{display:flex;align-items:center;justify-content:space-between;gap:14px;border:1px solid #7b9cc538;border-radius:10px;background:#10213a70;padding:13px 16px;margin:0 0 10px;transition:background .2s,border-color .2s,box-shadow .2s}
+.download-link strong{display:block;font-size:13px;font-weight:500;color:#f1f6ff}
+.download-link small{display:block;font-size:11px;line-height:1.5;margin-top:3px;color:#b6cbe5}
+.download-link>span:last-child{color:#d4ff24;font-size:20px}
+.download-link:hover,.download-link:focus-visible{border-color:#9abae1;background:#173054;box-shadow:0 0 25px #1466ff20}
+.footer-downloads>p{font-size:11px;color:#94abc7;margin-top:12px}
+.footer-legal{display:flex;align-items:center;justify-content:space-between;gap:20px;border-top:1px solid #91b0d52e;padding:20px 0 24px;font-size:11px;color:#a8bed8}
+.footer-legal nav{display:flex;gap:22px;flex-wrap:wrap}
+.footer-legal a{display:inline-flex;align-items:center;min-height:32px}
+.studio-footer a:hover{color:#e0ff8c}
+.studio-footer .button-primary:hover{color:#071321}
+
+/* Float small technical objects behind the reading surface, never the copy. */
+.has-stage-light{isolation:isolate}
+body .section-stage-light{opacity:.75;mask-image:linear-gradient(90deg,transparent 20%,#000 75%)}
+body [data-page-art] .section-stage-light{opacity:.55}
+body .stage-grid{background:none}
+body .stage-beam{inset:-10%;transform:translate3d(0,var(--beam-parallax,0px),0);background:radial-gradient(ellipse at 82% 48%,#2262d12e,transparent 46%),radial-gradient(ellipse at 95% 90%,#b7ed1720,transparent 35%)}
+.stage-objects{position:absolute;inset:0;transform:translate3d(0,var(--stage-parallax,0px),0)}
+.stage-object{position:absolute;display:block;color:#7faeff;opacity:.46;animation:studio-float 11s ease-in-out infinite alternate;animation-play-state:paused}
+.is-stage-active .stage-object{animation-play-state:running}
+.stage-object-ring{right:5%;top:18%;width:140px;height:140px;border:1px solid #759fff6b;border-radius:50%;box-shadow:inset 0 0 24px #3474ed22,0 0 36px #3474ed22}
+.stage-object-ring::before{content:"";position:absolute;inset:13px;border:1px dashed #a3c3ff6b;border-radius:50%}
+.stage-object-ring::after{content:"";position:absolute;top:12px;left:23px;width:6px;height:6px;border-radius:50%;background:#d4ff24;box-shadow:0 0 16px #d4ff24}
+.stage-object-chip{right:28%;top:64%;width:38px;height:38px;border:1px solid #a7c8ff80;transform:rotate(35deg);background:linear-gradient(135deg,#317bff30,transparent);box-shadow:0 0 32px #215dff22;animation-delay:-4s}
+.stage-object-chip::before{content:"";position:absolute;inset:9px;border:1px solid #d4ff2480}
+.stage-object-spark{right:13%;top:80%;width:5px;height:5px;border-radius:50%;background:#d4ff24;box-shadow:0 0 20px #b6ff57,35px -38px 0 -1px #92c6ff,-70px -18px 0 -1px #92c6ff;animation-delay:-7s}
+@keyframes studio-float{from{translate:0 -9px}to{translate:10px 12px}}
+body :is(.atlas-route,.service-card,.portfolio-card,.project-panel,.package-card){transition:border-color .25s,box-shadow .25s,background-color .25s}
+body :is(.atlas-route,.service-card,.portfolio-card,.project-panel,.package-card):is(:hover,:focus-within){border-color:#7db0fc99;box-shadow:inset 0 0 32px #2475ff0b,0 0 30px #2475ff12}
+body .button{transition:box-shadow .2s,border-color .2s,background-color .2s}
+body .button-primary:is(:hover,:focus-visible){box-shadow:0 0 26px #c9f52e35}
+@keyframes atlas-enter{from{opacity:0}to{opacity:1}}
+@media(max-width:1000px){.footer-resources{grid-template-columns:1fr 1fr 1fr;gap:28px}.footer-about{grid-column:1/-1;display:flex;align-items:center;gap:28px}.footer-about>p{margin:0}.footer-location{margin-left:auto}}
+@media(max-width:600px){body .site-footer.studio-footer{padding-inline:22px}.footer-contact{display:block;padding:32px 0 28px}.footer-contact-actions{justify-items:start;margin-top:22px;gap:6px}.footer-phone{padding-left:0}.footer-resources{grid-template-columns:1fr 1fr;gap:26px 18px;padding:28px 0}.footer-about{display:block}.footer-about>p{margin:12px 0 8px}.footer-downloads{grid-column:1/-1}.footer-resources h3{font-size:13px}.footer-column a{min-height:40px;font-size:14px}.footer-legal{align-items:flex-start;flex-direction:column;gap:10px;padding-block:18px}.footer-legal nav{gap:10px 22px}.stage-object-ring{width:82px;height:82px;right:3%}.stage-object-chip{right:12%}.stage-object-spark{display:none}}
+@media(prefers-reduced-motion:reduce){.stage-object{animation:none}.stage-objects,body .stage-beam{transform:none}body :is(.button,.atlas-route,.service-card,.portfolio-card,.project-panel,.package-card,.download-link){transition:none}}

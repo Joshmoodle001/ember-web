@@ -104,8 +104,8 @@ reduced.addEventListener("change", updateMotion);
 window.addEventListener("pagehide", () => { film.pause(); clearTimeout(deadline); });
 window.addEventListener("pageshow", event => {
   if (event.persisted) {
-    root.style.setProperty("--film-arrival", "0");
-    playIntro();
+    // A restored page is a return within the journey, not a new arrival.
+    finishIntro();
   }
 });
 

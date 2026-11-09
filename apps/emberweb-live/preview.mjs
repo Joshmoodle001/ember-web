@@ -29,6 +29,7 @@ const types = new Map([
   [".json", "application/json; charset=utf-8"],
   [".png", "image/png"],
   [".mp4", "video/mp4"],
+  [".pdf", "application/pdf"],
   [".jpg", "image/jpeg"],
   [".webp", "image/webp"],
   [".svg", "image/svg+xml"],

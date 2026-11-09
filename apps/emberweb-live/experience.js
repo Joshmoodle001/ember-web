@@ -24,29 +24,26 @@
   if (!main) return;
   const reduced = matchMedia("(prefers-reduced-motion: reduce)");
   const sections = [...main.children].filter(element => element.tagName === "SECTION");
-  const layers = sections.map((section, index) => {
+  const layers = sections.map(section => {
     const light = document.createElement("div");
     light.className = "section-stage-light";
     light.setAttribute("aria-hidden", "true");
     section.classList.add("has-stage-light");
-    light.style.setProperty("--light-hue", String(195 + index % 3 * 24));
-    light.innerHTML = '<div class="stage-beam"></div><div class="stage-grid"></div>';
+    light.innerHTML = '<div class="stage-beam"></div><div class="stage-objects"><i class="stage-object stage-object-ring"></i><i class="stage-object stage-object-chip"></i><i class="stage-object stage-object-spark"></i></div>';
     section.prepend(light);
-    return { section, light, index };
+    return { section, light };
   });
   let frame = 0;
   function update() {
     frame = 0;
     const enabled = !reduced.matches && document.documentElement.classList.contains("motion-enabled");
-    for (const { section, light, index } of layers) {
+    for (const { section, light } of layers) {
       const rect = section.getBoundingClientRect();
       if (rect.bottom < 0 || rect.top > innerHeight) continue;
       const progress = enabled ? Math.max(0, Math.min(1, (innerHeight - rect.top) / (innerHeight + rect.height))) : .5;
-      // A slow approach, a settled central reading interval, then departure.
-      let travel = progress < .35 ? (progress / .35 - 1) : progress > .7 ? (progress - .7) / .3 : 0;
-      travel = Math.sign(travel) * travel * travel;
-      light.style.setProperty("--light-x", ((index % 2 ? -1 : 1) * travel * 85).toFixed(3) + "%");
-      light.style.setProperty("--light-turn", ((index % 2 ? 1 : -1) * (12 + travel * 24)).toFixed(3) + "deg");
+      // Two restrained depths; the reading surface never translates or rotates.
+      light.style.setProperty("--stage-parallax", (enabled ? (progress - .5) * 140 : 0).toFixed(2) + "px");
+      light.style.setProperty("--beam-parallax", (enabled ? (progress - .5) * 50 : 0).toFixed(2) + "px");
     }
   }
   function request() {
@@ -57,5 +54,10 @@
   document.addEventListener("visibilitychange", request);
   reduced.addEventListener("change", request);
   new MutationObserver(request).observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+  const observer = new IntersectionObserver(entries => {
+    for (const item of entries) item.target.classList.toggle("is-stage-active", item.isIntersecting);
+    request();
+  });
+  sections.forEach(section => observer.observe(section));
   request();
 })();

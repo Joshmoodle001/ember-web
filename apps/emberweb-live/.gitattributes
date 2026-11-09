@@ -1,0 +1,2 @@
+# Preserve PDF byte offsets and streams on Windows checkouts.
+assets/downloads/*.pdf binary

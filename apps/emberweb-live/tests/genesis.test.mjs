@@ -63,9 +63,9 @@ test("stalled and blocked playback both fail open", async()=>{
   const stalled=mount();stalled.state.timeout();assert.equal(stalled.entry.hidden,true);
   const denied=mount({denied:true});await Promise.resolve();await Promise.resolve();assert.equal(denied.entry.hidden,true);
 });
-test("restoring the homepage from browser history replays the film",()=>{
+test("restoring the homepage from browser history keeps the opening dismissed",()=>{
   const m=mount();m.trigger("film:ended");m.trigger("pageshow",{persisted:true});
-  assert.equal(m.state.plays,2);assert.equal(m.entry.hidden,false);
+  assert.equal(m.state.plays,1);assert.equal(m.entry.hidden,true);
 });
 test("a background tab pauses and resumes without dismissing the film",()=>{
   const m=mount();m.document.hidden=true;m.trigger("visibilitychange");
@@ -73,13 +73,20 @@ test("a background tab pauses and resumes without dismissing the film",()=>{
   assert.equal(m.state.plays,2);assert.equal(m.entry.hidden,false);
 });
 const boot=await readFile(new URL("../galaxy-boot.js",import.meta.url),"utf8");
-test("every homepage load gates the opening even after an earlier visit or pause",()=>{
-  for(let visit=0;visit<2;visit++){
+test("direct and external arrivals and reloads play, internal and history returns bypass",()=>{
+  const cases = [
+    ["", "navigate", true], ["https://example.com/", "navigate", true],
+    ["https://emberweb.co.za/work", "navigate", false],
+    ["https://emberweb.co.za/work", "reload", true], ["", "back_forward", false],
+    ["invalid referrer", "navigate", true]
+  ];
+  for(const [referrer,type,expected] of cases){
     let gated=false;
-    vm.runInNewContext(boot,{matchMedia:()=>({matches:false}),document:{documentElement:{classList:{add(){gated=true}}},addEventListener(){}},setTimeout(){return 1},clearTimeout(){},sessionStorage:{getItem:()=>"true"},location:{hash:"#explore"}});
-    assert.equal(gated,true);
+    vm.runInNewContext(boot,{URL,performance:{getEntriesByType:()=>[{type}]},location:{origin:"https://emberweb.co.za"},matchMedia:()=>({matches:false}),document:{referrer,documentElement:{classList:{add(){gated=true}}},addEventListener(){}},setTimeout(){return 1},clearTimeout(){}});
+    assert.equal(gated,expected,referrer+" "+type);
   }
 });
+
 test("opening a homepage in a background tab waits until it becomes visible",()=>{
   const m=mount({hidden:true});assert.equal(m.state.plays,0);assert.equal(m.entry.hidden,false);
   m.document.hidden=false;m.trigger("visibilitychange");assert.equal(m.state.plays,1);
