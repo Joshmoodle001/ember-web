@@ -275,3 +275,5 @@ body[data-page="/"] .footer-wordmark{display:none}body[data-page="/"] .site-foot
 .event-shock{width:58vmin;height:58vmin;border:1px solid #cfedff;border-radius:50%;box-shadow:0 0 10px #6da8ff,inset 0 0 38px #aeceff88,0 0 55px #d4fc9166;opacity:calc(var(--blast,0) * (1 - var(--radius,0)));transform:translate(-50%,-50%) scale(calc(.04 + var(--radius,0)*6))}
 .event-planet{width:82vmin;height:82vmin;background:url("/visuals/ember-homeworld-v1.webp") center/contain no-repeat;opacity:calc(var(--blast,0)*var(--radius,0));transform:translate(calc(-38% + var(--radius,0)*14%),calc(-36% + var(--radius,0)*3%)) rotate(calc(-32deg + var(--radius,0)*29deg)) scale(calc(.05 + var(--radius,0)*.78))}
 .atlas-copy h1[tabindex="-1"]:focus{outline:none}
+
+.universe-play{position:absolute;left:50%;bottom:12%;transform:translateX(-50%);z-index:2;padding:15px 22px;border:1px solid #c8ddff80;border-radius:4px;background:#071120e8;color:#fff;font:600 14px sans-serif;cursor:pointer}.universe-play[hidden]{display:none!important}

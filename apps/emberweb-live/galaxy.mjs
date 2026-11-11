@@ -3,6 +3,7 @@ const stage = document.querySelector(".galaxy-stage");
 const entry = document.querySelector(".universe-entry");
 const film = entry.querySelector("video");
 const skip = entry.querySelector(".universe-skip");
+const playButton = entry.querySelector(".universe-play");
 const replay = document.querySelector(".universe-replay");
 const root = document.documentElement;
 const main = document.querySelector("main");
@@ -21,6 +22,7 @@ function finishIntro() {
   clearTimeout(deadline);
   entry.hidden = true;
   film.pause();
+  playButton.hidden = true;
   root.classList.remove("cosmos-gated", "cosmos-opening");
   for (const element of document.querySelectorAll("[data-cosmos-inert]")) {
     element.inert = false;
@@ -57,17 +59,17 @@ function playIntro() {
     film.src = compact.matches ? (lowPower ? film.dataset.economySrc : film.dataset.mobileSrc) : (lowPower ? film.dataset.economyDesktopSrc : film.dataset.src);
   }
   film.muted = true;
+  film.defaultMuted = true;
   film.currentTime = 0;
   // A stalled stream must never leave the visitor behind the opening.
   if (!document.hidden) {
     deadline = setTimeout(finishIntro, 12000);
-    film.play().catch(() => { if (session === generation && !document.hidden) finishIntro(); });
+    film.play().catch(() => { if (session === generation && !document.hidden) { playButton.hidden = false; } });
   }
 }
 
-entry.addEventListener("click", finishIntro);
-entry.addEventListener("wheel", finishIntro, { passive: true });
-entry.addEventListener("touchmove", finishIntro, { passive: true });
+skip.addEventListener("click", finishIntro);
+playButton.addEventListener("click", () => { film.muted = true; film.play().then(() => { playButton.hidden = true; deadline = setTimeout(finishIntro, 12000); }).catch(() => { playButton.hidden = false; }); });
 film.addEventListener("playing", () => entry.classList.add("film-playing"));
 film.addEventListener("ended", finishIntro);
 film.addEventListener("error", finishIntro);
@@ -91,7 +93,7 @@ document.addEventListener("visibilitychange", () => {
     clearTimeout(deadline);
   } else {
     deadline = setTimeout(finishIntro, 12000);
-    film.play().catch(() => { if (!document.hidden) finishIntro(); });
+    film.play().catch(() => { if (!document.hidden) playButton.hidden = false; });
   }
 });
 function updateMotion() {

@@ -1,7 +1,8 @@
 export function galaxyBackdrop() {
   return `<div class="galaxy-stage" aria-hidden="true"><div class="universe-shade"></div><div class="universe-grain"></div></div>
   <div class="universe-entry" role="dialog" aria-modal="true" aria-label="EmberWeb opening film" hidden>
-    <video class="arrival-film" data-src="/visuals/ember-arrival-playback.mp4" data-mobile-src="/visuals/ember-arrival-playback-mobile.mp4" data-economy-src="/visuals/ember-arrival-playback-lite.mp4" data-economy-desktop-src="/visuals/ember-arrival-playback-lite-desktop.mp4" muted playsinline preload="none" aria-hidden="true"></video>
+    <video class="arrival-film" data-src="/visuals/ember-arrival-playback.mp4" data-mobile-src="/visuals/ember-arrival-playback-mobile.mp4" data-economy-src="/visuals/ember-arrival-playback-lite.mp4" data-economy-desktop-src="/visuals/ember-arrival-playback-lite-desktop.mp4" muted autoplay playsinline webkit-playsinline preload="auto" aria-hidden="true"></video>
+    <button class="universe-play" type="button" hidden>Play opening film</button>
     <button class="universe-skip" type="button">Skip intro</button>
   </div>`;
 }

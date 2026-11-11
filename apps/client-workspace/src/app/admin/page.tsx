@@ -1,2 +1,2 @@
-import PipelineWorkspace from "@/components/pipeline-workspace";
-export default function AdminPage(){return <PipelineWorkspace/>;}
+import WorkspaceOverview from "@/components/workspace-overview";
+export default function AdminPage(){return <WorkspaceOverview/>;}

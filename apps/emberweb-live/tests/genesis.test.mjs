@@ -13,12 +13,12 @@ function mount({ gated = true, reduced = false, denied = false, hidden = false, 
     addEventListener(type, fn) { events.set(this.id + ":" + type, fn); },
     focus() { state.focus = this; }
   });
-  const elements = Object.fromEntries(["root","stage","entry","film","skip","replay","main","heading","header"].map(id=>[id,Object.assign(element(),{id})]));
-  const {root,stage,entry,film,skip,replay,main,heading,header} = elements;
+  const elements = Object.fromEntries(["root","stage","entry","film","skip","playButton","replay","main","heading","header"].map(id=>[id,Object.assign(element(),{id})]));
+  const {root,stage,entry,film,skip,playButton,replay,main,heading,header} = elements;
   const classes = new Set(["motion-enabled", ...(gated ? ["cosmos-gated"] : [])]);
   root.classList = { contains:n=>classes.has(n), add:(...n)=>n.forEach(k=>classes.add(k)), remove:(...n)=>n.forEach(k=>classes.delete(k)) };
   entry.hidden = true;
-  entry.querySelector = selector => selector === "video" ? film : skip;
+  entry.querySelector = selector => selector === "video" ? film : selector === ".universe-play" ? playButton : skip;
   main.querySelector = () => heading;
   film.dataset = {src:'desktop',mobileSrc:'mobile',economySrc:'lite',economyDesktopSrc:'lite-desktop'};
   film.getAttribute = () => film.src;
@@ -44,7 +44,7 @@ test("first arrival starts the film without input and completion releases naviga
   assert.equal(m.entry.hidden,true); assert.equal(m.main.inert,false); assert.equal(m.state.focus,m.heading);
   assert.equal(m.state.stored,false);
 });
-for(const event of ["entry:click","entry:wheel","entry:touchmove","film:error"]) {
+for(const event of ["skip:click","film:error"]) {
   test(event+" releases the page during playback",()=>{
     const m=mount(); m.trigger(event); assert.equal(m.main.inert,false); assert.equal(m.entry.hidden,true);
   });
@@ -59,9 +59,9 @@ test("Escape during replay returns focus to replay",()=>{
   m.trigger("keydown",{key:"Escape",preventDefault(){}});
   assert.equal(m.state.focus,m.replay);
 });
-test("stalled and blocked playback both fail open", async()=>{
+test("a blocked autoplay offers play and still fails open on timeout", async()=>{
   const stalled=mount();stalled.state.timeout();assert.equal(stalled.entry.hidden,true);
-  const denied=mount({denied:true});await Promise.resolve();await Promise.resolve();assert.equal(denied.entry.hidden,true);
+  const denied=mount({denied:true});await Promise.resolve();await Promise.resolve();assert.equal(denied.playButton.hidden,false);denied.state.timeout();assert.equal(denied.entry.hidden,true);
 });
 test("restoring the homepage from browser history keeps the opening dismissed",()=>{
   const m=mount();m.trigger("film:ended");m.trigger("pageshow",{persisted:true});

@@ -2,12 +2,39 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import type { WorkspaceRole } from "@/lib/workspace-model";
-const links=[["/admin","Seed pipeline"],["/admin/projects","Project delivery"],["/admin/requests","Support requests"],["/admin/business","Business overview"],["/admin/finance","Finance"],["/admin/meetings","Appointments"],["/admin/proposals","Proposals"],["/admin/outreach","Outreach"],["/admin/notifications","Notifications"],["/admin/connections","Connections"]];
-export default function WorkspaceNavigation({role}:{role:WorkspaceRole}){
- const path=usePathname(),mobile=useRef<HTMLDetailsElement>(null);
- const entries=role==="super_admin"?[...links,["/admin/leads","Lead research"],["/admin/clients","Clients & sites"],["/admin/accounts","Accounts & roles"],["/admin/activity","Analytics & audit"]]:links;
- const nav=<nav aria-label="Staff workspace">{entries.map(([href,label])=><Link key={href} href={href} aria-current={path===href?"page":undefined} onClick={()=>{if(mobile.current)mobile.current.open=false;}}>{label}<span aria-hidden="true">↗</span></Link>)}</nav>;
- return <><aside className="control-sidebar"><Link href="/admin" className="control-brand"><Image unoptimized src="/account/icon-192.png" alt="" width={35} height={35}/>EMBERWEB<span>WORKSPACE</span></Link><p className="control-role">{role==="super_admin"?"Super admin":"Admin"}</p>{nav}<small>Project and page activity is recorded in the workspace audit.</small></aside><details ref={mobile} className="control-mobile-menu"><summary>Workspace menu <span aria-hidden="true">☰</span></summary>{nav}</details></>;
+import { navigationSections, workspaceLocation } from "@/lib/workspace-navigation";
+
+export function WorkspaceLocation() {
+  const location = workspaceLocation(usePathname());
+  return <div className="workspace-location"><span>{location.section}</span><span aria-hidden="true">/</span><strong>{location.label}</strong></div>;
+}
+
+function NavigationItems({ role, onNavigate }: { role: WorkspaceRole; onNavigate?: () => void }) {
+  const path = usePathname();
+  const [search, setSearch] = useState("");
+  const sections = navigationSections(role, search);
+  const location = workspaceLocation(path);
+  return <>
+    <label className="workspace-nav-search"><span className="sr-only">Find a workspace tool</span><input type="search" placeholder="Find a tool…" value={search} onChange={event => setSearch(event.target.value)} /></label>
+    <nav aria-label="Staff workspace">
+      {!search && <Link href="/admin" className="workspace-overview-link" aria-current={path === "/admin" ? "page" : undefined} onClick={onNavigate}><span aria-hidden="true">⌂</span> Overview</Link>}
+      {sections.map(section => <details className="workspace-nav-group" key={`${section.id}:${location.section}:${!!search}`} open={!!search || section.label === location.section || (path === "/admin" && section.id === "work")}>
+        <summary>{section.label}<span aria-hidden="true">⌄</span></summary>
+        <div>{section.items.map(item => <Link key={item.href} href={item.href} aria-current={path === item.href || path.startsWith(`${item.href}/`) ? "page" : undefined} onClick={onNavigate}>{item.label}</Link>)}</div>
+      </details>)}
+      {!sections.length && <p className="workspace-nav-empty">No matching tools. Try “projects”, “password” or “invoices”.</p>}
+    </nav>
+  </>;
+}
+
+export default function WorkspaceNavigation({ role }: { role: WorkspaceRole }) {
+  const menu = useRef<HTMLDialogElement>(null);
+  const brand = <Link href="/admin" className="control-brand"><Image unoptimized src="/account/icon-192.png" alt="" width={35} height={35} />EMBERWEB<span>WORKSPACE</span></Link>;
+  return <>
+    <aside className="control-sidebar">{brand}<NavigationItems role={role} /><div className="workspace-sidebar-foot"><span>{role === "super_admin" ? "Super admin" : "Admin"}</span><small>Private team workspace</small></div></aside>
+    <button className="workspace-menu-trigger" aria-label="Open workspace navigation" onClick={() => menu.current?.showModal()}><span aria-hidden="true">☰</span> Menu</button>
+    <dialog ref={menu} className="workspace-menu-dialog" aria-labelledby="workspace-menu-title"><div className="workspace-menu-heading"><h2 id="workspace-menu-title">Workspace menu</h2><button onClick={() => menu.current?.close()} aria-label="Close workspace navigation">Close ×</button></div><NavigationItems role={role} onNavigate={() => menu.current?.close()} /></dialog>
+  </>;
 }

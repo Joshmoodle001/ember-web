@@ -50,14 +50,16 @@ function startScenes() {
     section.prepend(layer);
     return { section, layer };
   });
+  const stageCards = [...main.querySelectorAll("[data-galaxy-card],.atlas-route,.solution-card,.portfolio-card,.process-step")];
   let frame = 0;
   function update() {
     frame = 0;
     const still = reduced.matches || economical || root.classList.contains("cosmos-gated") || !root.classList.contains("motion-enabled");
     const animate = !still && !document.hidden;
     if (root.classList.contains("signal-motion") !== animate) root.classList.toggle("signal-motion", animate);
-    for (const { section, layer } of layers) {
-      const rect = section.getBoundingClientRect();
+    const measurements = layers.map(({section,layer}) => ({section,layer,rect:section.getBoundingClientRect()}));
+    const cardMeasurements = stageCards.map(card => ({card,rect:card.getBoundingClientRect()}));
+    for (const { section, layer, rect } of measurements) {
       if (rect.bottom < -100 || rect.top > innerHeight + 100) continue;
       const value = sceneFrame({ top: rect.top, height: rect.height, viewport: innerHeight, compact: compact.matches, reduced: still });
       layer.style.setProperty("--signal-near", `${value.near.toFixed(2)}px`);
@@ -66,6 +68,17 @@ function startScenes() {
       layer.style.setProperty("--signal-scale", value.scale.toFixed(3));
       layer.style.setProperty("--signal-draw", value.draw.toFixed(2));
       section.style.setProperty("--signal-art", `${value.art.toFixed(2)}px`);
+      section.style.setProperty("--art-scroll-y", `${((value.progress-.5)*(compact.matches?-100:-180)).toFixed(2)}px`);
+      section.style.setProperty("--art-scroll-x", `${((value.progress-.5)*(compact.matches?28:80)).toFixed(2)}px`);
+      section.style.setProperty("--art-scroll-scale", (1.03+value.progress*.12).toFixed(3));
+    }
+    for (const {card,rect} of cardMeasurements) {
+      if (rect.bottom < -100 || rect.top > innerHeight+120) continue;
+      const entering = still ? 0 : clamp((rect.top-innerHeight*.82)/(innerHeight*.22),0,1);
+      const exiting = still ? 0 : clamp((innerHeight*.08-rect.bottom)/(innerHeight*.16),0,1);
+      const amount = Math.max(entering,exiting);
+      card.style.setProperty("--stage-shift", `${(amount*(compact.matches?24:54)).toFixed(1)}px`);
+      card.style.setProperty("--stage-opacity", (1-amount*.16).toFixed(3));
     }
   }
   function request() {
