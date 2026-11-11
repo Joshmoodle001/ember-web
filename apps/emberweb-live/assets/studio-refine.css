@@ -160,3 +160,16 @@ body .atlas-edge { justify-content:space-between; }
 @media(prefers-reduced-motion:no-preference){html.signal-motion body [data-page-art] .page-artwork img{transform:translate3d(var(--art-scroll-x,0px),var(--art-scroll-y,0px),0) scale(var(--art-scroll-scale,1));transform-origin:80% 50%;will-change:transform}html.signal-motion body [data-galaxy-card],html.signal-motion body :is(.atlas-route,.solution-card,.portfolio-card,.process-step){translate:0 var(--stage-shift,0px);opacity:var(--stage-opacity,1)}html.signal-motion body :is([data-galaxy-card],.atlas-route,.solution-card,.portfolio-card,.process-step):focus-within{translate:none;opacity:1}}
 
 @media(prefers-reduced-motion:no-preference){html.signal-motion body .atlas-route::before{transform:translate3d(calc(var(--art-scroll-x,0px) * .25),var(--art-scroll-y,0px),0) scale(1.18);transition:opacity .3s}html.signal-motion body .library-closing>img{transform:translate3d(var(--art-scroll-x,0px),var(--art-scroll-y,0px),0) scale(var(--art-scroll-scale,1))}html.signal-motion body .atlas-arrival .signal-far{opacity:.85}}
+
+/* A shared world bridges the homepage sections, while the text stays in its own plane. */
+body[data-page="/"] .galaxy-stage .cinema-world { position:absolute;inset:-12%;background-position:center;background-size:cover;background-repeat:no-repeat;pointer-events:none; }
+body[data-page="/"] .cinema-world-arrival { background-image:url('/visuals/library/hero-home-768.webp');opacity:.30; }
+body[data-page="/"] .cinema-world-explore { background-image:url('/visuals/library/hero-solutions-768.webp');opacity:calc(var(--world-explore,0) * .52);transform:translate3d(0,var(--world-drift,0px),0) scale(var(--world-zoom,1.05)); }
+body[data-page="/"] .cinema-world-contact { background-image:url('/visuals/library/closing-home-768.webp');opacity:calc(var(--world-contact,0) * .58);transform:translate3d(0,calc(var(--world-drift,0px) * -.5),0) scale(var(--world-zoom,1.05)); }
+body[data-page="/"] .cinema-world-veil { position:absolute;inset:0;background:linear-gradient(90deg,#030916e8 0%,#0309168c 68%,#0309166e),linear-gradient(0deg,#030916b8,transparent 45%,#0309164d); }
+html.signal-motion body[data-page="/"] .atlas-arrival { background:linear-gradient(180deg,#040914d9,#0409148a); }
+html.signal-motion body[data-page="/"] .atlas-directory { background:linear-gradient(150deg,#101d36bb,#040a16cf); }
+html.signal-motion body[data-page="/"] .library-closing { background:#040914a8; }
+html.signal-motion body[data-page="/"] .atlas-route { background:linear-gradient(145deg,#142b4bed,#071321f7); }
+@media(max-width:760px){body[data-page="/"] .cinema-world-veil { background:linear-gradient(180deg,#030916e6 0%,#030916b0 42%,#0309169c 100%); }html.signal-motion body[data-page="/"] .atlas-directory { background:linear-gradient(180deg,#071426b8,#040a16cc); }}
+@media(prefers-reduced-motion:reduce){body[data-page="/"] .cinema-world-explore,body[data-page="/"] .cinema-world-contact { display:none; }}

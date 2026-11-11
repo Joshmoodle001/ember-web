@@ -1,5 +1,11 @@
 const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
 
+// Blend the next world across the viewport as its section reaches the reader.
+export function worldTransition(top, viewport) {
+  const progress = clamp((viewport * 1.05 - top) / Math.max(1, viewport * .9), 0, 1);
+  return progress * progress * (3 - 2 * progress);
+}
+
 // One scroll driver for decorative layers. Values remain bounded on short/long pages.
 export function sceneFrame({ top, height, viewport, compact = false, reduced = false }) {
   const progress = clamp((viewport - top) / Math.max(1, viewport + height), 0, 1);
@@ -51,6 +57,8 @@ function startScenes() {
     return { section, layer };
   });
   const stageCards = [...main.querySelectorAll("[data-galaxy-card],.atlas-route,.solution-card,.portfolio-card,.process-step")];
+  const worldStage = document.querySelector(".galaxy-stage");
+  const worldSections = [main.querySelector(".atlas-directory"), main.querySelector(".library-closing")];
   let frame = 0;
   function update() {
     frame = 0;
@@ -59,6 +67,15 @@ function startScenes() {
     if (root.classList.contains("signal-motion") !== animate) root.classList.toggle("signal-motion", animate);
     const measurements = layers.map(({section,layer}) => ({section,layer,rect:section.getBoundingClientRect()}));
     const cardMeasurements = stageCards.map(card => ({card,rect:card.getBoundingClientRect()}));
+    const worldTops = worldSections.map(section => section?.getBoundingClientRect().top);
+    if (worldStage && worldTops.every(Number.isFinite)) {
+      const explore = still ? 0 : worldTransition(worldTops[0], innerHeight);
+      const contact = still ? 0 : worldTransition(worldTops[1], innerHeight);
+      worldStage.style.setProperty("--world-explore", explore.toFixed(4));
+      worldStage.style.setProperty("--world-contact", contact.toFixed(4));
+      worldStage.style.setProperty("--world-drift", `${((explore-contact)*-55).toFixed(1)}px`);
+      worldStage.style.setProperty("--world-zoom", (1.05 + explore*.12 + contact*.09).toFixed(4));
+    }
     for (const { section, layer, rect } of measurements) {
       if (rect.bottom < -100 || rect.top > innerHeight + 100) continue;
       const value = sceneFrame({ top: rect.top, height: rect.height, viewport: innerHeight, compact: compact.matches, reduced: still });

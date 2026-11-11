@@ -1,6 +1,15 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { sceneFrame } from "../assets/scene-motion.mjs";
+import { sceneFrame, worldTransition } from "../assets/scene-motion.mjs";
+
+test("background worlds blend smoothly at each section boundary and reverse with scroll", () => {
+  const samples=[1000,700,400,100,-300].map(top=>worldTransition(top,844));
+  assert.equal(samples[0],0);
+  assert.equal(samples.at(-1),1);
+  for(let i=1;i<samples.length;i++)assert.ok(samples[i]>=samples[i-1]);
+  assert.ok(samples[2]>0&&samples[2]<1);
+  assert.equal(worldTransition(400,844),samples[2]);
+});
 
 test("scrolling advances the scene continuously and reverses on return", () => {
   const positions = [900, 400, 0, -400, -900];
