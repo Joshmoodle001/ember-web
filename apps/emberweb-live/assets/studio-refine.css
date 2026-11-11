@@ -173,3 +173,17 @@ html.signal-motion body[data-page="/"] .library-closing { background:#040914a8; 
 html.signal-motion body[data-page="/"] .atlas-route { background:linear-gradient(145deg,#142b4bed,#071321f7); }
 @media(max-width:760px){body[data-page="/"] .cinema-world-veil { background:linear-gradient(180deg,#030916e6 0%,#030916b0 42%,#0309169c 100%); }html.signal-motion body[data-page="/"] .atlas-directory { background:linear-gradient(180deg,#071426b8,#040a16cc); }}
 @media(prefers-reduced-motion:reduce){body[data-page="/"] .cinema-world-explore,body[data-page="/"] .cinema-world-contact { display:none; }}
+
+/* Reveal the shared world: an earlier studio rule hides the legacy galaxy stage. */
+@media(prefers-reduced-motion:no-preference){
+ html.signal-motion body[data-page="/"] .galaxy-stage { display:block; }
+ html.signal-motion body[data-page="/"] .cinema-world-arrival { transform:translate3d(0,var(--world-arrival-y,0px),0) scale(calc(1.08 + var(--world-explore,0)*.17));opacity:calc(.46 - var(--world-explore,0)*.30); }
+ html.signal-motion body[data-page="/"] .cinema-world-explore { opacity:calc(var(--world-explore,0)*(.70 - var(--world-contact,0)*.38));transform:translate3d(var(--world-explore-x,0px),var(--world-drift,0px),0) scale(var(--world-zoom,1.05)); }
+ html.signal-motion body[data-page="/"] .cinema-world-contact { opacity:calc(var(--world-contact,0)*.72);transform:translate3d(0,var(--world-contact-y,0px),0) scale(calc(1.22 - var(--world-contact,0)*.10)); }
+ html.signal-motion body[data-page="/"] .cinema-world-veil::after { content:"";position:absolute;inset:-30%;pointer-events:none;background:radial-gradient(ellipse at 60% 50%,transparent 25%,#4d8eff22 32%,transparent 42%),linear-gradient(115deg,transparent 37%,#8dafff2e 48%,#d4ff2425 50%,transparent 59%);opacity:var(--world-sweep-opacity,0);transform:rotate(var(--world-sweep-turn,0deg)); }
+ html.signal-motion body[data-page="/"] .atlas-route { translate:none;opacity:1; }
+}
+@media(max-width:760px) and (prefers-reduced-motion:no-preference){
+ html.signal-motion body[data-page="/"] .cinema-world-veil { background:linear-gradient(180deg,#030916cf 0%,#03091680 42%,#03091678 100%); }
+ html.signal-motion body[data-page="/"] .atlas-directory { background:linear-gradient(180deg,#07142696,#040a16a8); }
+}

@@ -75,6 +75,11 @@ function startScenes() {
       worldStage.style.setProperty("--world-contact", contact.toFixed(4));
       worldStage.style.setProperty("--world-drift", `${((explore-contact)*-55).toFixed(1)}px`);
       worldStage.style.setProperty("--world-zoom", (1.05 + explore*.12 + contact*.09).toFixed(4));
+      worldStage.style.setProperty("--world-arrival-y", `${(-explore * 115).toFixed(1)}px`);
+      worldStage.style.setProperty("--world-explore-x", `${((1-explore)*90-contact*70).toFixed(1)}px`);
+      worldStage.style.setProperty("--world-contact-y", `${((1-contact)*100).toFixed(1)}px`);
+      worldStage.style.setProperty("--world-sweep-turn", `${(-16 + explore*32 + contact*24).toFixed(1)}deg`);
+      worldStage.style.setProperty("--world-sweep-opacity", (Math.sin(explore*Math.PI)*.48 + Math.sin(contact*Math.PI)*.48).toFixed(3));
     }
     for (const { section, layer, rect } of measurements) {
       if (rect.bottom < -100 || rect.top > innerHeight + 100) continue;
