@@ -8,6 +8,8 @@ import { handleClientLogin } from "@/lib/client-login";
 import { isAllowedPasswordLoginOrigin } from "@/lib/password-login";
 import { matchesUsernameLoginIdentity, parseClientLoginCredentials, resolveUsernameLogin } from "@/lib/username-login";
 import { workspaceIdentity,logAccountEvent } from "@/lib/workspace-identity";
+import { ownsWorkspaceAccount, workspaceLoginEmail } from "@/lib/supabase/scope";
+import { getWorkspaceAccount } from "@/lib/supabase/workspace-accounts";
 
 export async function POST(request: NextRequest) {
   const result = await handleClientLogin(request, {
@@ -29,8 +31,8 @@ export async function POST(request: NextRequest) {
         return typeof data === "string" ? data : null;
       },
       getUserById: async (userId) => {
-        const { data, error } = await createServiceClient().auth.admin.getUserById(userId);
-        return error ? null : data.user;
+        const user = await getWorkspaceAccount(userId);
+        return user ? { id: user.id, email: user.authEmail, email_confirmed_at: user.verified ? "confirmed" : undefined } : null;
       },
     }),
     dummyAuthenticate: async (password) => {
@@ -40,8 +42,9 @@ export async function POST(request: NextRequest) {
     },
     authenticate: async (credentials, expectedUserId) => {
       const supabase = await createClient();
-      const { data, error } = await supabase.auth.signInWithPassword(credentials);
-      if (error || !data.user || !data.user.email_confirmed_at || !matchesUsernameLoginIdentity(data.user, expectedUserId)) {
+      const email = expectedUserId ? credentials.email : await workspaceLoginEmail(credentials.email);
+      const { data, error } = await supabase.auth.signInWithPassword({ ...credentials, email });
+      if (error || !data.user || !ownsWorkspaceAccount(data.user) || !data.user.email_confirmed_at || !matchesUsernameLoginIdentity(data.user, expectedUserId)) {
         if (data.user) await supabase.auth.signOut();
         return null;
       }

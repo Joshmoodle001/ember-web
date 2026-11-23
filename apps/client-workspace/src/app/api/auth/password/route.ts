@@ -5,6 +5,7 @@ import { checkRateLimits, getTrustedClientIp } from "@/lib/rate-limit";
 import { createClient } from "@/lib/supabase/server";
 import { readLimitedText, RequestBodyTooLargeError } from "@/lib/request-body";
 import { handlePasswordLogin } from "@/lib/password-login";
+import { ownsWorkspaceAccount, workspaceEmail, workspaceLoginEmail } from "@/lib/supabase/scope";
 
 export const runtime = "nodejs";
 
@@ -23,9 +24,9 @@ export async function POST(request: NextRequest) {
     },
     authenticate: async ({ email, password }) => {
       const supabase = await createClient();
-      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+      const { data, error } = await supabase.auth.signInWithPassword({ email: await workspaceLoginEmail(email), password });
       return {
-        userEmail: data.user?.email ?? null,
+        userEmail: data.user && ownsWorkspaceAccount(data.user) ? workspaceEmail(data.user) ?? null : null,
         error,
         signOut: async () => {
           const { error: signOutError } = await supabase.auth.signOut();

@@ -5,6 +5,7 @@ import { createServiceClient } from "@/lib/supabase/service";
 import { getAdminEmails } from "@/lib/supabase/env";
 import { readLimitedText } from "@/lib/request-body";
 import { checkRateLimits, getTrustedClientIp } from "@/lib/rate-limit";
+import { isSharedWorkspace } from "@/lib/supabase/scope";
 
 export async function POST(request: Request) {
   const headers = { "Cache-Control": "private, no-store" };
@@ -14,6 +15,7 @@ export async function POST(request: Request) {
   if (process.env.NODE_ENV !== "production") origins.add(new URL(request.url).origin);
   if (!origin || !origins.has(origin)) return json({ error: "Origin not allowed." }, 403);
   let code: string, password: string;
+  if (isSharedWorkspace()) return json({ error: "Request a private password link at /password." }, 410);
   try {
     const body: unknown = JSON.parse(await readLimitedText(request, 2000));
     if (!body || typeof body !== "object" || Array.isArray(body) || !("code" in body) || !("password" in body) || typeof body.code !== "string" || typeof body.password !== "string") throw new Error("invalid");

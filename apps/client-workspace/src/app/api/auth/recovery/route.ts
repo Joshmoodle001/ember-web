@@ -6,11 +6,12 @@ import { readLimitedText } from "@/lib/request-body";
 import { checkRateLimits, getTrustedClientIp } from "@/lib/rate-limit";
 import { sendPasswordSetup } from "@/lib/account-email";
 import { logAccountEvent } from "@/lib/workspace-identity";
+import { workspaceEmail } from "@/lib/supabase/scope";
 const headers = { "Cache-Control": "private, no-store", "Referrer-Policy": "no-referrer" };
 export async function GET() {
   try {
     const { data, error } = await (await createClient()).auth.getUser();
-    return NextResponse.json({ email: !error && data.user?.email_confirmed_at ? data.user.email : null }, { headers });
+    return NextResponse.json({ email: !error && data.user?.email_confirmed_at ? workspaceEmail(data.user) ?? null : null }, { headers });
   } catch { return NextResponse.json({ email: null }, { headers }); }
 }
 export async function POST(request: Request) {

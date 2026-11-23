@@ -5,6 +5,7 @@ import { checkRateLimits } from "@/lib/rate-limit";
 import { readLimitedText } from "@/lib/request-body";
 import { hasAllowedStaffOrigin } from "@/lib/staff-origin";
 import { createServiceClient } from "@/lib/supabase/service";
+import { provisionWorkspaceUsername } from "@/lib/supabase/workspace-accounts";
 
 const headers = { "Cache-Control": "private, no-store" };
 const fail = (error: string, status = 400) => NextResponse.json({ error }, { status, headers });
@@ -43,25 +44,11 @@ export async function POST(request: Request) {
       return fail("Account creation could not be confirmed. Retry this request with the same details.", 503);
     }
     if (reservation.data === true) return NextResponse.json({ success: true, recovered: true }, { headers });
-    const email = `${body.operationId}@login.emberweb.invalid`;
-    const created = await service.auth.admin.createUser({ email, password: body.password, email_confirm: true, app_metadata: { workspace_provisioning_id: body.operationId } });
-    let user = created.data.user;
-    let recovered = false;
-    if (created.error || !user) {
-      // A timeout may have happened after creation. Only reuse an exact,
-      // server-marked account; never attach an arbitrary existing identity.
-      for (let page = 1; page <= 20 && !user; page++) {
-        const result = await service.auth.admin.listUsers({ page, perPage: 100 });
-        if (result.error) return fail("Account creation needs staff review before retrying.", 503);
-        user = result.data.users.find((item) => item.email === email && item.app_metadata?.workspace_provisioning_id === body.operationId) ?? null;
-        if (result.data.users.length < 100) break;
-      }
-      if (!user) return fail("Account creation could not be confirmed. Check the account list before retrying.", 503);
-      recovered = true;
-    }
+    const user = await provisionWorkspaceUsername(body.operationId, body.password);
+    if (!user) return fail("Account creation could not be confirmed. Check the account list before retrying.", 503);
     const finished = await service.rpc("finish_client_login", { p_operation: body.operationId, p_actor: admin.user.id, p_user: user.id });
     if (finished.error) return fail("Account created, but access could not be linked. Retry this same request or contact support.", 503);
-    return NextResponse.json({ success: true, recovered }, { headers });
+    return NextResponse.json({ success: true, recovered: user.recovered ?? false }, { headers });
   } catch {
     return fail("Account creation could not be confirmed. Check the account list before retrying.", 503);
   }

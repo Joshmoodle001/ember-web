@@ -29,12 +29,19 @@ async function route(options = {}) {
     "@/lib/staff-origin": { hasAllowedStaffOrigin: () => !options.badOrigin },
     "@/lib/supabase/service": { createServiceClient: () => service },
   };
-  const source = await readFile(new URL("../src/app/api/admin/client-login/route.ts", import.meta.url), "utf8");
-  const compiled = ts.transpileModule(source, { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 } }).outputText;
-  const compiledModule = { exports: {} };
-  vm.runInNewContext(compiled, { module: compiledModule, exports: compiledModule.exports, require: (name) => mocks[name] });
+  async function loadModule(path) {
+    const source = await readFile(new URL(path, import.meta.url), "utf8");
+    const compiled = ts.transpileModule(source, { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 } }).outputText;
+    const compiledModule = { exports: {} };
+    vm.runInNewContext(compiled, { module: compiledModule, exports: compiledModule.exports, require: (name) => mocks[name] });
+    return compiledModule.exports;
+  }
+  mocks["./service"] = mocks["@/lib/supabase/service"];
+  mocks["./scope"] = { isSharedWorkspace: () => false };
+  mocks["@/lib/supabase/workspace-accounts"] = await loadModule("../src/lib/supabase/workspace-accounts.ts");
+  const { POST } = await loadModule("../src/app/api/admin/client-login/route.ts");
   const request = (body = {}) => new Request("https://portal.emberweb.co.za/api/admin/client-login", { method: "POST", body: JSON.stringify({ operationId: operation, clientId, username: "BioSync", password: "unique-long-password", ...body }) });
-  return { post: compiledModule.exports.POST, request, calls, identity };
+  return { post: POST, request, calls, identity };
 }
 
 test("only a confirmed staff session from an allowed origin can start provisioning", async () => {

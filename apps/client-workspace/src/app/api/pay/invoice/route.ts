@@ -1,6 +1,8 @@
 import { createHash } from "node:crypto";
 import { createClient } from "@supabase/supabase-js";
 import { NextResponse, type NextRequest } from "next/server";
+import { createServiceClient } from "@/lib/supabase/service";
+import { isSharedWorkspace } from "@/lib/supabase/scope";
 
 export async function GET(request: NextRequest) {
   const token = request.nextUrl.searchParams.get("token") ?? "";
@@ -9,7 +11,7 @@ export async function GET(request: NextRequest) {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const key = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
   if (!url || !key) return NextResponse.json({ error: "Invoice payment is not configured." }, { status: 503 });
-  const supabase = createClient(url, key, { auth: { autoRefreshToken: false, persistSession: false } });
+  const supabase = isSharedWorkspace(url) ? createServiceClient() : createClient(url, key, { auth: { autoRefreshToken: false, persistSession: false } });
   const tokenHash = createHash("sha256").update(token).digest("hex");
   const { data, error } = await supabase.rpc("get_invoice_for_payment", { p_token_hash: tokenHash }).maybeSingle();
   if (error) {

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { requireSuperAdmin } from "@/lib/admin";
-import { createServiceClient } from "@/lib/supabase/service";
+import { findWorkspaceAccount } from "@/lib/supabase/workspace-accounts";
 import { hasAllowedStaffOrigin } from "@/lib/staff-origin";
 import { readLimitedText } from "@/lib/request-body";
 import { clientResourceKinds, isUuid, safeClientResourceUrl } from "@/lib/client-account";
@@ -33,8 +33,9 @@ export async function POST(request: Request) {
   if(!isUuid(body.clientId)||email.length>254||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return failure("Choose a client and valid registered email.");
   const {data:client,error:clientError}=await auth.supabase.from("clients").select("id").eq("id",body.clientId).maybeSingle();
   if(clientError||!client) return failure("Client not found.",404);
-  const service=createServiceClient(); let userId: string|null=null;
-  for(let page=1;page<=20;page++) {const {data,error}=await service.auth.admin.listUsers({page,perPage:100}); if(error) return failure("Registered accounts could not be checked.",503); const user=data.users.find(u=>u.email?.toLowerCase()===email&&u.email_confirmed_at); if(user){userId=user.id;break;} if(data.users.length<100)break;}
+  const user = await findWorkspaceAccount(email).catch(() => undefined);
+  if (user === undefined) return failure("Registered accounts could not be checked.", 503);
+  const userId = user?.verified ? user.id : null;
   if(!userId)return failure("Invite the client from Accounts & roles and ask them to verify their email first.");
   const {error}=await auth.supabase.from("client_portal_memberships").upsert({client_id:body.clientId,user_id:userId,active:true},{onConflict:"client_id,user_id"});
   if(error)return failure("Access could not be granted.",503);

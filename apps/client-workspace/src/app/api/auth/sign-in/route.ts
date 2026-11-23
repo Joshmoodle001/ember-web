@@ -5,6 +5,8 @@ import { checkRateLimits, getTrustedClientIp } from "@/lib/rate-limit";
 import { getWorkspaceSiteOrigin } from "@/lib/public-links";
 import { createClient } from "@/lib/supabase/server";
 import { readLimitedText } from "@/lib/request-body";
+import { isSharedWorkspace } from "@/lib/supabase/scope";
+import { sendPasswordSetup } from "@/lib/account-email";
 
 const genericMessage = "If this address is eligible for workspace access, a one-time sign-in link will be sent when the request is accepted.";
 const unavailableMessage = "Sign-in is temporarily unavailable. Please try again later.";
@@ -52,6 +54,11 @@ export async function POST(request: NextRequest) {
     // Apply the same rate limits to every valid address before the allowlist response so repeated
     // probes cannot distinguish staff emails through different 202/429 statuses.
     if (!getAdminEmails().includes(email)) return authJson({ message: genericMessage }, 202);
+
+    if (isSharedWorkspace()) {
+      await sendPasswordSetup(email);
+      return authJson({ message: genericMessage }, 202);
+    }
 
     // The SSR client stores the PKCE verifier in response cookies so that this same browser can
     // exchange the code when the email link returns to /auth/callback.

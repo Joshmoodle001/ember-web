@@ -7,6 +7,7 @@ import { preparePasswordSetup,sendPasswordSetup } from "@/lib/account-email";
 import { logAccountEvent } from "@/lib/workspace-identity";
 import { checkRateLimits } from "@/lib/rate-limit";
 import { isUuid } from "@/lib/client-account";
+import { deleteWorkspaceAccount, getWorkspaceAccount, updateWorkspaceAccount } from "@/lib/supabase/workspace-accounts";
 const headers={"Cache-Control":"private, no-store"};
 export async function GET(request:Request){
  const auth=await requireSuperAdmin();if(!auth.ok)return auth.response;
@@ -32,17 +33,18 @@ async function write(request:Request){
    return NextResponse.json({message:"Invitation sent. The recipient verifies their email and chooses their own password."},{status:201,headers});
   }
   if(!isUuid(p.id)||p.id===auth.user.id)return NextResponse.json({error:"The owner account cannot be changed here."},{status:403,headers});
-  const target=await service.auth.admin.getUserById(p.id);
-  if(target.error||!target.data.user||target.data.user.email?.toLowerCase()==="joshmoodley01@gmail.com")return NextResponse.json({error:"Account unavailable or protected."},{status:403,headers});
+  const target = await getWorkspaceAccount(p.id);
+  if(!target || target.email?.toLowerCase()==="joshmoodley01@gmail.com")return NextResponse.json({error:"Account unavailable or protected."},{status:403,headers});
   if(request.method==="DELETE"){
-   if(p.confirmEmail!==target.data.user.email)return NextResponse.json({error:"Enter the exact account email to confirm deletion."},{status:400,headers});
+   if(typeof p.confirmEmail !== "string" || p.confirmEmail !== (target.email ?? target.authEmail))return NextResponse.json({error:"Enter the exact account email to confirm deletion."},{status:400,headers});
    const revoke=await service.rpc("workspace_account_access",{p_actor_id:auth.user.id,p_target_id:p.id,p_action:"revoke"});if(revoke.error)throw Error("Access could not be revoked.");
-   const deleted=await service.auth.admin.deleteUser(p.id,true);if(deleted.error)throw Error("Access is revoked, but account deletion needs a retry.");
+   await deleteWorkspaceAccount(p.id, p.confirmEmail);
    await logAccountEvent(auth.user.id,"account_deleted",p.id);
    return NextResponse.json({message:"Account deleted and project access revoked. Audit history is retained."},{headers});
   }
   if(p.action==="reset"){
-   await sendPasswordSetup(target.data.user.email!,!target.data.user.email_confirmed_at);await logAccountEvent(auth.user.id,"password_email_sent",p.id);
+   if (!target.email) return NextResponse.json({error:"This username-only login has no recovery email."},{status:400,headers});
+   await sendPasswordSetup(target.email, !target.verified);await logAccountEvent(auth.user.id,"password_email_sent",p.id);
    return NextResponse.json({message:"Private password link sent. Passwords are never displayed to staff."},{headers});
   }
   if(p.action==="access"){
@@ -51,7 +53,7 @@ async function write(request:Request){
    return NextResponse.json({message:"Account access updated."},{headers});
   }
   if(p.action!=="details"||typeof p.name!=="string"||p.name.length>160||typeof p.phone!=="string"||p.phone.length>40)return NextResponse.json({error:"Check the account details."},{status:400,headers});
-  const changed=await service.auth.admin.updateUserById(p.id,{user_metadata:{...target.data.user.user_metadata,full_name:p.name.trim(),contact_phone:p.phone.trim()}});if(changed.error)throw Error("Account details could not be saved.");
+  await updateWorkspaceAccount(p.id, p.name.trim(), p.phone.trim());
   await logAccountEvent(auth.user.id,"account_details_changed",p.id);
   return NextResponse.json({message:"Account details updated."},{headers});
  }catch{return NextResponse.json({error:"The account change or email could not be completed. Refresh the account list before retrying; an invitation may already be pending."},{status:503,headers});}

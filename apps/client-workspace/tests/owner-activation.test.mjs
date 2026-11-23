@@ -25,6 +25,7 @@ async function loadActivationRoute(state) {
     "next/server": { NextResponse: { json: (body, init = {}) => ({ body, status: init.status ?? 200, headers: new Headers(init.headers) }) } },
     "@/lib/supabase/service": { createServiceClient: () => { state.serviceClientCalls += 1; return state.service; } },
     "@/lib/supabase/env": { getAdminEmails: () => state.adminEmails },
+    "@/lib/supabase/scope": { isSharedWorkspace: () => Boolean(state.sharedWorkspace) },
     "@/lib/request-body": { readLimitedText },
     "@/lib/rate-limit": {
       checkRateLimits: async (_service, checks) => { state.rateLimitCalls.push(asPlainData(checks)); if (state.rateLimitError) throw new Error("synthetic rate-limit failure"); return state.rateLimitAllowed; },
@@ -90,6 +91,13 @@ function activationRequest(body = { code: activationCode, password: activationPa
     ...(body === undefined ? {} : { body: JSON.stringify(body) }),
   });
 }
+
+test("shared projects use private password setup instead of the old owner activation", async () => {
+  const state = createState({ sharedWorkspace: true });
+  const route = await loadActivationRoute(state);
+  assert.equal((await route(activationRequest())).status, 410);
+  assert.equal(state.serviceClientCalls, 0);
+});
 
 test("owner activation rejects invalid origins, malformed bodies, and invalid credentials before creating Supabase service access", async () => {
   const invalidOrigin = createState();

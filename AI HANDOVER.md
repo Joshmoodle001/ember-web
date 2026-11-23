@@ -1,6 +1,6 @@
 # EmberWeb Current Handover
 
-Last verified: 7 November 2026. This is the current project map; the historical
+Last updated: 23 November 2026. This is the current project map; the historical
 OpenAI Sites handover is preserved in `archive/chatgpt-era/AI HANDOVER.md`.
 
 ## Production services
@@ -9,12 +9,9 @@ OpenAI Sites handover is preserved in `archive/chatgpt-era/AI HANDOVER.md`.
 | --- | --- | --- | --- |
 | Public marketing site | `https://emberweb.co.za` | `ember-web` | `apps/emberweb-live` |
 | Client workspace / portal | `https://portal.emberweb.co.za` | `emberweb-workspace` | `apps/client-workspace` |
-| Workspace database | Supabase project `EmberWeb` (`hbdxhbwufgkrwqxpieds`) | Ember Web organization | `apps/client-workspace/supabase/migrations/` |
+| Workspace database | Supabase project `szucqxbkhjotszfaekex` | PFM Pro, isolated `emberweb` and `emberweb_private` schemas | `apps/client-workspace/supabase/shared/` |
 
-Both Vercel projects are linked to `Joshmoodle001/ember-web`. The marketing
-deployment was verified on branch `codex/live-site-copy`; the latest portal
-production deployment was uploaded from source rather than tied to a Git commit.
-The source recovered from those production deployments is now in this repository.
+Both Vercel projects use `Joshmoodle001/ember-web`. The marketing project proxies workspace requests to the portal. Only production portal deployments use the shared Supabase connection. The original EmberWeb database, `hbdxhbwufgkrwqxpieds`, is the source of the transferred business records.
 
 ## Repository layout
 
@@ -22,11 +19,9 @@ The source recovered from those production deployments is now in this repository
   configuration. It proxies portal routes to `portal.emberweb.co.za`.
 - `apps/client-workspace/`: Next.js workspace with admin, client account, finance,
   proposals, PayFast, outreach and scheduled research features.
-- `apps/client-workspace/supabase/migrations/`: 14 SQL migrations recovered with
-  the deployed application source. The Supabase migration-history API returned
-  no recorded migrations during the 7 Nov 2026 inspection, although the live
-  project has the workspace schema. Do not apply migrations to production just
-  to make the history appear populated; inspect live schema and migration state
+- `apps/client-workspace/supabase/migrations/`: the original workspace SQL.
+  The shared-project bootstrap is generated under `apps/client-workspace/supabase/shared/`.
+  Inspect the live EmberWeb schema before applying changes
   first.
 - `archive/chatgpt-era/`: original vinext + Cloudflare D1 + OpenAI Sites app and
   its deployment artifacts. It is historical and is not the current production

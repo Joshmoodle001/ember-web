@@ -1,12 +1,13 @@
 import { createHmac } from "node:crypto";
 import { isIP } from "node:net";
 import type { createServiceClient } from "@/lib/supabase/service";
+import { isSharedWorkspace } from "@/lib/supabase/scope";
 
 type ServiceClient = ReturnType<typeof createServiceClient>;
 type RateLimitCheck = { scope: string; identity: string; limit: number; windowSeconds: number };
 
 function getRateLimitPepper() {
-  const secret = process.env.SUPABASE_SECRET_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY;
+  const secret = isSharedWorkspace() ? process.env.EMBERWEB_PORTAL_TOKEN : process.env.SUPABASE_SECRET_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY;
   if (!secret) throw new Error("A server-side Supabase key is required for rate limiting.");
   return secret;
 }

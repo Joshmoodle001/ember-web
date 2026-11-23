@@ -1,5 +1,7 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
+import { isSharedWorkspace, workspaceCookieOptions } from "@/lib/supabase/scope";
+import { memberRole, workspaceId } from "../supabase/functions/_shared/emberweb-scope.mjs";
 
 export async function proxy(request: NextRequest) {
   // Public offline assets must work without an Auth refresh or a live connection.
@@ -16,6 +18,7 @@ export async function proxy(request: NextRequest) {
 
   let response = NextResponse.next({ request });
   const supabase = createServerClient(url, key, {
+    cookieOptions: workspaceCookieOptions(url),
     cookies: {
       getAll: () => request.cookies.getAll(),
       setAll(cookiesToSet, headers) {
@@ -28,7 +31,10 @@ export async function proxy(request: NextRequest) {
   });
 
   const { data } = await supabase.auth.getClaims();
-  if (request.nextUrl.pathname.startsWith("/admin") && !data?.claims) {
+  const claims = data?.claims;
+  const workspaceSession = claims && (!isSharedWorkspace(url) ||
+    (claims.role === memberRole && claims.app_metadata?.emberweb_workspace_id === workspaceId));
+  if (request.nextUrl.pathname.startsWith("/admin") && !workspaceSession) {
     const loginUrl = new URL("/login", process.env.NODE_ENV === "production" ? "https://emberweb.co.za" : request.nextUrl.origin);
     loginUrl.searchParams.set("next", request.nextUrl.pathname);
     const denied = NextResponse.redirect(loginUrl);

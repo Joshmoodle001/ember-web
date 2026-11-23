@@ -2,12 +2,13 @@ import Link from "next/link";
 import { getCalendarBookingUrl } from "@/lib/public-links";
 import { isClientRegistrationEnabled } from "@/lib/client-registration";
 import { isStaffEmailDeliveryConfigured } from "@/lib/notifications";
+import { isSharedWorkspace } from "@/lib/supabase/scope";
 
 export const dynamic = "force-dynamic";
 
 export default function ConnectionsPage() {
   const calendar = Boolean(getCalendarBookingUrl());
-  const database = process.env.NEXT_PUBLIC_SUPABASE_URL === "https://hbdxhbwufgkrwqxpieds.supabase.co";
+  const database = isSharedWorkspace() && Boolean(process.env.EMBERWEB_PORTAL_TOKEN);
   const payments = Boolean(process.env.PAYFAST_MERCHANT_ID && process.env.PAYFAST_MERCHANT_KEY && process.env.PAYFAST_PASSPHRASE);
   const notificationEmail = isStaffEmailDeliveryConfigured();
   const lookup = Boolean(process.env.GOOGLE_PLACES_API_KEY);

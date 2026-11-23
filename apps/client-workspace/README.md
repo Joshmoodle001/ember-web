@@ -43,18 +43,18 @@ Runs persist before provider calls. Repeated submissions reuse their recorded ru
 
 ### Verification and database changes
 
-The November migrations are additive and already recorded against **hbdxhbwufgkrwqxpieds**. Inspect migration history before applying anything; do not replay the entire historical schema or target another project's database. New internal tables have RLS and no public/authenticated table grants. Service-only RPCs also validate the verified actor's current role. Private Auth lookups use narrowly scoped private functions; the runtime key does not get broad SELECT access to `auth.users`.
+The shared PFM Pro workspace uses project **szucqxbkhjotszfaekex**, with application objects in `emberweb` and `emberweb_private`. The installation ID is `c5a1014d-1a15-4f29-acac-c7221799bdd3`. The original migrations are the source for the workspace schema. `node supabase/shared/render.mjs` generates the scoped bootstrap for a fresh installation. Review new migrations for shared-project scope before applying updates. Never run the original migrations against `public` in the shared project.
+
+Only the `emberweb` schema is added to the Data API alongside the pre-existing schemas. EmberWeb sessions use the `emberweb_member` role and the dedicated workspace ID in trusted Auth metadata. Workspace email addresses map to distinct Auth identities, so a person can use the same contact email in PFM and EmberWeb with separate passwords. The portal's server token calls `emberweb-portal`, whose database routes are fixed to the EmberWeb schema and whose account routes require EmberWeb-owned identities.
 
 ```powershell
 node node_modules/typescript/lib/tsc.js --noEmit
 node node_modules/eslint/bin/eslint.js src
 node --experimental-strip-types --test tests/*.test.mjs
 node node_modules/next/dist/bin/next build
-supabase db query --remote=hbdxhbwufgkrwqxpieds --file supabase/tests/workspace_control_center.sql --yes
-supabase db query --remote=hbdxhbwufgkrwqxpieds --file supabase/tests/workspace_service_role.sql --yes
 ```
 
-Both SQL suites roll back all fixtures. The second exercises the actual `service_role`, including ticket creation and lead-to-seed promotion. Browser verification covered desktop and 390px navigation, client sign-in persistence, install availability, offline cold launch, a queued request, reconnection and logout. A temporary QA account was revoked and its test business/project/ticket removed; its audit trail remains. Existing payment-link security-definer and leaked-password-protection advisor warnings predate this release; no new advisor warnings were introduced.
+The SQL suites under `supabase/tests` use the original single-project schema. Run them on a disposable dedicated database or adapt their schema, Auth fixtures and role for the shared installation. They roll back their fixtures.
 
 The older implementation notes below describe the retained business and outreach modules; the role, invitation and pipeline rules above supersede their earlier allowlist and public-registration guidance.
 
@@ -62,10 +62,11 @@ An isolated Next.js workspace for EmberWeb's inquiry pipeline, discovery schedul
 
 ## Local setup
 
-1. Copy `.env.example` to `.env.local` and fill in the Supabase publishable key. Keep `SUPABASE_SECRET_KEY` (or its legacy service-role fallback) and all PayFast credentials server-only.
-2. Apply the numbered migrations in `supabase/migrations` to project `hbdxhbwufgkrwqxpieds`.
-3. Add `http://localhost:3000/auth/callback` to Supabase Auth's allowed redirect URLs.
-4. Run `pnpm install`, then `pnpm dev`.
+1. For local work, use a dedicated development database and apply the numbered migrations there. Set `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, and the server-only `SUPABASE_SECRET_KEY` in `.env.local`.
+2. Add `http://localhost:3000/auth/callback` to the development project's Auth redirect URLs.
+3. Run `pnpm install`, then `pnpm dev`.
+
+The shared production installation uses `EMBERWEB_PORTAL_TOKEN` as a Vercel secret. Keep the shared Supabase service key out of Vercel. The Edge Function obtains its provider credential within Supabase.
 
 The initial allowlist contains only `joshmoodley01@gmail.com`. Supabase Auth must already have a verified user for that email before passwordless sign-in can succeed.
 

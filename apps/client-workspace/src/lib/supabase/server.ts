@@ -1,12 +1,16 @@
 import { createServerClient } from "@supabase/ssr";
+import { AuthSessionMissingError } from "@supabase/supabase-js";
 import { cookies } from "next/headers";
 import { getSupabasePublicConfig } from "./env";
+import { ownsWorkspaceAccount, workspaceCookieOptions, workspaceSchema } from "./scope";
 
 export async function createClient() {
   const cookieStore = await cookies();
   const { url, key } = getSupabasePublicConfig();
 
-  return createServerClient(url, key, {
+  const client = createServerClient(url, key, {
+    db: { schema: workspaceSchema(url) },
+    cookieOptions: workspaceCookieOptions(url),
     cookies: {
       getAll() {
         return cookieStore.getAll();
@@ -20,4 +24,13 @@ export async function createClient() {
       },
     },
   });
+  const getUser = client.auth.getUser.bind(client.auth);
+  client.auth.getUser = async (jwt) => {
+    const result = await getUser(jwt);
+    if (result.data.user && !ownsWorkspaceAccount(result.data.user)) {
+      return { data: { user: null }, error: new AuthSessionMissingError() };
+    }
+    return result;
+  };
+  return client;
 }
