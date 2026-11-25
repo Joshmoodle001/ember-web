@@ -47,76 +47,133 @@ function startScenes() {
   const reduced = matchMedia("(prefers-reduced-motion: reduce)");
   const compact = matchMedia("(max-width: 760px)");
   const economical = navigator.connection?.saveData || navigator.deviceMemory <= 2 || navigator.hardwareConcurrency <= 2;
-  const layers = [...main.children].filter(section => section.tagName === "SECTION").map((section, index) => {
-    const layer = document.createElement("div");
-    layer.className = `signal-scene scene-${index % 3}`;
-    layer.setAttribute("aria-hidden", "true");
-    layer.innerHTML = sceneMarkup(index, economical);
-    section.classList.add("has-signal-scene");
-    section.prepend(layer);
-    return { section, layer };
-  });
-  const stageCards = [...main.querySelectorAll("[data-galaxy-card],.atlas-route,.solution-card,.portfolio-card,.process-step")];
+  const sections = [...main.children].filter(section => section.tagName === "SECTION");
+  const scenes = new Map(sections.map((section, index) => [section, {
+    index,
+    artwork: section.querySelector(".page-artwork, :scope.library-closing > img"),
+    routeArt: section.querySelector(".atlas-routes"),
+    layer: null,
+  }]));
   const worldStage = document.querySelector(".galaxy-stage");
   const worldSections = [main.querySelector(".atlas-directory"), main.querySelector(".library-closing")];
+  const stageCards = [...main.querySelectorAll("[data-galaxy-card],.atlas-route,.solution-card,.portfolio-card,.process-step")]
+    .filter(card => !worldStage || !card.classList.contains("atlas-route"));
+  const nearbySections = new Set();
+  const nearbyCards = new Set();
+  let previousExplore;
+  let previousContact;
   let frame = 0;
+
+  function addLayer(section, scene) {
+    const layer = document.createElement("div");
+    layer.className = `signal-scene scene-${scene.index % 3}`;
+    layer.setAttribute("aria-hidden", "true");
+    layer.innerHTML = sceneMarkup(scene.index, economical);
+    section.classList.add("has-signal-scene");
+    section.prepend(layer);
+    scene.layer = layer;
+  }
+
+  function updateWorld(explore, contact) {
+    if (explore === previousExplore && contact === previousContact) return;
+    previousExplore = explore;
+    previousContact = contact;
+    worldStage.style.setProperty("--world-explore", explore.toFixed(4));
+    worldStage.style.setProperty("--world-contact", contact.toFixed(4));
+    worldStage.style.setProperty("--world-drift", `${((explore-contact)*-55).toFixed(1)}px`);
+    worldStage.style.setProperty("--world-zoom", (1.05 + explore*.12 + contact*.09).toFixed(4));
+    worldStage.style.setProperty("--world-arrival-y", `${(-explore * 115).toFixed(1)}px`);
+    worldStage.style.setProperty("--world-explore-x", `${((1-explore)*90-contact*70).toFixed(1)}px`);
+    worldStage.style.setProperty("--world-contact-y", `${((1-contact)*100).toFixed(1)}px`);
+    worldStage.style.setProperty("--world-sweep-turn", `${(-16 + explore*32 + contact*24).toFixed(1)}deg`);
+    worldStage.style.setProperty("--world-sweep-opacity", (Math.sin(explore*Math.PI)*.48 + Math.sin(contact*Math.PI)*.48).toFixed(3));
+  }
+
   function update() {
     frame = 0;
-    const still = reduced.matches || economical || root.classList.contains("cosmos-gated") || !root.classList.contains("motion-enabled");
-    const animate = !still && !document.hidden;
+    const gated = root.classList.contains("cosmos-gated");
+    const animate = !gated && !document.hidden && !reduced.matches && !economical && root.classList.contains("motion-enabled");
     if (root.classList.contains("signal-motion") !== animate) root.classList.toggle("signal-motion", animate);
-    const measurements = layers.map(({section,layer}) => ({section,layer,rect:section.getBoundingClientRect()}));
-    const cardMeasurements = stageCards.map(card => ({card,rect:card.getBoundingClientRect()}));
-    const worldTops = worldSections.map(section => section?.getBoundingClientRect().top);
-    if (worldStage && worldTops.every(Number.isFinite)) {
-      const explore = still ? 0 : worldTransition(worldTops[0], innerHeight);
-      const contact = still ? 0 : worldTransition(worldTops[1], innerHeight);
-      worldStage.style.setProperty("--world-explore", explore.toFixed(4));
-      worldStage.style.setProperty("--world-contact", contact.toFixed(4));
-      worldStage.style.setProperty("--world-drift", `${((explore-contact)*-55).toFixed(1)}px`);
-      worldStage.style.setProperty("--world-zoom", (1.05 + explore*.12 + contact*.09).toFixed(4));
-      worldStage.style.setProperty("--world-arrival-y", `${(-explore * 115).toFixed(1)}px`);
-      worldStage.style.setProperty("--world-explore-x", `${((1-explore)*90-contact*70).toFixed(1)}px`);
-      worldStage.style.setProperty("--world-contact-y", `${((1-contact)*100).toFixed(1)}px`);
-      worldStage.style.setProperty("--world-sweep-turn", `${(-16 + explore*32 + contact*24).toFixed(1)}deg`);
-      worldStage.style.setProperty("--world-sweep-opacity", (Math.sin(explore*Math.PI)*.48 + Math.sin(contact*Math.PI)*.48).toFixed(3));
+    if (gated || document.hidden) return;
+
+    if (!animate) {
+      for (const section of nearbySections) {
+        const scene = scenes.get(section);
+        if (!scene.layer) addLayer(section, scene);
+      }
+      return;
     }
-    for (const { section, layer, rect } of measurements) {
-      if (rect.bottom < -100 || rect.top > innerHeight + 100) continue;
-      const value = sceneFrame({ top: rect.top, height: rect.height, viewport: innerHeight, compact: compact.matches, reduced: still });
+
+    const viewport = innerHeight;
+    const small = compact.matches;
+    const measurements = new Map([...nearbySections].map(section => [section, section.getBoundingClientRect()]));
+    const cardMeasurements = [...nearbyCards].map(card => [card, card.getBoundingClientRect()]);
+    if (worldStage && worldSections.every(Boolean)) {
+      const [explore, contact] = worldSections.map(section => {
+        const rect = measurements.get(section) ?? section.getBoundingClientRect();
+        return worldTransition(rect.top, viewport);
+      });
+      updateWorld(explore, contact);
+    }
+    for (const [section, rect] of measurements) {
+      if (rect.bottom < -120 || rect.top > viewport + 120) continue;
+      const scene = scenes.get(section);
+      if (!scene.layer) addLayer(section, scene);
+      const { layer, artwork, routeArt } = scene;
+      const value = sceneFrame({ top: rect.top, height: rect.height, viewport, compact: small });
       layer.style.setProperty("--signal-near", `${value.near.toFixed(2)}px`);
       layer.style.setProperty("--signal-far", `${value.far.toFixed(2)}px`);
       layer.style.setProperty("--signal-turn", `${value.turn.toFixed(2)}deg`);
       layer.style.setProperty("--signal-scale", value.scale.toFixed(3));
       layer.style.setProperty("--signal-draw", value.draw.toFixed(2));
-      section.style.setProperty("--signal-art", `${value.art.toFixed(2)}px`);
-      section.style.setProperty("--art-scroll-y", `${((value.progress-.5)*(compact.matches?-100:-180)).toFixed(2)}px`);
-      section.style.setProperty("--art-scroll-x", `${((value.progress-.5)*(compact.matches?28:80)).toFixed(2)}px`);
-      section.style.setProperty("--art-scroll-scale", (1.03+value.progress*.12).toFixed(3));
+      if (artwork) {
+        artwork.style.setProperty("--signal-art", `${value.art.toFixed(2)}px`);
+        artwork.style.setProperty("--art-scroll-scale", (1.03 + value.progress * .12).toFixed(3));
+      }
+      for (const artLayer of [artwork, routeArt]) {
+        if (!artLayer) continue;
+        artLayer.style.setProperty("--art-scroll-y", `${((value.progress - .5) * (small ? -100 : -180)).toFixed(2)}px`);
+        artLayer.style.setProperty("--art-scroll-x", `${((value.progress - .5) * (small ? 28 : 80)).toFixed(2)}px`);
+      }
     }
-    for (const {card,rect} of cardMeasurements) {
-      if (rect.bottom < -100 || rect.top > innerHeight+120) continue;
-      const entering = still ? 0 : clamp((rect.top-innerHeight*.82)/(innerHeight*.22),0,1);
-      const exiting = still ? 0 : clamp((innerHeight*.08-rect.bottom)/(innerHeight*.16),0,1);
+    for (const [card, rect] of cardMeasurements) {
+      if (rect.bottom < -120 || rect.top > viewport + 120) continue;
+      const entering = clamp((rect.top - viewport * .82) / (viewport * .22), 0, 1);
+      const exiting = clamp((viewport * .08 - rect.bottom) / (viewport * .16), 0, 1);
       const amount = Math.max(entering,exiting);
-      card.style.setProperty("--stage-shift", `${(amount*(compact.matches?24:54)).toFixed(1)}px`);
-      card.style.setProperty("--stage-opacity", (1-amount*.16).toFixed(3));
+      const shift = `${(amount * (small ? 24 : 54)).toFixed(1)}px`;
+      if (card.style.getPropertyValue("--stage-shift") === shift) continue;
+      card.style.setProperty("--stage-shift", shift);
+      card.style.setProperty("--stage-opacity", (1 - amount * .16).toFixed(3));
     }
   }
   function request() {
     if (!frame && !document.hidden) frame = requestAnimationFrame(update);
   }
+  const proximity = new IntersectionObserver(entries => {
+    for (const { target, isIntersecting } of entries) {
+      const nearby = scenes.has(target) ? nearbySections : nearbyCards;
+      if (isIntersecting) nearby.add(target);
+      else nearby.delete(target);
+    }
+    request();
+  }, { rootMargin: "160px 0px" });
   const observer = new IntersectionObserver(entries => {
     entries.forEach(entry => entry.target.classList.toggle("signal-in-view", entry.isIntersecting));
-    request();
   }, { rootMargin: "50px" });
-  layers.forEach(({ section }) => observer.observe(section));
+  sections.forEach(section => {
+    proximity.observe(section);
+    observer.observe(section);
+  });
+  stageCards.forEach(card => proximity.observe(card));
   const cards = [...document.querySelectorAll(".atlas-route,.solution-card,.portfolio-card,.process-step")];
   const cardObserver = new IntersectionObserver(entries => {
     entries.forEach(entry => entry.target.classList.toggle("signal-card-visible", entry.isIntersecting));
   }, { threshold: .16 });
   cards.forEach(card => cardObserver.observe(card));
-  window.addEventListener("scroll", request, { passive: true });
+  window.addEventListener("scroll", () => {
+    if (root.classList.contains("signal-motion")) request();
+  }, { passive: true });
   window.addEventListener("resize", request, { passive: true });
   window.addEventListener("pageshow", request);
   document.addEventListener("visibilitychange", () => {

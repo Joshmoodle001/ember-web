@@ -37,6 +37,7 @@
   const enabled = () => !paused && !reducedMotion.matches;
 
   const backgroundOnly = document.body?.dataset?.motionScope === "background";
+  const nativeProgress = backgroundOnly && window.CSS?.supports("animation-timeline: scroll(root block)");
   const groups = [
     ".hero-copy > .eyebrow, .hero-copy .typed-line, .hero-foot > p:first-child, .hero-actions, .hero-reassurance",
     ".journey-heading h2, .journey-heading > p:last-child, .journey-steps > li",
@@ -211,7 +212,7 @@
     if (progress) progress.style.transform = `scaleX(${fraction})`;
   }
   function requestFrame() {
-    if (!frame && !document.hidden) frame = window.requestAnimationFrame(updateFrame);
+    if (!nativeProgress && !frame && !document.hidden) frame = window.requestAnimationFrame(updateFrame);
   }
 
   function configure() {

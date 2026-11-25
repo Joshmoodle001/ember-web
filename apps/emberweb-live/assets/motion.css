@@ -160,6 +160,18 @@ html.motion-enabled .journey-sigil {
   transform-origin: left center;
 }
 
+@supports (animation-timeline: scroll(root block)) {
+  body[data-motion-scope="background"] > .progress {
+    animation: ember-reading-progress auto linear both;
+    animation-timeline: scroll(root block);
+  }
+}
+
+@keyframes ember-reading-progress {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
 html.motion-paused [data-depth] {
   --depth-shift: 0px;
   translate: 0 0 !important;

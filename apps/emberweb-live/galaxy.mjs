@@ -16,6 +16,14 @@ const arrivalAnchor = window.location?.hash;
 let session = 0;
 let returnFocus;
 let deadline;
+const startupTimeout = 3500;
+const playbackTimeout = 12000;
+
+function setDeadline(timeout) {
+  clearTimeout(deadline);
+  deadline = setTimeout(finishIntro, timeout);
+}
+
 function finishIntro() {
   if (entry.hidden) return;
   session++;
@@ -37,12 +45,22 @@ function finishIntro() {
 
 }
 
+function resumeFilm() {
+  const generation = session;
+  setDeadline(startupTimeout);
+  film.play().then(() => {
+    if (session === generation) playButton.hidden = true;
+  }).catch(() => {
+    if (session === generation && !document.hidden) playButton.hidden = false;
+  });
+}
+
 function playIntro() {
   if (!moving()) {
     root.classList.remove("cosmos-gated");
     return;
   }
-  const generation = ++session;
+  session++;
   returnFocus = document.activeElement === replay ? replay : null;
   for (const element of document.body.children) {
     if (element === entry || element === stage || element.inert || element.tagName === "SCRIPT") continue;
@@ -50,6 +68,7 @@ function playIntro() {
     element.dataset.cosmosInert = "";
   }
   window.scrollTo({ top: 0, behavior: "instant" });
+  root.classList.remove("cosmos-landed");
   entry.classList.remove("film-playing");
   entry.hidden = false;
   root.classList.add("cosmos-gated", "cosmos-opening");
@@ -61,17 +80,24 @@ function playIntro() {
   film.muted = true;
   film.defaultMuted = true;
   film.currentTime = 0;
-  // A stalled stream must never leave the visitor behind the opening.
-  if (!document.hidden) {
-    deadline = setTimeout(finishIntro, 12000);
-    film.play().catch(() => { if (session === generation && !document.hidden) { playButton.hidden = false; } });
-  }
+  if (!document.hidden) resumeFilm();
 }
 
 skip.addEventListener("click", finishIntro);
-playButton.addEventListener("click", () => { film.muted = true; film.play().then(() => { playButton.hidden = true; deadline = setTimeout(finishIntro, 12000); }).catch(() => { playButton.hidden = false; }); });
-film.addEventListener("playing", () => entry.classList.add("film-playing"));
-film.addEventListener("ended", finishIntro);
+playButton.addEventListener("click", resumeFilm);
+film.addEventListener("playing", () => {
+  if (entry.hidden || document.hidden) return;
+  entry.classList.add("film-playing");
+  setDeadline(playbackTimeout);
+});
+film.addEventListener("waiting", () => {
+  if (!entry.hidden && !document.hidden) setDeadline(startupTimeout);
+});
+film.addEventListener("ended", () => {
+  if (entry.hidden) return;
+  finishIntro();
+  if ((!arrivalAnchor || returnFocus) && moving()) root.classList.add("cosmos-landed");
+});
 film.addEventListener("error", finishIntro);
 film.addEventListener("timeupdate", () => {
   if (Number.isFinite(film.duration)) root.style.setProperty("--film-arrival", Math.min(1, Math.max(0, 1 - (film.duration - film.currentTime) / .55)));
@@ -92,8 +118,7 @@ document.addEventListener("visibilitychange", () => {
     entry.classList.remove("film-playing");
     clearTimeout(deadline);
   } else {
-    deadline = setTimeout(finishIntro, 12000);
-    film.play().catch(() => { if (!document.hidden) playButton.hidden = false; });
+    resumeFilm();
   }
 });
 function updateMotion() {

@@ -4,6 +4,7 @@ import { fileURLToPath } from "node:url";
 import { renderDocument, art } from "./design2.mjs";
 import { renderBody } from "./design2-pages.mjs";
 import { syncSecurityHeaders } from "./security-headers.mjs";
+import { COMPANY } from "./company.mjs";
 
 const appRoot = path.dirname(fileURLToPath(import.meta.url));
 const outputDirectory = path.resolve(appRoot, "dist");
@@ -48,28 +49,28 @@ const pages = [
   {
     file: "index.html",
     path: "/",
-    title: "EmberWeb | Websites, apps & AI systems",
+    title: "Web Design, Custom Apps & AI in South Africa | EmberWeb",
     description:
-      "Distinctive websites, useful apps and practical AI automation for South African businesses. Share a brief, book a discovery call and agree a clear plan.",
+      "EmberWeb designs small business websites, develops custom web apps and builds AI workflow automation for South African businesses.",
   },
   {
     file: "work.html",
     path: "/work",
-    title: "Web apps, AI agents & workflows | EmberWeb",
+    title: "Custom Web App Development & AI Automation | EmberWeb",
     description:
-      "Explore custom web apps, client portals, AI knowledge engines, coordinated agents and workflow examples for your business.",
+      "Explore website design, custom app development and AI automation for South African businesses, including client portals, dashboards and document search.",
   },
   {
     file: "packages.html",
     path: "/packages",
-    title: "Website packages and pricing | EmberWeb",
+    title: "Website Design Packages & Pricing in South Africa | EmberWeb",
     description:
-      "Find a clear starting point for your new website, with launch fees and ongoing EmberCare support explained up front.",
+      "Compare four website design packages for South African small businesses, with once-off build prices and monthly EmberCare fees shown separately.",
   },
   {
     file: "portfolio.html",
     path: "/portfolio",
-    title: "Our applications & portfolio | EmberWeb",
+    title: "Web & App Development Portfolio | EmberWeb",
     description:
       "Explore EmberWeb applications for attendance, operations, asset tracking, forms, learning and mobile experiences. Clear examples of what we can build around your work.",
   },
@@ -97,7 +98,7 @@ const pages = [
   {
     file: "care.html",
     path: "/care",
-    title: "EmberCare website, app & AI support | EmberWeb",
+    title: "Website Maintenance & Hosting Support | EmberWeb",
     description:
       "Hosting, backups, monitoring, practical improvements and human support to keep your website looked after after launch.",
   },
@@ -174,7 +175,7 @@ async function preparePage(page) {
   let html = renderDocument(page, renderBody(page.path, { connected: Boolean(workspaceOrigin), calendarUrl, art }));
   if (workspaceOrigin) html = html.replace(/<\/head>/i, '<meta name="ember-workspace-origin" content="' + workspaceOrigin + '"></head>');
 
-  const canonical = "https://emberweb.co.za" + page.path;
+  const canonical = COMPANY.website + page.path;
   html = setMeta(html, "name", "description", page.description);
   html = setMeta(html, "name", "robots", "index,follow");
   html = setMeta(html, "name", "theme-color", "#061722");
@@ -192,18 +193,35 @@ async function preparePage(page) {
   html = setLink(html, "icon", "/brand/ember-mark.svg");
   html = setLink(html, "apple-touch-icon", "/brand/ember-mark.png");
 
-  const schema = {
-    "@context": "https://schema.org",
-    "@type": "ProfessionalService",
-    name: "EmberWeb",
-    url: "https://emberweb.co.za/",
-    areaServed: "South Africa",
-    telephone: "+27 72 339 8781",
-  };
-  html = html.replace(
-    /<\/head>/i,
-    '<script type="application/ld+json">' + JSON.stringify(schema) + "</script></head>",
-  );
+  if (page.path === "/") {
+    const organizationId = `${canonical}#organization`;
+    const schema = {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": organizationId,
+          name: COMPANY.brand,
+          alternateName: "Ember Web",
+          url: canonical,
+          logo: `${COMPANY.website}/brand/ember-mark.png`,
+          description: page.description,
+          areaServed: { "@type": "Country", name: COMPANY.location },
+          telephone: COMPANY.phone,
+        },
+        {
+          "@type": "WebSite",
+          "@id": `${canonical}#website`,
+          name: COMPANY.brand,
+          alternateName: "Ember Web",
+          url: canonical,
+          inLanguage: "en-ZA",
+          publisher: { "@id": organizationId },
+        },
+      ],
+    };
+    html = html.replace(/<\/head>/i, '<script type="application/ld+json">' + JSON.stringify(schema) + "</script></head>");
+  }
   return optimizePageImages(html, page.path);
 }
 

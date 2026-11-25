@@ -32,21 +32,24 @@ function mount({ gated = true, reduced = false, denied = false, hidden = false, 
   const window = { addEventListener(type, fn){events.set(type,fn);}, scrollTo(){state.scrolls++;} };
   const media = { matches:reduced, addEventListener(){} };
   vm.runInNewContext(source,{window,document,matchMedia:query=>query.includes('max-width') ? {matches:compact,addEventListener(){}} : media,MutationObserver:class{observe(){}},Event:class{},
-    requestAnimationFrame:()=>1,setTimeout:fn=>{state.timeout=fn;return 1;},clearTimeout(){},
+    requestAnimationFrame:()=>1,setTimeout:(fn,ms)=>{state.timeout=fn;state.timeoutMs=ms;return 1;},clearTimeout(){},
     navigator:{connection:{saveData}},sessionStorage:{setItem(){state.stored=true;}}});
-  return { ...elements, document, state, events, trigger:(type,event)=>events.get(type)?.(event) };
+  return { ...elements, classes, document, state, events, trigger:(type,event)=>events.get(type)?.(event) };
 }
 
 test("first arrival starts the film without input and completion releases navigation",()=>{
   const m=mount();
   assert.equal(m.state.plays,1); assert.equal(m.main.inert,true);
+  assert.equal(m.classes.has("cosmos-landed"),false);
   m.trigger("film:ended");
   assert.equal(m.entry.hidden,true); assert.equal(m.main.inert,false); assert.equal(m.state.focus,m.heading);
+  assert.equal(m.classes.has("cosmos-landed"),true);
   assert.equal(m.state.stored,false);
 });
 for(const event of ["skip:click","film:error"]) {
   test(event+" releases the page during playback",()=>{
     const m=mount(); m.trigger(event); assert.equal(m.main.inert,false); assert.equal(m.entry.hidden,true);
+    assert.equal(m.classes.has("cosmos-landed"),false);
   });
 }
 test("reduced motion and direct returns bypass the opening",()=>{
@@ -56,12 +59,24 @@ test("reduced motion and direct returns bypass the opening",()=>{
 });
 test("Escape during replay returns focus to replay",()=>{
   const m=mount();m.trigger("film:ended");m.document.activeElement=m.replay;m.trigger("replay:click");
+  assert.equal(m.classes.has("cosmos-landed"),false);
   m.trigger("keydown",{key:"Escape",preventDefault(){}});
   assert.equal(m.state.focus,m.replay);
 });
 test("a blocked autoplay offers play and still fails open on timeout", async()=>{
   const stalled=mount();stalled.state.timeout();assert.equal(stalled.entry.hidden,true);
   const denied=mount({denied:true});await Promise.resolve();await Promise.resolve();assert.equal(denied.playButton.hidden,false);denied.state.timeout();assert.equal(denied.entry.hidden,true);
+});
+test("a slow intro fails open quickly while a playing film gets time to finish", ()=>{
+  const m=mount();
+  const startup=m.state.timeoutMs;
+  m.trigger("film:playing");
+  assert.ok(m.state.timeoutMs>startup);
+  m.trigger("film:waiting");
+  assert.equal(m.state.timeoutMs,startup);
+  m.state.timeout();
+  assert.equal(m.entry.hidden,true);
+  assert.equal(m.main.inert,false);
 });
 test("restoring the homepage from browser history keeps the opening dismissed",()=>{
   const m=mount();m.trigger("film:ended");m.trigger("pageshow",{persisted:true});

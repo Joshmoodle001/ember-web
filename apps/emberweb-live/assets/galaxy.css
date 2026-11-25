@@ -276,4 +276,73 @@ body[data-page="/"] .footer-wordmark{display:none}body[data-page="/"] .site-foot
 .event-planet{width:82vmin;height:82vmin;background:url("/visuals/ember-homeworld-v1.webp") center/contain no-repeat;opacity:calc(var(--blast,0)*var(--radius,0));transform:translate(calc(-38% + var(--radius,0)*14%),calc(-36% + var(--radius,0)*3%)) rotate(calc(-32deg + var(--radius,0)*29deg)) scale(calc(.05 + var(--radius,0)*.78))}
 .atlas-copy h1[tabindex="-1"]:focus{outline:none}
 
+.home-welcome {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: max-content;
+  margin-bottom: 14px;
+  color: #f7f4ec;
+  font-size: clamp(18px, 2.2vw, 25px);
+  line-height: 1.2;
+  letter-spacing: -.025em;
+}
+.home-welcome-mark { position: relative; width: clamp(54px, 5vw, 64px); aspect-ratio: 1; flex: none; }
+.home-welcome-mark img { display: block; width: 100%; height: 100%; }
+.home-welcome-mark i { display: none; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .cosmos-landed .site-header .brand img { animation: welcome-header-mark 460ms cubic-bezier(.2,.7,.2,1) both; }
+  .cosmos-landed .home-welcome-mark img { animation: welcome-mark-settle 680ms both; }
+  .cosmos-landed .home-welcome-text { animation: welcome-text-in 320ms cubic-bezier(.2,.7,.2,1) 370ms both; }
+  .cosmos-landed .home-welcome-mark i {
+    display: block;
+    position: absolute;
+    inset: 0;
+    background: url('/brand/ember-mark.svg') center / contain no-repeat;
+    animation: welcome-shard-land 620ms cubic-bezier(.42,0,.24,1) var(--shard-delay) both;
+  }
+  .home-welcome-mark i:nth-of-type(1) {
+    clip-path: polygon(0 0,53% 0,48% 36%,27% 54%,0 42%);
+    --shard-x: -12px; --shard-y: -44px; --shard-turn: -20deg; --shard-delay: 0ms;
+  }
+  .home-welcome-mark i:nth-of-type(2) {
+    clip-path: polygon(53% 0,100% 0,100% 45%,66% 54%,48% 36%);
+    --shard-x: 15px; --shard-y: -50px; --shard-turn: 22deg; --shard-delay: 25ms;
+  }
+  .home-welcome-mark i:nth-of-type(3) {
+    clip-path: polygon(0 42%,27% 54%,46% 65%,46% 100%,0 100%);
+    --shard-x: -8px; --shard-y: -30px; --shard-turn: -12deg; --shard-delay: 48ms;
+  }
+  .home-welcome-mark i:nth-of-type(4) {
+    clip-path: polygon(27% 54%,48% 36%,66% 54%,73% 78%,46% 100%,46% 65%);
+    --shard-x: 5px; --shard-y: -57px; --shard-turn: -16deg; --shard-delay: 34ms;
+  }
+  .home-welcome-mark i:nth-of-type(5) {
+    clip-path: polygon(100% 45%,100% 100%,46% 100%,73% 78%,66% 54%);
+    --shard-x: 12px; --shard-y: -39px; --shard-turn: 16deg; --shard-delay: 60ms;
+  }
+  @keyframes welcome-header-mark {
+    0% { opacity: .4; transform: translateY(-12px); }
+    68% { opacity: 1; transform: translateY(2px); }
+    100% { opacity: 1; transform: none; }
+  }
+  @keyframes welcome-shard-land {
+    0% { opacity: 0; transform: translate(var(--shard-x),var(--shard-y)) rotate(var(--shard-turn)) scale(.55); }
+    20% { opacity: 1; }
+    68% { transform: translate(0,3px) rotate(0deg) scale(1.04); }
+    84% { transform: translate(0,-2px) rotate(0deg) scale(1); }
+    92% { opacity: 1; transform: none; }
+    100% { opacity: 0; transform: none; }
+  }
+  @keyframes welcome-mark-settle {
+    0%, 80% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+  @keyframes welcome-text-in {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: none; }
+  }
+}
+
 .universe-play{position:absolute;left:50%;bottom:12%;transform:translateX(-50%);z-index:2;padding:15px 22px;border:1px solid #c8ddff80;border-radius:4px;background:#071120e8;color:#fff;font:600 14px sans-serif;cursor:pointer}.universe-play[hidden]{display:none!important}

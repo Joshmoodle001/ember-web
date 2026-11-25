@@ -1,8 +1,8 @@
 export const outreachPricePlans = [
- { id: "launch-lite", name: "Launch Lite", onceOff: 1500, monthlyCare: 799, from: false },
- { id: "starter", name: "Starter", onceOff: 2500, monthlyCare: 999, from: false },
- { id: "business", name: "Business", onceOff: 4000, monthlyCare: 1250, from: false },
- { id: "growth", name: "Growth", onceOff: 6000, monthlyCare: 1500, from: true },
+ { id: "launch-lite", name: "Launch Lite", onceOff: 500, monthlyCare: 799, from: false },
+ { id: "starter", name: "Starter", onceOff: 1000, monthlyCare: 999, from: false },
+ { id: "business", name: "Business", onceOff: 1500, monthlyCare: 1250, from: false },
+ { id: "growth", name: "Growth", onceOff: 2000, monthlyCare: 1500, from: true },
 ] as const;
 export type OutreachPlanId = typeof outreachPricePlans[number]["id"];
 export type OutreachOfferInput = { businessName: string; industry: string; productKey?: string; website: string; notes?: string };
