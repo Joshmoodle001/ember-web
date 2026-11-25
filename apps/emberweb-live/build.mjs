@@ -56,7 +56,7 @@ const pages = [
   {
     file: "work.html",
     path: "/work",
-    title: "Custom Web App Development & AI Automation | EmberWeb",
+    title: "Website Design, Web Apps & Automation | EmberWeb",
     description:
       "Explore website design, custom app development and AI automation for South African businesses, including client portals, dashboards and document search.",
   },

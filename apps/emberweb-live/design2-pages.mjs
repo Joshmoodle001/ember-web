@@ -96,7 +96,7 @@ function home() {
 }
 
 function workPage() {
-  return `<main id="main-content" class="page page-work">${subHero("Solutions", "Websites, apps<br>and automation.", "Give customers a place to book, give your team a shared workspace, or cut the time spent on repeat tasks.", button("/start", "Tell us what you have in mind", true))}${solutionGallery()}${workflowExplorer()}${finalCta("What would you build if it were simpler?", "Tell us about the work, the customers or the idea. We will help you find a useful first step.")}</main>`;
+  return `<main id="main-content" class="page page-work">${subHero("Solutions", "Websites, apps<br>and automation.", "Website design, custom web apps and workflow automation for South African businesses. Work with EmberWeb online from your first conversation through launch.", button("/start", "Tell us what you have in mind", true))}${solutionGallery()}${workflowExplorer()}${finalCta("What would you build if it were simpler?", "Tell us about the work, the customers or the idea. We will help you find a useful first step.")}</main>`;
 }
 
 function packagesPage() {
