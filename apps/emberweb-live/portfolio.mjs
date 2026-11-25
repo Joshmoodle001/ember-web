@@ -14,6 +14,34 @@ const categories = Object.freeze([
 
 const projects = [
   {
+    id: "wholesale-hub", name: "Wholesale operations hub", category: "business-systems", type: "Private business platform",
+    summary: "A workspace for wholesale teams to organise tasks, management planning and reporting. It brings team activity and follow-up work into a shared place, with access for authorised users.",
+    capabilities: ["Team task management", "Management planning", "Reports and follow-ups"],
+    image: "workspace", alt: "Illustration of a workspace with project, invoice and request panels.",
+    service: "Custom web app", goal: "Discuss a wholesale operations and planning hub",
+  },
+  {
+    id: "automotive-workshop", name: "TM Automobile", category: "business-systems", type: "Automotive workshop platform",
+    summary: "A workshop website and installable web app combining service enquiries and appointment requests with customer accounts and staff workflows. Customers can follow booking updates, while the workshop can manage its services and records.",
+    capabilities: ["Service bookings", "Customer accounts", "Workshop administration"],
+    image: "workspace", alt: "Illustration of a workspace with project, invoice and request panels.",
+    service: "Custom web app", goal: "Discuss an automotive workshop website and booking platform",
+  },
+  {
+    id: "whatsapp-studio", name: "WhatsApp automation studio", category: "business-systems", type: "Private automation platform",
+    summary: "A private workspace for organising linked WhatsApp accounts, configuring chat workflows and reviewing bot activity. It brings account management, selected conversations and scheduled document delivery into one interface.",
+    capabilities: ["Linked account management", "Chat workflows", "Scheduled document delivery"],
+    image: "broadcasts", alt: "Illustration of a mobile update feed beside a desktop publishing panel.",
+    service: "Workflow automation", goal: "Discuss a messaging and document workflow workspace",
+  },
+  {
+    id: "vibeos", name: "VibeOS", category: "web-platforms", type: "Windows desktop pilot · in development",
+    summary: "An experimental Windows desktop workspace for opening tools, registering project folders and reviewing project information. Its AI command centre can prepare plans for review; advanced automation and deployment features remain under development.",
+    capabilities: ["Project organisation", "Windows app launcher", "AI planning"],
+    image: "workspace", alt: "Illustration of a workspace with project, invoice and request panels.",
+    service: "Custom web app", goal: "Discuss a desktop workspace and project dashboard",
+  },
+  {
     id: "biosync", name: "BioSync", category: "business-systems", type: "EmberWeb product", featured: true,
     summary: "An attendance and workforce workspace combining attendance reports, shift rosters and leave administration. Multi-organisation access gives each organisation its own working view.",
     capabilities: ["Attendance reporting", "Rosters & scheduling", "Multi-organisation access"],
@@ -111,7 +139,7 @@ function enquiryUrl(project) {
 function projectCard(project) {
   const publicLink = project.url
     ? `<a class="text-link" href="${escape(project.url)}" target="_blank" rel="noopener noreferrer">Visit ${escape(project.name)}<span class="sr-only"> (opens in a new tab)</span><span aria-hidden="true">↗</span></a>`
-    : '<p class="portfolio-private-note portfolio-access">Private project · demonstration available by arrangement.</p>';
+    : '<p class="portfolio-private-note portfolio-access">Project access by arrangement.</p>';
   return `<article class="portfolio-card${project.featured ? " portfolio-card-featured" : ""}" id="portfolio-${escape(project.id)}">
     <figure class="portfolio-figure">
       <img class="portfolio-image" src="/portfolio/${escape(project.image)}.svg" alt="${escape(project.alt)}" width="1200" height="800" loading="lazy" decoding="async">
