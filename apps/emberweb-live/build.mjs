@@ -194,6 +194,7 @@ async function preparePage(page) {
   html = setLink(html, "apple-touch-icon", "/brand/ember-mark.png");
 
   if (page.path === "/") {
+    html = setMeta(html, "name", "google-site-verification", "MKeUoDBJJHdUnbTH1YenhZiK6Rd98ZOTLAzP6FuLMW4");
     const organizationId = `${canonical}#organization`;
     const schema = {
       "@context": "https://schema.org",
