@@ -15,14 +15,14 @@ const categories = Object.freeze([
 const projects = [
   {
     id: "biosync", name: "BioSync", category: "business-systems", type: "EmberWeb product", featured: true,
-    summary: "One workspace for attendance, shifts and leave, giving teams a clearer view of who is working and when.",
+    summary: "An attendance and workforce workspace combining attendance reports, shift rosters and leave administration. Multi-organisation access gives each organisation its own working view.",
     capabilities: ["Attendance reporting", "Rosters & scheduling", "Multi-organisation access"],
     image: "attendance", alt: "Illustration of an attendance workspace with a weekly roster and reporting panels.",
     url: "https://app-biosync.co.za/", service: "Custom web app", goal: "Discuss an attendance and scheduling system like BioSync",
   },
   {
     id: "fuel-intelligence", name: "Fuel Intelligence", category: "business-systems", type: "Private business system",
-    summary: "A focused fleet workspace for fuel reporting, review and audit controls, keeping the process in one place.",
+    summary: "A fleet fuel reporting workspace that brings fuel information, review controls and an audit workflow together for staff responsible for checking reports.",
     capabilities: ["Fuel reporting", "Review controls", "Audit workflow"],
     image: "fuel", alt: "Illustration of a fuel reporting dashboard with a usage chart and a review queue.",
     service: "Custom web app", goal: "Discuss a fuel reporting and review workspace",
@@ -64,7 +64,7 @@ const projects = [
   },
   {
     id: "flexiform", name: "FlexiForm", category: "web-platforms", type: "Web application",
-    summary: "Give a Google Sheet a friendlier front end: build a form, map its fields to columns and collect submissions through a shared link.",
+    summary: "A form builder for Google Sheets. Create fields, map each field to a spreadsheet column and share a link for people to submit information.",
     capabilities: ["Google Sheets connection", "Custom form fields", "Submission capture"],
     image: "forms", alt: "Illustration of a custom form connected to spreadsheet columns.",
     url: "https://flexi-form-wine.vercel.app/", service: "Workflow automation", goal: "Discuss a form and spreadsheet workflow like FlexiForm",
@@ -132,9 +132,10 @@ export function renderPortfolio() {
     <section class="sub-hero section portfolio-intro"><div class="container">
       <p class="eyebrow">Selected applications</p>
       <h1>Projects we’ve built.</h1>
-      <div class="sub-hero-foot"><p class="lead">Browse attendance systems, reporting tools, mobile apps and learning platforms. Each entry describes the job the software does.</p></div>
+      <div class="sub-hero-foot"><p class="lead">Explore custom web apps, client portals and mobile experiences, from attendance and fuel reporting to forms connected to Google Sheets. Each example describes its purpose and capabilities.</p></div>
       <nav class="portfolio-jump-links portfolio-jumps" aria-label="Portfolio categories">${categories.map(category => `<a href="#portfolio-category-${category.id}">${escape(category.name)} <span aria-hidden="true">↓</span></a>`).join("")}</nav>
       <p class="portfolio-intro-note portfolio-disclosure">Private projects use illustrations to protect client data.</p>
+      <p><a class="text-link" href="/work">Explore website design, custom apps and automation services →</a></p>
     </div></section>
     ${categories.map(category => `<section class="section portfolio-category portfolio-section" id="portfolio-category-${category.id}" aria-labelledby="portfolio-heading-${category.id}"><div class="container"><header class="portfolio-category-heading section-head"><h2 id="portfolio-heading-${category.id}">${escape(category.name)}</h2></header><div class="portfolio-grid">${PORTFOLIO_PROJECTS.filter(project => project.category === category.id).map(projectCard).join("")}</div></div></section>`).join("")}
     <section class="cta-panel section portfolio-next portfolio-closing"><div class="container"><p class="eyebrow">Your idea could be next</p><h2>What would make<br>your work easier?</h2><p class="lead">Tell us the goal. We will help you choose a focused first build.</p><div class="actions"><a class="button button-primary" href="/start?service=Custom%20web%20app&amp;goal=Discuss%20a%20project%20from%20the%20portfolio">Talk about your idea <span aria-hidden="true">↗</span></a><a class="button button-secondary" href="/book">Book a discovery call <span aria-hidden="true">→</span></a></div></div></section>
