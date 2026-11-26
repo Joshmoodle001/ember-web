@@ -40,7 +40,7 @@ export function renderDocument(page, body) {
   }
   const galaxy = page.path === "/";
   if (galaxy) body = markGalaxyCards(body);
-  const galaxyHead = galaxy ? '<link rel="stylesheet" href="/galaxy.css?v=home-welcome-2"><script src="/galaxy-boot.js?v=return-journey-2"></script>' : "";
+  const galaxyHead = galaxy ? '<link rel="stylesheet" href="/galaxy.css?v=home-welcome-drop"><script src="/galaxy-boot.js?v=return-journey-2"></script>' : "";
   const galaxyScript = galaxy ? '<script type="module" src="/galaxy.mjs?v=home-welcome-1"></script>' : "";
   const nav = links.map(([href,label]) => `<a href="${href}"${href === "/login" ? ' class="site-sign-in"' : ""}${page.path === href ? ' aria-current="page"' : ''}>${label}</a>`).join('');
   const mobile = [...links,['/book','Book a call'],['/audit','Free audit'],['/care','Ongoing care'],['/industries','Industries']].map(([href,label]) => `<a href="${href}" tabindex="-1"${page.path === href ? ' aria-current="page"' : ''}>${label}<span aria-hidden="true">↗</span></a>`).join('');

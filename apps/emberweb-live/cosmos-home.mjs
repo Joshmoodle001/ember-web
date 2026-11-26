@@ -8,7 +8,7 @@ const worlds = [
 export function cosmosHome() {
   return `<main id="main-content" class="page page-home"><section class="atlas-arrival" id="top" data-cosmos-scene="0" aria-labelledby="arrival-title"><div class="container atlas-arrival-inner">
   <div class="crafted-hero-art" aria-hidden="true"></div>
-  <div class="atlas-copy"><div class="home-welcome"><span class="home-welcome-mark" aria-hidden="true"><img src="/brand/ember-mark.svg" alt="" width="48" height="48"><i></i><i></i><i></i><i></i><i></i></span><span class="home-welcome-text">Welcome.</span></div><p class="crafted-services">AI development · Apps · Websites</p><h1 id="arrival-title">Build what’s next.<br><em>With AI.</em></h1>
+  <div class="atlas-copy"><div class="home-welcome"><span class="home-welcome-mark" aria-hidden="true"><img src="/brand/ember-mark.svg" alt="" width="64" height="64"></span><span class="home-welcome-text">Welcome.</span></div><p class="crafted-services">AI development · Apps · Websites</p><h1 id="arrival-title">Build what’s next.<br><em>With AI.</em></h1>
   <p>We design websites, build custom web apps and automate everyday work for South African businesses.</p>
   <div class="hero-actions"><a class="button button-primary" href="/start">Start a project ↗</a><a class="atlas-link" href="/portfolio">See our work →</a></div></div>
   <div class="atlas-edge"><a class="atlas-scroll-cue" href="#explore">Find your next step <span aria-hidden="true">↓</span></a><button type="button" class="universe-replay">↻ &nbsp; Replay opening</button></div></div></section>

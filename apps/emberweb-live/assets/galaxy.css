@@ -289,59 +289,42 @@ body[data-page="/"] .footer-wordmark{display:none}body[data-page="/"] .site-foot
 }
 .home-welcome-mark { position: relative; width: clamp(54px, 5vw, 64px); aspect-ratio: 1; flex: none; }
 .home-welcome-mark img { display: block; width: 100%; height: 100%; }
-.home-welcome-mark i { display: none; }
 
 @media (prefers-reduced-motion: no-preference) {
+  html:not(.cosmos-gated) .home-welcome-mark {
+    --welcome-drop-x: clamp(164px, 24vw, 300px);
+    transform-origin: center 75%;
+    animation: welcome-mark-arrival 1080ms both;
+  }
+
+  @keyframes welcome-mark-arrival {
+    0% {
+      opacity: 0;
+      transform: translate(var(--welcome-drop-x), -72px) rotate(12deg) scale(.32, .54);
+      animation-timing-function: cubic-bezier(.52, .04, .9, .54);
+    }
+    16% { opacity: 1; }
+    37% {
+      transform: translate(var(--welcome-drop-x), -3px) rotate(6deg) scale(.48, .78);
+      animation-timing-function: ease-out;
+    }
+    47% {
+      transform: translate(var(--welcome-drop-x), 4px) rotate(0deg) scale(.78, .51);
+      animation-timing-function: cubic-bezier(.32, .12, .47, 1);
+    }
+    71% {
+      transform: translate(calc(var(--welcome-drop-x) * .34), -40px) rotate(-10deg) scale(.76, .82);
+      animation-timing-function: cubic-bezier(.44, .05, .33, 1);
+    }
+    91% { transform: translate(-2px, 0) rotate(2deg) scale(1.04, .98); }
+    100% { transform: none; }
+  }
+
   .cosmos-landed .site-header .brand img { animation: welcome-header-mark 460ms cubic-bezier(.2,.7,.2,1) both; }
-  .cosmos-landed .home-welcome-mark img { animation: welcome-mark-settle 680ms both; }
-  .cosmos-landed .home-welcome-text { animation: welcome-text-in 320ms cubic-bezier(.2,.7,.2,1) 370ms both; }
-  .cosmos-landed .home-welcome-mark i {
-    display: block;
-    position: absolute;
-    inset: 0;
-    background: url('/brand/ember-mark.svg') center / contain no-repeat;
-    animation: welcome-shard-land 620ms cubic-bezier(.42,0,.24,1) var(--shard-delay) both;
-  }
-  .home-welcome-mark i:nth-of-type(1) {
-    clip-path: polygon(0 0,53% 0,48% 36%,27% 54%,0 42%);
-    --shard-x: -12px; --shard-y: -44px; --shard-turn: -20deg; --shard-delay: 0ms;
-  }
-  .home-welcome-mark i:nth-of-type(2) {
-    clip-path: polygon(53% 0,100% 0,100% 45%,66% 54%,48% 36%);
-    --shard-x: 15px; --shard-y: -50px; --shard-turn: 22deg; --shard-delay: 25ms;
-  }
-  .home-welcome-mark i:nth-of-type(3) {
-    clip-path: polygon(0 42%,27% 54%,46% 65%,46% 100%,0 100%);
-    --shard-x: -8px; --shard-y: -30px; --shard-turn: -12deg; --shard-delay: 48ms;
-  }
-  .home-welcome-mark i:nth-of-type(4) {
-    clip-path: polygon(27% 54%,48% 36%,66% 54%,73% 78%,46% 100%,46% 65%);
-    --shard-x: 5px; --shard-y: -57px; --shard-turn: -16deg; --shard-delay: 34ms;
-  }
-  .home-welcome-mark i:nth-of-type(5) {
-    clip-path: polygon(100% 45%,100% 100%,46% 100%,73% 78%,66% 54%);
-    --shard-x: 12px; --shard-y: -39px; --shard-turn: 16deg; --shard-delay: 60ms;
-  }
   @keyframes welcome-header-mark {
     0% { opacity: .4; transform: translateY(-12px); }
     68% { opacity: 1; transform: translateY(2px); }
     100% { opacity: 1; transform: none; }
-  }
-  @keyframes welcome-shard-land {
-    0% { opacity: 0; transform: translate(var(--shard-x),var(--shard-y)) rotate(var(--shard-turn)) scale(.55); }
-    20% { opacity: 1; }
-    68% { transform: translate(0,3px) rotate(0deg) scale(1.04); }
-    84% { transform: translate(0,-2px) rotate(0deg) scale(1); }
-    92% { opacity: 1; transform: none; }
-    100% { opacity: 0; transform: none; }
-  }
-  @keyframes welcome-mark-settle {
-    0%, 80% { opacity: 0; }
-    100% { opacity: 1; }
-  }
-  @keyframes welcome-text-in {
-    from { opacity: 0; transform: translateY(6px); }
-    to { opacity: 1; transform: none; }
   }
 }
 
