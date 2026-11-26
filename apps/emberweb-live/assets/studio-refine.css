@@ -194,15 +194,12 @@ html.signal-motion body[data-page="/"] .atlas-route { background:linear-gradient
  html.signal-motion body[data-page="/"] .atlas-directory { background:linear-gradient(180deg,#07142696,#040a16a8); }
 }
 
-/* Keep the tunnel artwork static. The logo has one brief desktop entrance. */
+/* Keep the tunnel artwork static during the welcome. */
 body[data-page="/"] .atlas-arrival .page-artwork { opacity: .82; }
-body[data-page="/"] .home-welcome-mark i { display: none; }
 body .universe-replay[hidden] { display: none; }
 .hero-actions .button svg, .site-nav-cta svg { flex: none; }
 @media (pointer: coarse), (prefers-reduced-motion: reduce) {
-  body .home-welcome, body .home-welcome-mark, body .home-welcome-mark img,
   body .crafted-backdrop, body .crafted-hero-art { animation: none !important; transition: none !important; }
-  body .home-welcome, body .home-welcome-mark img { opacity: 1; transform: none; }
 }
 @media (max-width: 760px) {
   body .atlas-edge .universe-replay, body .atlas-shortcuts a { min-height: 44px; }

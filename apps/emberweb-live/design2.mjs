@@ -41,7 +41,7 @@ export function renderDocument(page, body) {
     body = body.replace(/<section\b([^>]*)>/, (_, attributes) => `<section${attributes} data-page-art>${markup}`);
   }
   const galaxy = page.path === "/";
-  const galaxyHead = galaxy ? '<link rel="stylesheet" href="/galaxy.css?v=home-welcome-2">' : "";
+  const galaxyHead = galaxy ? '<link rel="stylesheet" href="/galaxy.css?v=home-welcome-drop">' : "";
   const galaxyScript = galaxy ? '<script type="module" src="/galaxy.mjs?v=play-on-request"></script>' : "";
   const nav = links.map(([href,label]) => `<a href="${href}"${href === "/login" ? ' class="site-sign-in"' : ""}${page.path === href ? ' aria-current="page"' : ''}>${label}</a>`).join('');
   const mobile = [...links,['/book','Book a call'],['/audit','Free audit'],['/care','Ongoing care'],['/industries','Industries']].map(([href,label]) => `<a href="${href}" tabindex="-1"${page.path === href ? ' aria-current="page"' : ''}>${label}<span aria-hidden="true">↗</span></a>`).join('');
