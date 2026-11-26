@@ -6,6 +6,7 @@ import ClientDashboard from "@/components/client-dashboard";
 import WorkspaceRuntime,{WorkspaceLogout} from "@/components/workspace-runtime";
 export const metadata:Metadata={title:"Your projects | EmberWeb Client Portal",manifest:"/account/manifest.webmanifest",appleWebApp:{capable:true,title:"EmberWeb",statusBarStyle:"default"},icons:{apple:"/account/icon-192.png"}};
 export default async function AccountPage(){
+ if (process.env.VERCEL_ENV === "preview" && !process.env.EMBERWEB_PREVIEW_SUPABASE_HOST) redirect("/login");
  const {data,error}=await(await createClient()).auth.getUser();
  if(error||!data.user?.email_confirmed_at)redirect("/login");
  const identity=await workspaceIdentity(data.user.id);

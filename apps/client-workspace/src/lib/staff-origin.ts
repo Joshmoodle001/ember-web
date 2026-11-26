@@ -3,6 +3,9 @@ const staffOrigins = new Set(["https://emberweb.co.za", "https://www.emberweb.co
 export function hasAllowedStaffOrigin(request: Request, requireOrigin = false) {
   const origin = request.headers.get("origin");
   if (!origin) return !requireOrigin;
+  if (process.env.VERCEL_ENV === "preview") {
+    return Boolean(process.env.EMBERWEB_PREVIEW_SUPABASE_HOST) && origin === new URL(request.url).origin;
+  }
   if (staffOrigins.has(origin)) return true;
   if (process.env.NODE_ENV === "production") return false;
   try {

@@ -171,12 +171,13 @@ def welcome():
 
 
 def capabilities():
-    p = Pack("emberweb-capabilities.pdf", "EmberWeb | Capabilities and projects", 6)
+    project_pages = (len(PROJECTS) + 3) // 4
+    p = Pack("emberweb-capabilities.pdf", "EmberWeb | Capabilities and projects", project_pages + 3)
     p.cover("Useful software.<br/>Built around you.",
-            "Websites, custom apps and practical AI for businesses and people. A public overview of our capabilities and 12 projects.",
+            f"Websites, custom apps and practical AI for businesses and people. A public overview of our capabilities and {len(PROJECTS)} projects.",
             "visuals/library/hero-solutions.webp",
-            [("02", "What we can build for you"), ("03-05", "Twelve projects, explained simply"),
-             ("06", "From your first idea to a supported launch")])
+            [("02", "What we can build for you"), (f"03-{project_pages + 2:02}", "Project examples"),
+             (f"{project_pages + 3:02}", "From your first idea to a supported launch")])
     p.new("Our capabilities")
     y = p.heading("What we build", "Start with something useful.",
                   "Choose a problem worth solving. We combine the right interface, workflow and integrations around that goal.")
@@ -197,12 +198,10 @@ def capabilities():
         p.text(copy, x, ty+11, width=colw, size=10.5, colour=MUTED)
     p.rect(M, 715, CW, 42, PALE, 6)
     p.text("Examples are starting points. Features, data access and integrations are agreed for each project.", M+14, 727, width=CW-28, size=9, colour=MUTED)
-    groups = [
-        (PROJECTS[:4], "Operations & control", "Tools that give everyday work a clear place to happen."),
-        (PROJECTS[4:8], "Capture & connection", "From a stock report to a shared product reference."),
-        (PROJECTS[8:], "Clients, teams & learning", "Experiences that fit the people using them."),
-    ]
-    for projects, title, sub in groups:
+    for start in range(0, len(PROJECTS), 4):
+        projects = PROJECTS[start:start + 4]
+        title = "Selected projects"
+        sub = "Websites, apps and tools for everyday work."
         p.new("Project overview")
         y = p.heading("Our project collection", title, sub)
         for project in projects:
@@ -213,7 +212,7 @@ def capabilities():
                 label = project["url"].replace("https://", "").rstrip("/")
                 p.text(f"<link href='{escape(project['url'])}' color='#205DE8'>{escape(label)}</link>", M, bottom+9, size=9)
             else:
-                p.text("Private project | demonstration by arrangement", M, bottom+9, size=9, colour=MUTED)
+                p.text("Project access by arrangement", M, bottom+9, size=9, colour=MUTED)
             y += 128
             p.rule(y-12)
         p.text("Public summaries only. Private systems are described without client data, internal architecture or access details. This collection is a snapshot; ask about current availability.", M, 737, size=8.5, colour=MUTED)
@@ -235,9 +234,10 @@ def capabilities():
     p.button("Start a project", COMPANY["website"]+"/start", M, y+37, 235)
     p.button("Talk on WhatsApp", COMPANY["whatsapp"], M+250, y+37, 249)
     p.text("WhatsApp: +27 72 339 8781<br/><link href='https://emberweb.co.za/packages' color='#205DE8'>Current website packages</link>  /  <link href='https://emberweb.co.za/portfolio' color='#205DE8'>Explore the portfolio</link>  /  <link href='https://emberweb.co.za/book' color='#205DE8'>Book a call</link>", M, y+92, size=11, colour=MUTED)
-    p.text("Public information as at 9 November 2026. Scope and pricing are confirmed in a proposal. This brochure does not grant access to private projects or disclose their implementation.", M, y+152, size=9, colour=MUTED)
+    p.text("Scope and pricing are confirmed in a proposal. This brochure does not grant access to private projects or disclose their implementation.", M, y+152, size=9, colour=MUTED)
     p.finish()
 
 
-welcome()
+if "--capabilities-only" not in sys.argv:
+    welcome()
 capabilities()

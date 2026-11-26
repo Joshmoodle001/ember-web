@@ -10,7 +10,7 @@ export default function WorkspaceOverview() {
   const [error, setError] = useState("");
   useEffect(() => {
     let active = true;
-    void read<Board>("/api/admin/pipeline", "pipeline").then(data => { if (active) setBoard(data); }).catch(error => { if (active) setError(error.message); });
+    void read<Board>("/api/admin/pipeline").then(data => { if (active) setBoard(data); }).catch(error => { if (active) setError(error.message); });
     return () => { active = false; };
   }, [read, revision]);
   const seeds = board?.seeds ?? [];

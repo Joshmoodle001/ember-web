@@ -104,12 +104,11 @@ function packagesPage() {
 }
 
 function contactConsent() {
-  return `<label class="form-consent"><input type="checkbox" name="contact_consent" required><span>I agree that EmberWeb may contact me about this request.</span></label>`;
+  return `<label class="form-consent"><input type="checkbox" name="contact_consent" required><span>I agree that EmberWeb may contact me about this request.</span></label><label class="form-consent"><input type="checkbox" name="marketing_consent"><span>Optional: email me occasional EmberWeb tips and updates. I can opt out at any time.</span></label>`;
 }
 
 function formAside(connected, isAudit = false) {
-  const submitText = connected ? "Send request" : "Continue to WhatsApp";
-  return `<aside class="card form-aside form-next"><p class="eyebrow">What happens next</p><ol class="process-list"><li><strong>We receive your brief</strong><span>${connected ? "Your request is sent to the EmberWeb team." : "Your details are prepared in WhatsApp for you to review and send."}</span></li><li><strong>We talk it through</strong><span>Choose a discovery time that suits you.</span></li><li><strong>We agree the scope</strong><span>Review a proposal before any payment is due.</span></li></ol><p class="micro-note">${isAudit ? "An audit request is a first conversation, not a paid booking." : "No payment is taken on this website."}</p></aside>`;
+  return `<aside class="card form-aside form-next"><p class="eyebrow">What happens next</p><ol class="process-list"><li><strong>We receive your brief</strong><span>${connected ? "Your request is sent to the EmberWeb team." : "WhatsApp opens with a short message you can edit."}</span></li><li><strong>We talk it through</strong><span>Choose a discovery time that suits you.</span></li><li><strong>We agree the scope</strong><span>Review a proposal before any payment is due.</span></li></ol><p class="micro-note">${isAudit ? "An audit request is a first conversation, not a paid booking." : "No payment is taken on this website."}</p></aside>`;
 }
 
 function startPage(connected) {
@@ -118,17 +117,21 @@ function startPage(connected) {
 
 function auditPage(connected) {
   const consent = connected ? contactConsent() : "";
-  const action = connected ? "Send audit request" : "Continue to WhatsApp";
-  return `<main id="main-content" class="page page-audit">${subHero("Free audit", "Request a free review.", "Send your website or describe a task that takes too long. Tell us what you’d like us to look at.")}<section class="section section-light"><div class="container"><div class="audit-choice-grid"><article class="card audit-choice"><p class="eyebrow">Website audit</p><h2>Make the website easier to trust and use.</h2><p>We look at clarity, mobile experience, speed, trust and the path to an enquiry.</p><button class="button button-secondary" type="button">Choose website audit <span aria-hidden="true">↓</span></button></article><article class="card audit-choice"><p class="eyebrow">AI + automation audit</p><h2>Spot repetitive work worth simplifying.</h2><p>We discuss follow-ups, handovers and admin to identify sensible automation opportunities.</p><button class="button button-secondary" type="button">Choose automation audit <span aria-hidden="true">↓</span></button></article></div></div></section><section class="section section-light form-section" id="request"><div class="container"><div class="form-layout"><div class="form-main"><div class="brief-intro"><p class="eyebrow">Step 1 · Share the basics</p><h2 id="brief-heading">What should we review?</h2><p class="lead">Tell us what you want to improve. We will discuss the next step with you.</p></div><form method="dialog" aria-labelledby="brief-heading">
+  const action = connected ? "Review audit request" : "Continue to WhatsApp";
+  return `<main id="main-content" class="page page-audit">${subHero("Free audit", "Request a free review.", "Send your website or describe a task that takes too long. Tell us what you’d like us to look at.")}<section class="section section-light"><div class="container"><div class="audit-choice-grid"><article class="card audit-choice"><p class="eyebrow">Website audit</p><h2>Make the website easier to trust and use.</h2><p>We look at clarity, mobile experience, speed, trust and the path to an enquiry.</p><button class="button button-secondary" type="button">Choose website audit <span aria-hidden="true">↓</span></button></article><article class="card audit-choice"><p class="eyebrow">AI + automation audit</p><h2>Spot repetitive work worth simplifying.</h2><p>We discuss follow-ups, handovers and admin to identify sensible automation opportunities.</p><button class="button button-secondary" type="button">Choose automation audit <span aria-hidden="true">↓</span></button></article></div></div></section><section class="section section-light form-section" id="request"><div class="container"><div class="form-layout"><div class="form-main"><div class="brief-intro"><p class="eyebrow">Free review</p><h2 id="brief-heading">What should we review?</h2><p class="lead">Tell us what you want to improve. We will discuss the next step with you.</p></div><form method="dialog" aria-labelledby="brief-heading">
     <label>Audit focus *<select name="focus" required><option value="Website audit" selected>Website audit</option><option value="AI + automation audit">AI + automation audit</option></select></label>
     <label>Your name *<input type="text" name="name" autocomplete="name" required></label>
-    <label>Business name *<input type="text" name="business" autocomplete="organization" required></label>
+    <label>Business name (optional)<input type="text" name="business" autocomplete="organization"></label>
     <label>Website link <input type="url" name="website" autocomplete="url" placeholder="https://" required aria-describedby="website-help"><span id="website-help" class="field-help">Required for a website audit; optional for an automation audit.</span></label>
     <label>Email address *<input type="email" name="email" autocomplete="email" required></label>
-    <label class="form-full">What would you most like to improve? *<textarea name="notes" rows="5" minlength="20" maxlength="4000" required aria-describedby="audit-help"></textarea><span class="field-help" id="audit-help">At least 20 characters. Share what feels difficult or what you would like to change.</span></label>
+    <label class="form-full">What should we look at? <textarea name="notes" rows="3" maxlength="600" aria-describedby="audit-help"></textarea><span class="field-help" id="audit-help">Optional. For an automation audit, tell us which task to review. Keep passwords and customer information out of this field.</span></label>
     <input type="hidden" name="package" value="">${consent}<p class="form-note"><a href="/policies">Read our privacy and project policies</a>.</p><button class="button button-primary form-submit" type="submit">${action}<span aria-hidden="true">→</span></button>
     <noscript><p>Please enable JavaScript to send your request, or <a href="${waUrl}">message EmberWeb on WhatsApp</a>.</p></noscript>
   </form></div>${formAside(connected, true)}</div></div></section><section class="section section-ink audit-how"><div class="container">${sectionHead("The review", "Useful next steps, in plain language.", "We keep the focus on the clearest opportunity for your business.")}<div class="process-steps"><article class="card"><span class="step-number">01</span><h3>Share the link or goal</h3><p>Tell us what you would like looked at.</p></article><article class="card"><span class="step-number">02</span><h3>We review the journey</h3><p>We discuss what is working and what could be clearer.</p></article><article class="card"><span class="step-number">03</span><h3>Choose your next step</h3><p>Use the findings to decide what, if anything, to change.</p></article></div></div></section></main>`;
+}
+
+function workshopPage() {
+  return `<main id="main-content" class="page page-audit">${subHero("For Gauteng automotive workshops", "Make mobile bookings easier.", "See where drivers lose their way between finding your workshop and requesting an appointment.", button("/audit?focus=workshop", "Request a free mobile booking audit", true))}<section class="section section-light"><div class="container" id="workshop-review"><h2>What we review</h2><div class="process-steps"><article class="card"><h3>Find the right service</h3><p>Can drivers tell what you offer and where you work from a phone?</p></article><article class="card"><h3>Request a booking</h3><p>Check for repeated fields, unclear availability and buttons that are hard to reach.</p></article><article class="card"><h3>Know what happens next</h3><p>Does the confirmation explain when the workshop will reply?</p></article></div><p>Share a public website link. We’ll review the path on a phone and suggest practical improvements.</p><a class="text-link" href="/portfolio#portfolio-automotive-workshop">See an example of a workshop booking platform</a></div></section></main>`;
 }
 
 function processPage() {
@@ -150,7 +153,7 @@ function industriesPage() {
     ["Property & construction", "Keep projects and people working from the same picture.", "Project portals · Document workflows · Status reporting"],
     ["Growing teams", "Give repeatable work a better home.", "Internal apps · AI task forces · Approval workflows"],
   ];
-  return `<main id="main-content" class="page page-industries">${subHero("Built around your business", "What we build<br>in your industry.", "See examples of booking, sales and operations tools for businesses like yours.")}<section class="section section-light"><div class="container"><div class="industry-grid">${industries.map(([title, copy, examples]) => `<article class="card"><h2>${title}</h2><p>${copy}</p><p class="industry-examples">${examples}</p><a class="text-link" href="/start?industry=${encodeURIComponent(title)}&amp;goal=${encodeURIComponent(copy)}">Explore this direction <span aria-hidden="true">→</span></a></article>`).join("")}</div></div></section>${connectedSystems()}${finalCta()}</main>`;
+  return `<main id="main-content" class="page page-industries">${subHero("Built around your business", "What we build<br>in your industry.", "See examples of booking, sales and operations tools for businesses like yours.")}<section class="section section-light"><div class="container"><div class="industry-grid">${industries.map(([title, copy, examples]) => `<article class="card"><h2>${title}</h2><p>${copy}</p><p class="industry-examples">${examples}</p><a class="text-link" href="/start?industry=${encodeURIComponent(title)}&amp;goal=${encodeURIComponent(copy)}">Explore this direction <span aria-hidden="true">→</span></a></article>`).join("")}</div><p><a class="text-link" href="/gauteng-workshops">Mobile booking audits for Gauteng workshops</a></p></div></section>${connectedSystems()}${finalCta()}</main>`;
 }
 
 function carePage() {
@@ -165,14 +168,14 @@ function carePage() {
 
 function policiesPage() {
   const policies = [
-    ["Privacy and POPIA", "We use the details you share to reply to an enquiry, scope work and provide agreed services. We do not sell enquiry information. To ask about or remove personal information held by EmberWeb, use the project request form or WhatsApp."],
+    ["Privacy and POPIA", "We use the details you share to reply to an enquiry, scope work and provide agreed services. We do not sell enquiry information. Reply to your EmberWeb correspondence or contact us on WhatsApp at +27 72 339 8781 to ask for access, correction or deletion. We review inactive enquiries for deletion once follow-up ends. We retain active project and transaction records as needed for delivery, accounting and legal obligations. Marketing emails require a separate opt-in, which you can withdraw at any time."],
     ["Ownership and access", "Your domain remains registered to you. Your approved business content remains yours. Project handover and access are agreed in writing before launch, including any third-party tools required for the work."],
     ["Payments", "We confirm scope, payment schedule, third-party costs and what is included before work begins. When payment is due, EmberWeb sends a private PayFast payment link; payment details are not collected on this website."],
     ["Care and cancellation", "Monthly care covers the agreed service level. Larger new features are scoped separately. Minimum terms and cancellation notice are confirmed in the project agreement so both sides know what to expect."],
     ["Third-party tools", "Websites can rely on hosting, payment, analytics, map, email or booking services selected for the project. Their own terms and privacy practices may apply alongside EmberWeb’s project commitments."],
     ["Plain language first", "These notes explain how we aim to work. Your signed project scope and agreement set the final commercial and legal terms for your specific project."],
   ];
-  return `<main id="main-content" class="page page-policies">${subHero("Privacy, ownership and project policies", "Project terms and privacy.", "These notes explain how EmberWeb aims to work. Your signed project scope and agreement set the final terms for your project.")}<section class="section section-light"><div class="container"><div class="policy-list">${policies.map(([title, copy]) => `<article class="card"><h2>${title}</h2><p>${copy}</p></article>`).join("")}</div><p class="film-credit">Opening film adapted from the <a href="https://svs.gsfc.nasa.gov/14576/">black-hole simulation by NASA’s Goddard Space Flight Center, J. Schnittman and B. Powell</a>.</p></div></section>${finalCta("Need to ask about your information?", "Use the project request form or message EmberWeb on WhatsApp.")}</main>`;
+  return `<main id="main-content" class="page page-policies">${subHero("Privacy, ownership and project policies", "Project terms and privacy.", "Policy version 2026-11-26. Your signed project scope and agreement set the final terms for your project.")}<section class="section section-light"><div class="container"><div class="policy-list">${policies.map(([title, copy]) => `<article class="card"><h2>${title}</h2><p>${copy}</p></article>`).join("")}</div><p class="film-credit">Opening film adapted from the <a href="https://svs.gsfc.nasa.gov/14576/">black-hole simulation by NASA’s Goddard Space Flight Center, J. Schnittman and B. Powell</a>.</p></div></section>${finalCta("Need to ask about your information?", "Use the project request form or message EmberWeb on WhatsApp.")}</main>`;
 }
 
 function safeCalendarUrl(calendarUrl) {
@@ -206,6 +209,7 @@ export function renderBody(path, { connected = false, calendarUrl = null, art = 
     case "/portfolio": markup = renderPortfolio(); break;
     case "/packages": markup = packagesPage(); break;
     case "/audit": markup = auditPage(connected); break;
+    case "/gauteng-workshops": markup = workshopPage(); break;
     case "/process": markup = processPage(); break;
     case "/industries": markup = industriesPage(); break;
     case "/care": markup = carePage(); break;
@@ -216,5 +220,8 @@ export function renderBody(path, { connected = false, calendarUrl = null, art = 
   }
   const outerMain = markup.match(/^<main id="main-content" class="page [^"]+">([\s\S]*)<\/main>$/);
   if (!outerMain) throw new Error(`Design 2 template for ${route} must have one known outer main wrapper.`);
-  return outerMain[1];
+  const review = connected && ["/start", "/audit"].includes(route)
+    ? `<dialog class="request-review" data-request-review aria-labelledby="request-review-heading"><h2 id="request-review-heading">Review your request</h2><p data-review-summary></p><div class="actions"><button type="button" class="button button-secondary" data-edit-request autofocus>Edit details</button><button type="button" class="button button-primary" data-confirm-request>Send request</button></div></dialog>`
+    : "";
+  return outerMain[1] + review;
 }

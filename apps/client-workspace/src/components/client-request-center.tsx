@@ -22,7 +22,7 @@ export default function ClientRequestCenter({ clientId, projects }: { clientId: 
     const controller = new AbortController();
     void (async () => {
       try {
-        const result = await read<{requests:ClientRequest[]}>(`/api/account/requests?clientId=${encodeURIComponent(clientId)}`,`requests:${clientId}`);
+        const result = await read<{requests:ClientRequest[]}>(`/api/account/requests?clientId=${encodeURIComponent(clientId)}`);
         if(!Array.isArray(result.requests))throw Error("Requests could not be loaded.");
         if (!controller.signal.aborted) { setRequests((result.requests as ClientRequest[]).filter((request) => request.client_id === clientId)); setError(""); }
       } catch (failure) { if (!controller.signal.aborted) setError(failure instanceof Error ? failure.message : "Requests are temporarily unavailable."); }
@@ -42,10 +42,10 @@ export default function ClientRequestCenter({ clientId, projects }: { clientId: 
       : { action, requestId: selectedId, body: fields.get("body"), submissionId: identity.current };
     setBusy(true); setNotice("");
     try {
-      const result = await commit("/api/account/requests", payload);
+      await commit("/api/account/requests", payload);
       identity.current = null;
       form.reset();
-      setNotice(result.queued ? "Saved on this device. Your request will sync when your account reconnects." : action === "create" ? "Request saved. EmberWeb will review it here. Additional work and costs need a separate agreement." : "Reply saved to your request.");
+      setNotice(action === "create" ? "Request saved. EmberWeb will review it here. Additional work and costs need a separate agreement." : "Reply saved to your request.");
       setAttempt((value) => value + 1);
     } catch (failure) { setNotice(failure instanceof Error ? failure.message : "Please try again later."); }
     finally { setBusy(false); }

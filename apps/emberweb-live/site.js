@@ -76,7 +76,31 @@
     if (guide && !guide.contains(event.target)) setGuideOpen(false);
   });
 
+  const searchParams = new URLSearchParams(window.location.search);
+  const knownSources = ["linkedin", "referral", "organic", "partner"];
+  const sourceParam = searchParams.get("source");
+  let funnelSource = knownSources.includes(sourceParam) ? sourceParam : "direct";
+  try {
+    if (funnelSource !== "direct") sessionStorage.setItem("ember-source", funnelSource);
+    else {
+      const previous = sessionStorage.getItem("ember-source");
+      if (knownSources.includes(previous)) funnelSource = previous;
+      else if (/(^|\.)google\.[a-z.]+$/i.test(new URL(document.referrer || "https://emberweb.co.za").hostname)) funnelSource = "organic";
+    }
+  } catch { /* Tracking is optional if storage is unavailable. */ }
+
+  function countFunnel(milestone) {
+    if (!document.querySelector('meta[name="ember-workspace-origin"]') || navigator.doNotTrack === "1" || navigator.globalPrivacyControl) return;
+    try {
+      const key = "ember-counted:" + milestone + ":" + funnelSource;
+      if (sessionStorage.getItem(key)) return;
+      sessionStorage.setItem(key, "1");
+      void fetch("/api/intake/funnel", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ milestone, source: funnelSource }), keepalive: true }).catch(() => {});
+    } catch { /* The form works without measurement. */ }
+  }
+  if (window.location.pathname === "/gauteng-workshops") countFunnel("landing_visit");
   const projectForm = document.querySelector("form");
+  if (window.location.pathname === "/audit") projectForm?.addEventListener("focusin", () => countFunnel("audit_start"), { once: true });
   if (projectForm) {
     const search = new URLSearchParams(window.location.search);
     const packageField = projectForm.elements.namedItem("package");
@@ -115,10 +139,17 @@
     let submitting = false;
     let saved = false;
     const submissionId = crypto.randomUUID();
-    const connected = document.querySelector('meta[name="ember-workspace-origin"]')?.content === "https://portal.emberweb.co.za";
+    const syntheticPreview = document.querySelector('meta[name="ember-intake-preview"]')?.content === "synthetic";
+    const connected = syntheticPreview || document.querySelector('meta[name="ember-workspace-origin"]')?.content === "https://portal.emberweb.co.za";
+    const review = document.querySelector("[data-request-review]");
+    if (review) {
+      review.querySelector("[data-edit-request]").addEventListener("click", () => review.close("edit"));
+      review.querySelector("[data-confirm-request]").addEventListener("click", () => review.close("send"));
+    }
+    if (syntheticPreview) status.textContent = "Preview only. Use an example.test email and sample details.";
     projectForm.addEventListener("submit", async (event) => {
       event.preventDefault();
-      if (submitting || saved) return;
+      if (submitting || saved || review?.open) return;
       if (!projectForm.reportValidity()) return;
 
       const field = (name) => {
@@ -152,10 +183,11 @@
             ["More context", field("notes")],
           ];
 
+      const source = funnelSource;
       for (const [label, value] of fields) {
-        if (value) lines.push(label + ": " + value);
+        if (value && !["Name", "Business", "Email", "Phone / WhatsApp"].includes(label)) lines.push(label + ": " + value);
       }
-      for (const key of ["package", "service", "industry", "goal", "source"]) {
+      for (const key of ["package", "service", "industry", "goal"]) {
         const value = search.get(key)?.trim().slice(0, 160);
         if (value && !lines.some((line) => line.startsWith(key + ":"))) {
           lines.push(key.charAt(0).toUpperCase() + key.slice(1) + ": " + value);
@@ -169,8 +201,18 @@
         const need = (field("need") + " " + field("focus")).toLowerCase();
         const service = /ai|automat|workflow/.test(need) ? (/website|web.*ai/.test(need) ? "web_and_ai" : "ai_development") : /\bapp\b|portal/.test(need) ? "other" : /web|site|shop|booking/.test(need) ? "web_design" : "other";
         const consent = projectForm.elements.namedItem("contact_consent");
-        if (consent?.checked) lines.splice(1, 0, "Contact consent: agreed for this request");
-        const payload = { submission_id: submissionId, name: field("name"), company: field("business"), email: field("email"), phone: field("phone"), service, brief: lines.slice(1).join("\n").slice(0, 5000) };
+        const marketing = projectForm.elements.namedItem("marketing_consent");
+        const payload = { submission_id: submissionId, name: field("name"), company: field("business"), email: field("email"), phone: field("phone"), service, brief: lines.slice(1).join("\n").slice(0, 5000), source, consent: { inquiry: consent?.checked === true, marketing: marketing?.checked === true, policy: "2026-11-26", form: isAudit ? "audit" : "brief" } };
+        if (review) {
+          review.querySelector("[data-review-summary]").textContent = [
+            ...fields.filter(([, value]) => value).map(([label, value]) => label + ": " + value),
+            "Email updates: " + (payload.consent.marketing ? "Yes" : "No"),
+          ].join("\n");
+          review.returnValue = "edit";
+          review.showModal();
+          await new Promise(resolve => review.addEventListener("close", resolve, { once: true }));
+          if (review.returnValue !== "send") { button.focus(); return; }
+        }
         submitting = true;
         const originalDisabled = controls.map((control) => control.disabled);
         controls.forEach((control) => { control.disabled = true; });
@@ -179,13 +221,18 @@
         status.dataset.state = "pending";
         projectForm.setAttribute("aria-busy", "true");
         try {
-          const response = await fetch("/api/intake", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload), signal: AbortSignal.timeout(20000) });
-          const result = await response.json().catch(() => ({ error: "Your request could not be saved. Please try again shortly." }));
-          if (!response.ok || result.success !== true) throw new Error(result.error || "Your request could not be saved. Please try again.");
+          if (syntheticPreview) {
+            if (!/^[^@]+@example\.test$/i.test(payload.email)) throw new Error("Use a sample email ending in @example.test.");
+            if (payload.email.toLowerCase() === "preview-error@example.test") throw new Error("Simulated error. Change the sample email and try again.");
+          } else {
+            const response = await fetch("/api/intake", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload), signal: AbortSignal.timeout(20000) });
+            const result = await response.json().catch(() => ({ error: "Your request could not be saved. Please try again shortly." }));
+            if (!response.ok || result.success !== true) throw new Error(result.error || "Your request could not be saved. Please try again.");
+          }
           saved = true;
           projectForm.classList.add("is-complete");
           button.textContent = "Request sent ✓";
-          status.textContent = "Request received. Next, choose a discovery time using the same email as your brief. No payment is due at this step.";
+          status.textContent = syntheticPreview ? "Sample request complete. No information was sent. You can check the booking fallback next." : "Request received. Next, choose a discovery time using the same email as your brief. No payment is due at this step.";
           status.dataset.state = "success";
           const next = document.createElement("a");
           next.href = journey ? "/book?journey=" + journey : "/book";
@@ -208,11 +255,11 @@
         return;
       }
 
-      const whatsappUrl = "https://wa.me/27723398781?text=" + encodeURIComponent(lines.join("\n"));
+      const whatsappUrl = "https://wa.me/27723398781?text=" + encodeURIComponent(isAudit ? "Hi EmberWeb, I would like a free audit." : "Hi EmberWeb, I would like to discuss a project.");
       const whatsappWindow = window.open(whatsappUrl, "_blank");
       if (whatsappWindow) {
         whatsappWindow.opener = null;
-        status.textContent = "Your brief is ready in WhatsApp. Review it there before sending.";
+        status.textContent = "WhatsApp is open with a short message. Add any details you want to share before sending.";
       } else {
         window.location.assign(whatsappUrl);
       }
@@ -226,6 +273,8 @@
       if (!website) return;
       const required = auditFocus.value === "Website audit";
       website.required = required;
+      const notes = projectForm?.elements.namedItem("notes");
+      if (notes) notes.required = !required;
       const labelText = website.closest("label")?.firstChild;
       if (labelText?.nodeType === Node.TEXT_NODE) labelText.textContent = required ? "Website link *" : "Website link (optional)";
     }

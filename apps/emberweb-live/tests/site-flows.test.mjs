@@ -171,7 +171,7 @@ test("a pending enquiry blocks duplicate requests and a confirmed save provides 
   assert.equal(app.requests[0].url, "/api/intake");
   assert.equal(app.requests[0].method, "POST");
   assert.equal(app.requests[0].payload.name, "Client Name");
-  assert.ok(app.requests[0].payload.brief.includes("Contact consent: agreed for this request"));
+  assert.deepEqual(JSON.parse(JSON.stringify(app.requests[0].payload.consent)), { inquiry: true, marketing: false, policy: "2026-11-26", form: "brief" });
   app.respond(0, { success: true });
   await first;
   assert.equal(app.status.dataset.state, "success");
@@ -342,7 +342,7 @@ test("oversized referral context is bounded and cannot displace consent or the c
   const pending = app.submitForm();
   const brief = app.requests[0].payload.brief;
   assert.ok(brief.length <= 5000);
-  assert.equal(brief.split("\n")[0], "Contact consent: agreed for this request");
+  assert.equal(app.requests[0].payload.consent.inquiry, true);
   assert.match(brief, /Starting point: Starting something new/);
   assert.match(brief, /First useful outcome: Shape my idea/);
   for (const label of ["Goal", "Source", "Industry"]) {

@@ -7,75 +7,193 @@
   "rewrites": [
     {
       "source": "/api/workspace/:path*",
-      "destination": "https://portal.emberweb.co.za/api/workspace/:path*"
+      "destination": "https://portal.emberweb.co.za/api/workspace/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "(?:www\\.)?emberweb\\.co\\.za"
+        }
+      ]
     },
     {
       "source": "/api/account",
-      "destination": "https://portal.emberweb.co.za/api/account"
+      "destination": "https://portal.emberweb.co.za/api/account",
+      "has": [
+        {
+          "type": "host",
+          "value": "(?:www\\.)?emberweb\\.co\\.za"
+        }
+      ]
     },
     {
       "source": "/account",
-      "destination": "https://portal.emberweb.co.za/account"
+      "destination": "https://portal.emberweb.co.za/account",
+      "has": [
+        {
+          "type": "host",
+          "value": "(?:www\\.)?emberweb\\.co\\.za"
+        }
+      ]
     },
     {
       "source": "/api/account/:path*",
-      "destination": "https://portal.emberweb.co.za/api/account/:path*"
+      "destination": "https://portal.emberweb.co.za/api/account/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "(?:www\\.)?emberweb\\.co\\.za"
+        }
+      ]
     },
     {
       "source": "/account/:path*",
-      "destination": "https://portal.emberweb.co.za/account/:path*"
+      "destination": "https://portal.emberweb.co.za/account/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "(?:www\\.)?emberweb\\.co\\.za"
+        }
+      ]
     },
     {
       "source": "/outreach",
-      "destination": "https://portal.emberweb.co.za/admin/outreach"
+      "destination": "https://portal.emberweb.co.za/admin/outreach",
+      "has": [
+        {
+          "type": "host",
+          "value": "(?:www\\.)?emberweb\\.co\\.za"
+        }
+      ]
     },
     {
       "source": "/outreach/:path*",
-      "destination": "https://portal.emberweb.co.za/outreach/:path*"
+      "destination": "https://portal.emberweb.co.za/outreach/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "(?:www\\.)?emberweb\\.co\\.za"
+        }
+      ]
     },
     {
       "source": "/login",
-      "destination": "https://portal.emberweb.co.za/login"
+      "destination": "https://portal.emberweb.co.za/login",
+      "has": [
+        {
+          "type": "host",
+          "value": "(?:www\\.)?emberweb\\.co\\.za"
+        }
+      ]
     },
     {
       "source": "/setup",
-      "destination": "https://portal.emberweb.co.za/setup"
+      "destination": "https://portal.emberweb.co.za/setup",
+      "has": [
+        {
+          "type": "host",
+          "value": "(?:www\\.)?emberweb\\.co\\.za"
+        }
+      ]
     },
     {
       "source": "/admin",
-      "destination": "https://portal.emberweb.co.za/admin"
+      "destination": "https://portal.emberweb.co.za/admin",
+      "has": [
+        {
+          "type": "host",
+          "value": "(?:www\\.)?emberweb\\.co\\.za"
+        }
+      ]
     },
     {
       "source": "/admin/:path*",
-      "destination": "https://portal.emberweb.co.za/admin/:path*"
+      "destination": "https://portal.emberweb.co.za/admin/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "(?:www\\.)?emberweb\\.co\\.za"
+        }
+      ]
     },
     {
       "source": "/auth/:path*",
-      "destination": "https://portal.emberweb.co.za/auth/:path*"
+      "destination": "https://portal.emberweb.co.za/auth/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "(?:www\\.)?emberweb\\.co\\.za"
+        }
+      ]
     },
     {
       "source": "/api/admin/:path*",
-      "destination": "https://portal.emberweb.co.za/api/admin/:path*"
+      "destination": "https://portal.emberweb.co.za/api/admin/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "(?:www\\.)?emberweb\\.co\\.za"
+        }
+      ]
     },
     {
       "source": "/api/auth/:path*",
-      "destination": "https://portal.emberweb.co.za/api/auth/:path*"
+      "destination": "https://portal.emberweb.co.za/api/auth/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "(?:www\\.)?emberweb\\.co\\.za"
+        }
+      ]
     },
     {
       "source": "/_next/:path*",
-      "destination": "https://portal.emberweb.co.za/_next/:path*"
+      "destination": "https://portal.emberweb.co.za/_next/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "(?:www\\.)?emberweb\\.co\\.za"
+        }
+      ]
     },
     {
       "source": "/demo",
-      "destination": "https://portal.emberweb.co.za/demo"
+      "destination": "https://portal.emberweb.co.za/demo",
+      "has": [
+        {
+          "type": "host",
+          "value": "(?:www\\.)?emberweb\\.co\\.za"
+        }
+      ]
     },
     {
       "source": "/demo/:path*",
-      "destination": "https://portal.emberweb.co.za/demo/:path*"
+      "destination": "https://portal.emberweb.co.za/demo/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "(?:www\\.)?emberweb\\.co\\.za"
+        }
+      ]
     },
     {
       "source": "/api/intake",
-      "destination": "https://portal.emberweb.co.za/api/intake"
+      "destination": "https://portal.emberweb.co.za/api/intake",
+      "has": [
+        {
+          "type": "host",
+          "value": "(?:www\\.)?emberweb\\.co\\.za"
+        }
+      ]
+    },
+    {
+      "source": "/api/intake/funnel",
+      "destination": "https://portal.emberweb.co.za/api/intake/funnel",
+      "has": [
+        {
+          "type": "host",
+          "value": "(?:www\\.)?emberweb\\.co\\.za"
+        }
+      ]
     }
   ],
   "headers": [
@@ -138,6 +256,15 @@
     },
     {
       "source": "/care",
+      "headers": [
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self'; style-src 'self'; style-src-attr 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-src https://calendar.google.com; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'"
+        }
+      ]
+    },
+    {
+      "source": "/gauteng-workshops",
       "headers": [
         {
           "key": "Content-Security-Policy",

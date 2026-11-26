@@ -146,7 +146,7 @@ function assertInquiryContract(html, filename, kind, connected) {
   }
   const requiredNames = kind === "start"
     ? ["journey", "name", "email", "timing", "notes"]
-    : ["focus", "name", "business", "email", "notes"];
+    : ["focus", "name", "email"];
   for (const name of requiredNames) {
     const control = controls.find((tag) => attribute(tag, "name") === name);
     assert.ok(control && hasAttribute(control, "required"), filename + " should require " + name);
@@ -166,14 +166,14 @@ function assertInquiryContract(html, filename, kind, connected) {
   assert.equal(attribute(packageField, "type"), "hidden", filename + " should keep package context in a hidden field");
   const notesTag = controls.find((tag) => /^<textarea\b/i.test(tag) && attribute(tag, "name") === "notes");
   assert.ok(notesTag, filename + " should include project notes");
-  assert.equal(attribute(notesTag, "minlength"), "20", filename + " should enforce the explained 20-character notes minimum");
-  assert.ok(hasAttribute(notesTag, "required"), filename + " notes should be required");
+  if (kind === "start") assert.equal(attribute(notesTag, "minlength"), "20");
+  if (kind === "start") assert.ok(hasAttribute(notesTag, "required"));
   const helperIds = (attribute(notesTag, "aria-describedby") ?? "").split(/\s+/).filter(Boolean);
   assert.ok(helperIds.length > 0, filename + " notes should reference their helper text");
   for (const id of helperIds) {
     assert.ok(html.includes('id="' + id + '"'), filename + " notes helper reference should resolve");
   }
-  assert.match(html, /At least 20 characters/i, filename + " should explain the notes minimum");
+  if (kind === "start") assert.match(html, /At least 20 characters/i);
 
   const consent = controls.find((tag) => attribute(tag, "name") === "contact_consent");
   if (connected) {
@@ -302,7 +302,7 @@ for (const route of routes) {
   assert.match(html, /href="\/motion\.css\?v=[^"]+"/i, filename + " should load the progressive motion stylesheet");
   assert.match(html, /src="\/site\.js\?v=/i, filename + " should load the site interactions");
   assert.match(html, /src="\/journeys\.js\?v=/i, filename + " should load the client-path controller");
-  assert.match(html, /src="\/motion\.js\?v=/i, filename + " should load the motion controller");
+  assert.doesNotMatch(html, /src="\/(?:scene-motion\.mjs|galaxy-boot\.js)/i, filename + " must not depend on a scroll or arrival controller for content");
   await assertResponsiveImages(html, filename);
   responsiveImageCandidateCount += [...html.matchAll(/\bsrcset\s*=/gi)].length;
   if (route === "index") {
@@ -310,9 +310,7 @@ for (const route of routes) {
     assert.match(heroActions, /href="\/start"[^>]*>\s*Start a project/i, "The home hero should offer a clear project-request action");
     assert.match(html, /href="\/book"[^>]*>\s*Book a discovery call/i, "The homepage should offer a clear booking action");
     assert.doesNotMatch(html, /<button[^>]*class="[^"]*motion-toggle/, "Public pages do not show motion controls");
-    const stage = html.match(/<div\b[^>]*class="galaxy-stage"[^>]*>/i)?.[0];
-    assert.ok(stage, "The rendered universe should be present");
-    assert.equal(attribute(stage, "aria-hidden"), "true", "The rendered universe should be decorative");
+    assert.match(html, /<video[^>]*preload="none"/, "The film waits for a request");
     assert.match(html, /<video[^>]*muted[^>]*playsinline/, "The film must support silent inline playback");
     assert.match(html, /class="universe-skip"/, "The opening must have a visible escape route");
     assert.match(html, /class="universe-entry"[^>]*hidden/, "The entry must fail open without JavaScript");

@@ -19,7 +19,7 @@ function scopeMigration(source) {
 }
 
 const files = readdirSync(migrations).filter((name) => /^\d+_.+\.sql$/.test(name)).sort();
-const reviewedVersions = 19;
+const reviewedVersions = 20;
 if (files.length !== reviewedVersions) throw new Error("Review new workspace migrations for shared-project scope before provisioning.");
 
 const statements = files.map((name) => scopeMigration(readFileSync(new URL(name, migrations), "utf8")));

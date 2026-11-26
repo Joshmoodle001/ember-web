@@ -1,3 +1,4 @@
+import { PORTFOLIO_PROJECTS } from "./project-inventory.mjs";
 import { COMPANY, whatsappLink } from "./company.mjs";
 
 export function renderFooter() {
@@ -13,7 +14,7 @@ export function renderFooter() {
       <div class="footer-about"><a class="brand" href="/" aria-label="EmberWeb home"><img src="/brand/ember-mark.svg" alt="" width="38" height="38"><span>EMBERWEB</span></a><p>Websites, apps &amp; practical AI.<br>Built around your business.</p><span class="footer-location">South Africa</span></div>
       <nav class="footer-column" aria-label="Explore EmberWeb"><h3>Explore</h3><a href="/work">Solutions</a><a href="/portfolio">Our portfolio</a><a href="/ai-lab">AI Lab</a><a href="/industries">Industries</a><a href="/studio">Our studio</a></nav>
       <nav class="footer-column" aria-label="Work with EmberWeb"><h3>Work with us</h3><a href="/start">Start a project</a><a href="/packages">Pricing</a><a href="/process">How we work</a><a href="/book">Book a call</a><a href="/audit">Free audit</a><a href="/care">EmberCare</a></nav>
-      <div class="footer-downloads"><h3>Take a closer look</h3><a class="download-link" href="/downloads/emberweb-welcome-pack.pdf" download><span><strong>Welcome pack</strong><small>Your first steps with EmberWeb · PDF</small></span><span aria-hidden="true">↓</span></a><a class="download-link" href="/downloads/emberweb-capabilities.pdf" download><span><strong>Capabilities &amp; projects</strong><small>What we build, with 12 examples · PDF</small></span><span aria-hidden="true">↓</span></a><p>No form. Download and share.</p></div>
+      <div class="footer-downloads"><h3>Take a closer look</h3><a class="download-link" href="/downloads/emberweb-welcome-pack.pdf" download><span><strong>Welcome pack</strong><small>Your first steps with EmberWeb · PDF</small></span><span aria-hidden="true">↓</span></a><a class="download-link" href="/downloads/emberweb-capabilities.pdf" download><span><strong>Capabilities &amp; projects</strong><small>What we build, with ${PORTFOLIO_PROJECTS.length} examples · PDF</small></span><span aria-hidden="true">↓</span></a><p>No form. Download and share.</p></div>
     </div>
     <div class="footer-legal"><p>© ${new Date().getFullYear()} ${legal}</p><nav aria-label="Legal and account links"><a href="/policies">Privacy &amp; policies</a><a href="/login">Customer Login</a><a href="#main-content">Back to top ↑</a></nav></div>
   </footer>`;

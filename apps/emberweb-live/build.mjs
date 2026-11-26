@@ -22,8 +22,9 @@ for (const [source, image] of Object.entries(imageManifest.images)) {
 }
 const configuredWorkspace = process.env.WORKSPACE_SITE_URL;
 const configuredCalendar = process.env.GOOGLE_CALENDAR_BOOKING_URL;
+const preview = process.env.VERCEL_ENV === "preview";
 let calendarUrl = null;
-if (configuredCalendar) {
+if (configuredCalendar && !preview) {
   const url = new URL(configuredCalendar);
   if (url.protocol !== "https:" || url.hostname !== "calendar.google.com" || !/^\/calendar\/appointments\/schedules\/[A-Za-z0-9_-]+$/.test(url.pathname) || url.username || url.password) {
     throw new Error("Use the verified public Google Calendar appointment schedule.");
@@ -31,7 +32,7 @@ if (configuredCalendar) {
   calendarUrl = url.href;
 }
 let workspaceOrigin = null;
-if (configuredWorkspace) {
+if (configuredWorkspace && !preview) {
   const url = new URL(configuredWorkspace);
   if (url.origin !== "https://portal.emberweb.co.za" || url.pathname !== "/" || url.search || url.hash || url.username || url.password) {
     throw new Error("The public site must connect only to the EmberWeb workspace origin.");
@@ -44,6 +45,7 @@ if (!outputDirectory.startsWith(appRoot + path.sep)) {
 }
 
 const pages = [
+  { file: "gauteng-workshops.html", path: "/gauteng-workshops", title: "Free Mobile Booking Audit for Gauteng Workshops | EmberWeb", description: "Get a practical review of how drivers find a service and request an appointment on your Gauteng workshop website." },
   { file: "ai-lab.html", path: "/ai-lab", title: "AI Lab | EmberWeb", description: "Explore six interactive examples of AI for business planning, customer enquiries, learning and everyday tasks." },
   { file: "studio.html", path: "/studio", title: "AI development studio | EmberWeb", description: "AI tools, custom apps and websites. Meet the Ember studio and see how we plan, build and support your project." },
   {
@@ -172,23 +174,31 @@ function optimizePageImages(html, pagePath) {
 }
 
 async function preparePage(page) {
-  let html = renderDocument(page, renderBody(page.path, { connected: Boolean(workspaceOrigin), calendarUrl, art }));
+  let html = renderDocument(page, renderBody(page.path, { connected: preview || Boolean(workspaceOrigin), calendarUrl, art }));
+  if (preview) html = setMeta(html, "name", "ember-intake-preview", "synthetic");
   if (workspaceOrigin) html = html.replace(/<\/head>/i, '<meta name="ember-workspace-origin" content="' + workspaceOrigin + '"></head>');
 
   const canonical = COMPANY.website + page.path;
   html = setMeta(html, "name", "description", page.description);
-  html = setMeta(html, "name", "robots", "index,follow");
+  html = setMeta(html, "name", "robots", preview ? "noindex,nofollow" : "index,follow");
   html = setMeta(html, "name", "theme-color", "#061722");
   html = setMeta(html, "property", "og:type", "website");
   html = setMeta(html, "property", "og:site_name", "EmberWeb");
   html = setMeta(html, "property", "og:title", page.title);
   html = setMeta(html, "property", "og:description", page.description);
   html = setMeta(html, "property", "og:url", canonical);
-  html = setMeta(html, "property", "og:image", "https://emberweb.co.za/brand/ember-mark.png");
+  const shareImage = {
+    "/": "hero-home",
+    "/work": "hero-solutions",
+    "/portfolio": "hero-portfolio",
+    "/gauteng-workshops": "hero-audit",
+  }[page.path];
+  const shareUrl = COMPANY.website + (shareImage ? `/visuals/library/${shareImage}-768.webp` : "/brand/ember-mark.png");
+  html = setMeta(html, "property", "og:image", shareUrl);
   html = setMeta(html, "name", "twitter:card", "summary_large_image");
   html = setMeta(html, "name", "twitter:title", page.title);
   html = setMeta(html, "name", "twitter:description", page.description);
-  html = setMeta(html, "name", "twitter:image", "https://emberweb.co.za/brand/ember-mark.png");
+  html = setMeta(html, "name", "twitter:image", shareUrl);
   html = setLink(html, "canonical", canonical);
   html = setLink(html, "icon", "/brand/ember-mark.svg");
   html = setLink(html, "apple-touch-icon", "/brand/ember-mark.png");

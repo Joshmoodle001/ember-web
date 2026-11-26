@@ -14,7 +14,7 @@ export default function ClientDashboard() {
   const [error, setError] = useState("");
   useEffect(() => {
     const controller = new AbortController();
-    void read<{accounts:Account[];updates:typeof updates}>("/api/account","dashboard",data=>({...data,accounts:data.accounts.map(account=>({...account,client:{...account.client,email:""},invoices:[]}))})).then(data=>{
+    void read<{accounts:Account[];updates:typeof updates}>("/api/account").then(data=>{
       if(controller.signal.aborted)return;
       setAccounts(data.accounts);setUpdates(data.updates??[]);setError("");
     }).catch(failure=>{if(!controller.signal.aborted)setError(failure instanceof Error?failure.message:"Your dashboard could not be loaded.");});

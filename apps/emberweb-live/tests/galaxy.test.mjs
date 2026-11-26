@@ -52,7 +52,7 @@ test("only leaf reading cards get flight marks and only the homepage receives th
   assert.doesNotMatch(marked, /<(?:main|section)[^>]*data-galaxy-card/);
   const home = renderDocument({path:"/",title:"Home"},renderBody("/"));
   const other = renderDocument({path:"/work",title:"Work"},renderBody("/work"));
-  assert.match(home, /class="galaxy-stage"/);
+  assert.match(home, /class="universe-entry"[^>]*hidden/);
   assert.match(home, /type="module" src="\/galaxy\.mjs/);
   assert.doesNotMatch(other, /galaxy-stage|galaxy\.css|galaxy\.mjs/);
 });

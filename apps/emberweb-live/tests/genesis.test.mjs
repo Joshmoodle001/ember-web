@@ -5,7 +5,7 @@ import vm from "node:vm";
 
 const source = (await readFile(new URL("../galaxy.mjs", import.meta.url), "utf8")).replace(/^import .*;\r?\n/gm,"");
 
-function mount({ gated = true, reduced = false, denied = false, hidden = false, compact = false, saveData = false } = {}) {
+function mount({ requested = true, reduced = false, denied = false, hidden = false, compact = false, saveData = false } = {}) {
   const events = new Map();
   const state = { plays: 0, scrolls: 0, stored: false, focus: null };
   const element = () => ({
@@ -15,7 +15,7 @@ function mount({ gated = true, reduced = false, denied = false, hidden = false, 
   });
   const elements = Object.fromEntries(["root","stage","entry","film","skip","playButton","replay","main","heading","header"].map(id=>[id,Object.assign(element(),{id})]));
   const {root,stage,entry,film,skip,playButton,replay,main,heading,header} = elements;
-  const classes = new Set(["motion-enabled", ...(gated ? ["cosmos-gated"] : [])]);
+  const classes = new Set(["motion-enabled", ]);
   root.classList = { contains:n=>classes.has(n), add:(...n)=>n.forEach(k=>classes.add(k)), remove:(...n)=>n.forEach(k=>classes.delete(k)) };
   entry.hidden = true;
   entry.querySelector = selector => selector === "video" ? film : selector === ".universe-play" ? playButton : skip;
@@ -34,10 +34,11 @@ function mount({ gated = true, reduced = false, denied = false, hidden = false, 
   vm.runInNewContext(source,{window,document,matchMedia:query=>query.includes('max-width') ? {matches:compact,addEventListener(){}} : media,MutationObserver:class{observe(){}},Event:class{},
     requestAnimationFrame:()=>1,setTimeout:(fn,ms)=>{state.timeout=fn;state.timeoutMs=ms;return 1;},clearTimeout(){},
     navigator:{connection:{saveData}},sessionStorage:{setItem(){state.stored=true;}}});
+  if (requested && !reduced) events.get("replay:click")();
   return { ...elements, classes, document, state, events, trigger:(type,event)=>events.get(type)?.(event) };
 }
 
-test("first arrival starts the film without input and completion releases navigation",()=>{
+test("requesting the film starts playback and completion restores navigation",()=>{
   const m=mount();
   assert.equal(m.state.plays,1); assert.equal(m.main.inert,true);
   assert.equal(m.classes.has("cosmos-landed"),false);
@@ -53,7 +54,7 @@ for(const event of ["skip:click","film:error"]) {
   });
 }
 test("reduced motion and direct returns bypass the opening",()=>{
-  for(const options of [{reduced:true},{gated:false}]) {
+  for(const options of [{reduced:true},{requested:false}]) {
     const m=mount(options); assert.equal(m.state.plays,0); assert.equal(m.state.scrolls,0);
   }
 });
@@ -87,19 +88,11 @@ test("a background tab pauses and resumes without dismissing the film",()=>{
   assert.equal(m.entry.hidden,false);m.document.hidden=false;m.trigger("visibilitychange");
   assert.equal(m.state.plays,2);assert.equal(m.entry.hidden,false);
 });
-const boot=await readFile(new URL("../galaxy-boot.js",import.meta.url),"utf8");
-test("direct and external arrivals and reloads play, internal and history returns bypass",()=>{
-  const cases = [
-    ["", "navigate", true], ["https://example.com/", "navigate", true],
-    ["https://emberweb.co.za/work", "navigate", false],
-    ["https://emberweb.co.za/work", "reload", true], ["", "back_forward", false],
-    ["invalid referrer", "navigate", true]
-  ];
-  for(const [referrer,type,expected] of cases){
-    let gated=false;
-    vm.runInNewContext(boot,{URL,performance:{getEntriesByType:()=>[{type}]},location:{origin:"https://emberweb.co.za"},matchMedia:()=>({matches:false}),document:{referrer,documentElement:{classList:{add(){gated=true}}},addEventListener(){}},setTimeout(){return 1},clearTimeout(){}});
-    assert.equal(gated,expected,referrer+" "+type);
-  }
+test("first arrivals do not assign the video URL or block the page", () => {
+  const m = mount({ requested: false });
+  assert.equal(m.entry.hidden, true);
+  assert.equal(m.film.src, undefined);
+  assert.notEqual(m.main.inert, true);
 });
 
 test("opening a homepage in a background tab waits until it becomes visible",()=>{

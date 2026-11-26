@@ -18,6 +18,8 @@ type InquiryNotification = {
 
 const services = new Set(["web_design", "ai_development", "web_and_ai", "other"]);
 const budgets = new Set(["under_10000", "10000_30000", "30000_75000", "75000_plus", "not_sure"]);
+const consentPolicy = "2026-11-26";
+const sources = new Set(["direct", "linkedin", "referral", "organic", "partner"]);
 const uuidPattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 function clean(value: unknown, maxLength: number) {
@@ -36,6 +38,9 @@ function successResponse() {
 }
 
 export async function POST(request: NextRequest) {
+  if (process.env.VERCEL_ENV === "preview" && !process.env.EMBERWEB_PREVIEW_SUPABASE_HOST) {
+    return NextResponse.json({ error: "Preview intake has no isolated database configured." }, { status: 503 });
+  }
   if (Number(request.headers.get("content-length") ?? 0) > 12_000) {
     return NextResponse.json({ error: "The project brief is too large." }, { status: 413 });
   }
@@ -65,10 +70,19 @@ export async function POST(request: NextRequest) {
   const name = clean(body.name, 120);
   const company = clean(body.company, 160) || null;
   const email = clean(body.email, 254).toLowerCase();
+  if (process.env.VERCEL_ENV === "preview" && !email.endsWith("@example.test")) {
+    return NextResponse.json({ error: "Use a synthetic @example.test address in preview." }, { status: 400 });
+  }
   const phone = clean(body.phone, 40) || null;
   const service = clean(body.service, 40);
   const budget = clean(body.budget, 32) || null;
   const brief = clean(body.brief, 5000);
+  const usingConsentContract = Object.hasOwn(body, "consent");
+  const consent = isRecord(body.consent) ? body.consent : null;
+  if (usingConsentContract && (!consent || consent.inquiry !== true || typeof consent.marketing !== "boolean" ||
+      consent.policy !== consentPolicy || !["brief", "audit"].includes(String(consent.form)))) {
+    return NextResponse.json({ error: "Please review the privacy information and agree to be contacted about this request." }, { status: 400 });
+  }
 
   if (name.length < 2 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || !services.has(service) || brief.length < 20 || (budget && !budgets.has(budget))) {
     return NextResponse.json({ error: "Please check the required details and try again." }, { status: 400 });
@@ -108,7 +122,16 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Please wait before sending another project brief." }, { status: 429 });
     }
 
-    const inquiry = { submission_id: submissionId, name, company, email, phone, service, budget, brief };
+    const recordedAt = new Date().toISOString();
+    const source = clean(body.source, 20);
+    const acquisitionFields: Record<string, string | null> = consent ? {
+      inquiry_permission_at: recordedAt,
+      marketing_permission_at: consent.marketing === true ? recordedAt : null,
+      consent_policy_version: consentPolicy,
+      consent_form: consent.form === "audit" ? "audit" : "brief",
+      acquisition_source: sources.has(source) ? source : "direct",
+    } : {};
+    const inquiry = { submission_id: submissionId, name, company, email, phone, service, budget, brief, ...acquisitionFields };
     let inquiryId: string | null = null;
     let created = false;
     if (submissionId) {

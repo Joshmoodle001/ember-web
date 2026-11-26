@@ -14,6 +14,7 @@ const routes = new Map([
   ["/portfolio", "portfolio.html"],
   ["/packages", "packages.html"],
   ["/audit", "audit.html"],
+  ["/gauteng-workshops", "gauteng-workshops.html"],
   ["/process", "process.html"],
   ["/industries", "industries.html"],
   ["/care", "care.html"],
@@ -58,7 +59,7 @@ const server = http.createServer(async (request, response) => {
     if (!details.isFile()) throw new Error("Not a file");
     response.writeHead(200, {
       "Content-Type": types.get(path.extname(filePath)) || "application/octet-stream",
-      "Cache-Control": "no-store",
+      "Cache-Control": path.extname(filePath) === ".html" ? "no-store" : "public, max-age=300",
       "X-Content-Type-Options": "nosniff",
       "Referrer-Policy": "strict-origin-when-cross-origin",
     });
