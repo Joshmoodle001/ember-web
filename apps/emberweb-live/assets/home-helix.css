@@ -1,0 +1,122 @@
+.cosmos-home {
+  isolation: isolate;
+  background: #040914;
+}
+
+.home-helix-stage {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  height: 0;
+  pointer-events: none;
+}
+
+.home-helix-viewport {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 100svh;
+  display: grid;
+  justify-items: center;
+  overflow: clip;
+  opacity: var(--helix-strength, .84);
+  mask-image: linear-gradient(transparent, #000 16%, #000 84%, transparent);
+}
+
+.home-helix-viewport canvas {
+  width: clamp(260px, 32vw, 520px);
+  height: 100%;
+}
+
+body .cosmos-home :is(.atlas-arrival, .home-chapter) {
+  isolation: auto;
+  position: relative;
+  overflow: clip;
+}
+
+body .cosmos-home .atlas-arrival { background: #040914; }
+body .cosmos-home .atlas-arrival::after,
+body .cosmos-home .atlas-arrival .page-artwork { z-index: 0; }
+body .cosmos-home .atlas-arrival-inner,
+.home-chapter-content { position: relative; z-index: 2; }
+
+body .cosmos-home .home-chapter {
+  display: grid;
+  align-items: center;
+  min-height: clamp(440px, 72svh, 700px);
+  padding-block: clamp(54px, 10vw, 120px);
+  background: linear-gradient(180deg, #040914, #10213a 48%, #040914);
+}
+
+body .atlas-directory .atlas-routes { min-width: 0; }
+body .atlas-directory .atlas-route { background-color: #0b1629; }
+.home-chapter h2 {
+  margin: 0 0 .35em;
+  font-size: clamp(40px, 5.5vw, 76px);
+  line-height: 1.02;
+  letter-spacing: -.055em;
+}
+
+.home-chapter-art {
+  position: absolute;
+  z-index: 0;
+  inset: 0 0 0 auto;
+  width: min(62%, 1080px);
+  display: grid;
+  align-items: center;
+  pointer-events: none;
+  opacity: var(--chapter-art-opacity, .76);
+  mask-image: linear-gradient(90deg, transparent 4%, #000 39%);
+}
+
+.home-chapter-art img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: right center;
+}
+
+.home-process .home-chapter-art {
+  inset: 0 auto 0 0;
+  mask-image: linear-gradient(270deg, transparent 4%, #000 39%);
+}
+.home-process .home-chapter-art img { object-position: left center; }
+.home-process .home-chapter-copy { margin-left: auto; }
+.home-chapter-copy { width: min(100%, 485px); }
+.home-chapter-content > h2,
+.home-chapter-copy {
+  opacity: var(--chapter-copy-opacity, 1);
+  translate: 0 var(--chapter-shift, 0px);
+}
+.home-chapter:focus-within .home-chapter-content > h2,
+.home-chapter:focus-within .home-chapter-copy { opacity: 1; translate: none; }
+
+.home-example-list {
+  list-style: none;
+  padding: 0;
+  margin: 25px 0;
+  border-top: 1px solid var(--cosmos-line);
+}
+.home-example-list li { padding-block: 16px; border-bottom: 1px solid var(--cosmos-line); }
+.home-example-list :is(a, strong) { font-size: clamp(17px, 2vw, 23px); }
+.home-example-list a { color: #f7f4ec; text-underline-offset: .25em; }
+.home-example-list a:hover { color: var(--cosmos-accent); }
+.home-example-list p { color: #cfdaeb; margin: .45em 0 0; }
+
+@media (max-width: 760px) {
+  .home-helix-viewport canvas { width: min(64vw, 320px); }
+  body .cosmos-home .atlas-arrival-inner { min-height: 590px; }
+  body .cosmos-home .home-chapter { min-height: 0; padding-block: 58px; }
+  body .cosmos-home .home-chapter-art {
+    inset: auto 0 0;
+    width: 100%;
+    height: 65%;
+    mask-image: linear-gradient(transparent 10%, #000 84%);
+  }
+  .home-chapter-art img { opacity: .45; object-fit: cover; }
+  .home-chapter-copy { margin-inline: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-chapter-art { opacity: .76; }
+  .home-chapter-content > h2, .home-chapter-copy { opacity: 1; translate: none; }
+}

@@ -310,10 +310,12 @@ for (const route of routes) {
     assert.match(heroActions, /href="\/start"[^>]*>\s*Start a project/i, "The home hero should offer a clear project-request action");
     assert.match(html, /href="\/book"[^>]*>\s*Book a discovery call/i, "The homepage should offer a clear booking action");
     assert.doesNotMatch(html, /<button[^>]*class="[^"]*motion-toggle/, "Public pages do not show motion controls");
-    const stage = html.match(/<div\b[^>]*class="galaxy-stage"[^>]*>/i)?.[0];
+    const stage = html.match(/<div\b[^>]*class="home-helix-stage"[^>]*>/i)?.[0];
     assert.ok(stage, "The rendered universe should be present");
     assert.equal(attribute(stage, "aria-hidden"), "true", "The rendered universe should be decorative");
     assert.match(html, /<video[^>]*muted[^>]*playsinline/, "The film must support silent inline playback");
+    assert.match(html, /<video[^>]*preload="none"/, "Opening film loads on request");
+    assert.doesNotMatch(html, /src="\/(?:galaxy-boot\.js|scene-motion\.mjs)/i, "The homepage uses one scroll controller");
     assert.match(html, /class="universe-skip"/, "The opening must have a visible escape route");
     assert.match(html, /class="universe-entry"[^>]*hidden/, "The entry must fail open without JavaScript");
     for (const path of ["/work", "/ai-lab", "/portfolio", "/studio"]) assert.ok(html.match(/<nav class="atlas-routes"[\s\S]*?<\/nav>/)?.[0].includes('href="'+path+'"'), "Directory must link directly to "+path);

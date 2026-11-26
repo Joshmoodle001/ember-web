@@ -52,9 +52,10 @@ test("only leaf reading cards get flight marks and only the homepage receives th
   assert.doesNotMatch(marked, /<(?:main|section)[^>]*data-galaxy-card/);
   const home = renderDocument({path:"/",title:"Home"},renderBody("/"));
   const other = renderDocument({path:"/work",title:"Work"},renderBody("/work"));
-  assert.match(home, /class="galaxy-stage"/);
+  assert.match(home, /class="home-helix-stage"/);
+  assert.match(home, /src="\/home-helix\.mjs/);
   assert.match(home, /type="module" src="\/galaxy\.mjs/);
-  assert.doesNotMatch(other, /galaxy-stage|galaxy\.css|galaxy\.mjs/);
+  assert.doesNotMatch(other, /home-helix|galaxy\.css|galaxy\.mjs/);
 });
 
 test("the opening collapses before its single ignition and completes after the reveal", () => {

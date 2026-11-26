@@ -1,5 +1,4 @@
 
-const stage = document.querySelector(".galaxy-stage");
 const entry = document.querySelector(".universe-entry");
 const film = entry.querySelector("video");
 const skip = entry.querySelector(".universe-skip");
@@ -10,7 +9,7 @@ const main = document.querySelector("main");
 const heading = main.querySelector("h1");
 const compact = matchMedia("(max-width: 760px)");
 const reduced = matchMedia("(prefers-reduced-motion: reduce)");
-const moving = () => !reduced.matches && root.classList.contains("motion-enabled");
+const moving = () => !reduced.matches;
 
 const arrivalAnchor = window.location?.hash;
 let session = 0;
@@ -61,9 +60,9 @@ function playIntro() {
     return;
   }
   session++;
-  returnFocus = document.activeElement === replay ? replay : null;
+  returnFocus = replay;
   for (const element of document.body.children) {
-    if (element === entry || element === stage || element.inert || element.tagName === "SCRIPT") continue;
+    if (element === entry || element.inert || element.tagName === "SCRIPT") continue;
     element.inert = true;
     element.dataset.cosmosInert = "";
   }
@@ -108,8 +107,11 @@ replay.addEventListener("click", () => {
 });
 document.addEventListener("keydown", event => {
   if (entry.hidden) return;
-  if (event.key === "Tab") { event.preventDefault(); skip.focus(); return; }
-  if (["Escape","Enter"," ","ArrowDown","PageDown"].includes(event.key)) { event.preventDefault(); finishIntro(); }
+  if (event.key === "Tab") {
+    event.preventDefault();
+    (playButton.hidden || document.activeElement === playButton ? skip : playButton).focus();
+  }
+  if (event.key === "Escape") { event.preventDefault(); finishIntro(); }
 });
 document.addEventListener("visibilitychange", () => {
   if (entry.hidden) return;
@@ -122,10 +124,10 @@ document.addEventListener("visibilitychange", () => {
   }
 });
 function updateMotion() {
+  replay.hidden = !moving();
   if (!moving()) finishIntro();
 
 }
-new MutationObserver(updateMotion).observe(root, { attributes: true, attributeFilter: ["class"] });
 reduced.addEventListener("change", updateMotion);
 
 window.addEventListener("pagehide", () => { film.pause(); clearTimeout(deadline); });
@@ -136,5 +138,4 @@ window.addEventListener("pageshow", event => {
   }
 });
 
-if (root.classList.contains("cosmos-gated")) playIntro();
-document.dispatchEvent(new Event("ember:cosmos-ready"));
+updateMotion();
