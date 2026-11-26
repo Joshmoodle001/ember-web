@@ -221,7 +221,7 @@ export function renderBody(path, { connected = false, calendarUrl = null, art = 
   }
   const outerMain = markup.match(/^<main id="main-content" class="page [^"]+">([\s\S]*)<\/main>$/);
   if (!outerMain) throw new Error(`Design 2 template for ${route} must have one known outer main wrapper.`);
-  const review = connected && ["/start", "/audit"].includes(route)
+  const review = connected && route === "/audit"
     ? `<dialog class="request-review" data-request-review aria-labelledby="request-review-heading"><h2 id="request-review-heading">Review your request</h2><p data-review-summary></p><div class="actions"><button type="button" class="button button-secondary" data-edit-request autofocus>Edit details</button><button type="button" class="button button-primary" data-confirm-request>Send request</button></div></dialog>`
     : "";
   return outerMain[1] + review;

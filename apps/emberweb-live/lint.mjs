@@ -324,7 +324,7 @@ for (const route of routes) {
   if (route === "start" || route === "audit") {
     assertInquiryContract(html, filename, route, workspaceConnected || syntheticPreview);
     if (workspaceConnected || syntheticPreview) {
-      assert.match(html, /<dialog[^>]*data-request-review/);
+      if (route === "audit") assert.match(html, /<dialog[^>]*data-request-review/);
       const marketing = html.match(/<input\b[^>]*name="marketing_consent"[^>]*>/i)?.[0];
       assert.ok(marketing && !hasAttribute(marketing, "required") && !hasAttribute(marketing, "checked"));
     }

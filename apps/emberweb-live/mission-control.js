@@ -16,7 +16,7 @@
   const grouping=[
     {title:"Your starting point",nodes:[form.querySelector(".journey-picker")]},
     {title:"What you want to do",nodes:[...form.querySelectorAll(".journey-details"),label("notes"),label("timing"),form.querySelector(".brief-specifics")]},
-    {title:"How to reach you",nodes:[label("name"),label("email"),label("business"),label("phone"),form.querySelector(".form-consent"),form.querySelector(".form-note")]},
+    {title:"How to reach you",nodes:[label("name"),label("email"),label("business"),label("phone"),label("contact_consent"),label("marketing_consent"),form.querySelector(".form-note")]},
   ];
   if(grouping.some(group=>!group.nodes.some(Boolean)))return;
   const submit=form.querySelector('[type="submit"]');if(!submit)return;
@@ -37,6 +37,8 @@
     summary.replaceChildren();
     const journey=field("journey")?.value;
     const values=[["Starting point",journey==="business"?"An existing business":"A new idea or personal project"],["Your goal",journey==="business"?field("business_goal")?.value:field("startup_goal")?.value],["Stage",journey==="startup"?field("startup_stage")?.value:""],["Audience",journey==="startup"?field("audience")?.value:""],["Current tools",journey==="business"?field("current_tools")?.value:""],["Service",field("need")?.value==="Other"?"":field("need")?.value],["Package",field("package")?.value?.replace(/(^|-)\w/g, key => key.replace("-"," ").toUpperCase())],["Your brief",field("notes")?.value],["Timing",field("timing")?.value],["Name",field("name")?.value],["Email",field("email")?.value],["Project / business",field("business")?.value],["Phone / WhatsApp",field("phone")?.value]];
+    const marketing = field("marketing_consent");
+    if (marketing) values.push(["Email updates", marketing.checked ? "Yes" : "No"]);
     for(const [name,value] of values){if(!value)continue;const row=document.createElement("div"),dt=document.createElement("dt"),dd=document.createElement("dd");dt.textContent=name;dd.textContent=value;row.append(dt,dd);summary.append(row);}
   }
   function show(index,moveFocus=true){
