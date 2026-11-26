@@ -45,6 +45,7 @@ export default function WorkspaceRuntime({ identity, children }: { identity: Wor
   const [install, setInstall] = useState<InstallPrompt | null>(null);
   const path = usePathname();
   const accountId = identity.id;
+  const role = identity.role;
   const isClient = identity.role === "client";
 
   useEffect(() => {
@@ -59,11 +60,15 @@ export default function WorkspaceRuntime({ identity, children }: { identity: Wor
       const response = await fetch("/api/workspace/identity", { cache: "no-store" }).catch(() => null);
       if (!response) return;
       if (response.status === 401 || response.status === 403) window.location.replace("/login");
-      if (response.ok && (await response.json().catch(() => null))?.identity?.id !== accountId) location.reload();
+      if (response.ok) {
+        const { identity: current } = await response.json().catch(() => ({}));
+        if (current?.id !== accountId || current?.role !== role) location.reload();
+      }
     };
     const restore = (event: PageTransitionEvent) => { if (event.persisted) location.reload(); };
     if (sessions) sessions.onmessage = () => location.replace("/login");
     window.addEventListener("pageshow", restore);
+    window.addEventListener("focus", checkSession);
     window.addEventListener("online", checkSession);
     document.addEventListener("visibilitychange", checkSession);
     if (isClient) {
@@ -73,11 +78,12 @@ export default function WorkspaceRuntime({ identity, children }: { identity: Wor
     return () => {
       sessions?.close();
       window.removeEventListener("pageshow", restore);
+      window.removeEventListener("focus", checkSession);
       window.removeEventListener("online", checkSession);
       document.removeEventListener("visibilitychange", checkSession);
       window.removeEventListener("beforeinstallprompt", prompt);
     };
-  }, [accountId, isClient]);
+  }, [accountId, isClient, role]);
 
   useEffect(() => {
     async function beat() {

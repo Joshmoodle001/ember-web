@@ -4,6 +4,7 @@ alter table public.inquiries
   add column if not exists consent_policy_version text,
   add column if not exists consent_form text check (consent_form in ('brief', 'audit')),
   add column if not exists qualified_booked_at timestamptz,
+  add column if not exists acquisition_campaign text check (acquisition_campaign = 'gauteng_workshops'),
   add column if not exists acquisition_source text
     check (acquisition_source in ('direct', 'linkedin', 'referral', 'organic', 'partner'));
 

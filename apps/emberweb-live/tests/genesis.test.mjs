@@ -43,7 +43,7 @@ test("requesting the film starts playback and completion restores navigation",()
   assert.equal(m.state.plays,1); assert.equal(m.main.inert,true);
   assert.equal(m.classes.has("cosmos-landed"),false);
   m.trigger("film:ended");
-  assert.equal(m.entry.hidden,true); assert.equal(m.main.inert,false); assert.equal(m.state.focus,m.heading);
+  assert.equal(m.entry.hidden,true); assert.equal(m.main.inert,false); assert.equal(m.state.focus,m.replay);
   assert.equal(m.classes.has("cosmos-landed"),true);
   assert.equal(m.state.stored,false);
 });

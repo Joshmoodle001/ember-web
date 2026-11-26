@@ -130,6 +130,7 @@ export async function POST(request: NextRequest) {
       consent_policy_version: consentPolicy,
       consent_form: consent.form === "audit" ? "audit" : "brief",
       acquisition_source: sources.has(source) ? source : "direct",
+      acquisition_campaign: consent.form === "audit" && body.campaign === "gauteng_workshops" ? "gauteng_workshops" : null,
     } : {};
     const inquiry = { submission_id: submissionId, name, company, email, phone, service, budget, brief, ...acquisitionFields };
     let inquiryId: string | null = null;

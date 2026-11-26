@@ -78,7 +78,7 @@
 
   const searchParams = new URLSearchParams(window.location.search);
   const knownSources = ["linkedin", "referral", "organic", "partner"];
-  const sourceParam = searchParams.get("source");
+  const sourceParam = searchParams.get("utm_source") || searchParams.get("source");
   let funnelSource = knownSources.includes(sourceParam) ? sourceParam : "direct";
   try {
     if (funnelSource !== "direct") sessionStorage.setItem("ember-source", funnelSource);
@@ -98,9 +98,10 @@
       void fetch("/api/intake/funnel", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ milestone, source: funnelSource }), keepalive: true }).catch(() => {});
     } catch { /* The form works without measurement. */ }
   }
+  const workshopAudit = window.location.pathname === "/audit" && searchParams.get("focus") === "workshop";
   if (window.location.pathname === "/gauteng-workshops") countFunnel("landing_visit");
   const projectForm = document.querySelector("form");
-  if (window.location.pathname === "/audit") projectForm?.addEventListener("focusin", () => countFunnel("audit_start"), { once: true });
+  if (workshopAudit) projectForm?.addEventListener("focusin", () => countFunnel("audit_start"), { once: true });
   if (projectForm) {
     const search = new URLSearchParams(window.location.search);
     const packageField = projectForm.elements.namedItem("package");
@@ -202,7 +203,7 @@
         const service = /ai|automat|workflow/.test(need) ? (/website|web.*ai/.test(need) ? "web_and_ai" : "ai_development") : /\bapp\b|portal/.test(need) ? "other" : /web|site|shop|booking/.test(need) ? "web_design" : "other";
         const consent = projectForm.elements.namedItem("contact_consent");
         const marketing = projectForm.elements.namedItem("marketing_consent");
-        const payload = { submission_id: submissionId, name: field("name"), company: field("business"), email: field("email"), phone: field("phone"), service, brief: lines.slice(1).join("\n").slice(0, 5000), source, consent: { inquiry: consent?.checked === true, marketing: marketing?.checked === true, policy: "2026-11-26", form: isAudit ? "audit" : "brief" } };
+        const payload = { submission_id: submissionId, name: field("name"), company: field("business"), email: field("email"), phone: field("phone"), service, brief: lines.slice(1).join("\n").slice(0, 5000), source, campaign: workshopAudit ? "gauteng_workshops" : null, consent: { inquiry: consent?.checked === true, marketing: marketing?.checked === true, policy: "2026-11-26", form: isAudit ? "audit" : "brief" } };
         if (review) {
           review.querySelector("[data-review-summary]").textContent = [
             ...fields.filter(([, value]) => value).map(([label, value]) => label + ": " + value),

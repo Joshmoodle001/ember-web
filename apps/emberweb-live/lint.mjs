@@ -286,6 +286,11 @@ for (const route of routes) {
   const filename = route + ".html";
   const html = await readFile(path.join(outputDirectory, filename), "utf8");
   const workspaceConnected = /<meta\b[^>]*name="ember-workspace-origin"[^>]*content="https:\/\/portal\.emberweb\.co\.za"/i.test(html);
+  const syntheticPreview = /<meta\b[^>]*name="ember-intake-preview"[^>]*content="synthetic"/i.test(html);
+  if (syntheticPreview) {
+    assert.equal(workspaceConnected, false, filename + " must keep preview intake disconnected");
+    assert.match(html, /name="robots" content="noindex,nofollow"/i);
+  }
   if (expectedWorkspaceConnection === "connected") {
     assert.ok(workspaceConnected, filename + " should include the configured workspace handoff");
   } else if (expectedWorkspaceConnection === "disconnected") {
@@ -317,7 +322,12 @@ for (const route of routes) {
     for (const path of ["/work", "/ai-lab", "/portfolio", "/studio"]) assert.ok(html.match(/<nav class="atlas-routes"[\s\S]*?<\/nav>/)?.[0].includes('href="'+path+'"'), "Directory must link directly to "+path);
   }
   if (route === "start" || route === "audit") {
-    assertInquiryContract(html, filename, route, workspaceConnected);
+    assertInquiryContract(html, filename, route, workspaceConnected || syntheticPreview);
+    if (workspaceConnected || syntheticPreview) {
+      assert.match(html, /<dialog[^>]*data-request-review/);
+      const marketing = html.match(/<input\b[^>]*name="marketing_consent"[^>]*>/i)?.[0];
+      assert.ok(marketing && !hasAttribute(marketing, "required") && !hasAttribute(marketing, "checked"));
+    }
   }
   assert.doesNotMatch(html, /\/_next\/static\/chunks\//i, filename + " should not load the old framework runtime");
   assert.doesNotMatch(html, /C:\/Users\//i, filename + " should not expose a machine-local font path");
