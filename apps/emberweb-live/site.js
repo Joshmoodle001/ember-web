@@ -79,18 +79,20 @@
   const searchParams = new URLSearchParams(window.location.search);
   const knownSources = ["linkedin", "referral", "organic", "partner"];
   const sourceParam = searchParams.get("utm_source") || searchParams.get("source");
-  let funnelSource = knownSources.includes(sourceParam) ? sourceParam : "direct";
-  try {
-    if (funnelSource !== "direct") sessionStorage.setItem("ember-source", funnelSource);
-    else {
+  const measurementAllowed = window.navigator?.doNotTrack !== "1" && !window.navigator?.globalPrivacyControl;
+  let funnelSource = "direct";
+  if (measurementAllowed) {
+    if (knownSources.includes(sourceParam)) funnelSource = sourceParam;
+    try {
       const previous = sessionStorage.getItem("ember-source");
-      if (knownSources.includes(previous)) funnelSource = previous;
-      else if (/(^|\.)google\.[a-z.]+$/i.test(new URL(document.referrer || "https://emberweb.co.za").hostname)) funnelSource = "organic";
-    }
-  } catch { /* Tracking is optional if storage is unavailable. */ }
+      if (funnelSource === "direct" && knownSources.includes(previous)) funnelSource = previous;
+      if (funnelSource === "direct" && /(^|\.)google\.[a-z.]+$/i.test(new URL(document.referrer || "https://emberweb.co.za").hostname)) funnelSource = "organic";
+      if (funnelSource !== "direct") sessionStorage.setItem("ember-source", funnelSource);
+    } catch { /* Tracking is optional if storage is unavailable. */ }
+  }
 
   function countFunnel(milestone) {
-    if (!document.querySelector('meta[name="ember-workspace-origin"]') || navigator.doNotTrack === "1" || navigator.globalPrivacyControl) return;
+    if (!measurementAllowed || !document.querySelector('meta[name="ember-workspace-origin"]')) return;
     try {
       const key = "ember-counted:" + milestone + ":" + funnelSource;
       if (sessionStorage.getItem(key)) return;
