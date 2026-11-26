@@ -290,6 +290,8 @@ for (const route of routes) {
   if (syntheticPreview) {
     assert.equal(workspaceConnected, false, filename + " must keep preview intake disconnected");
     assert.match(html, /name="robots" content="noindex,nofollow"/i);
+    assert.doesNotMatch(html, /href="\/login"/i, filename + " must not link to an unserved local login");
+    assert.match(html, /href="https:\/\/emberweb\.co\.za\/login" rel="noreferrer"/i);
   }
   if (expectedWorkspaceConnection === "connected") {
     assert.ok(workspaceConnected, filename + " should include the configured workspace handoff");
@@ -457,7 +459,7 @@ for (const [source, destination] of expectedPortalRewrites) {
   assert.equal(matches[0].destination, destination, "Vercel should proxy " + source + " to the matching workspace route");
 }
 assert.ok(vercelConfig.rewrites.findIndex(rewrite => rewrite.source === "/admin") < vercelConfig.rewrites.findIndex(rewrite => rewrite.source === "/admin/:path*"), "The exact dashboard rewrite must precede its wildcard to avoid a trailing-slash redirect loop");
-assert.match(notFoundPage, /href="\/login"[^>]*>Customer Login<\/a>/i, "Unified Customer Login must remain available on the not-found page");
+assert.match(notFoundPage, /href="(?:https:\/\/emberweb\.co\.za)?\/login"[^>]*>Customer Login<\/a>/i, "Unified Customer Login must remain available on the not-found page");
 
 process.stdout.write(
   "Validated " + publicDocuments.length + " static document CSPs, portal and intake rewrites, " + routes.length + " public routes, Design 2 and motion accessibility, intake and pricing contracts, booking and fallback behavior, " + localAssetCount + " local asset references, " + responsiveImageCandidateCount + " responsive image sets, and site/motion script syntax.\n",

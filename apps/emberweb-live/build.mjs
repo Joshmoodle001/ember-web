@@ -23,6 +23,8 @@ for (const [source, image] of Object.entries(imageManifest.images)) {
 const configuredWorkspace = process.env.WORKSPACE_SITE_URL;
 const configuredCalendar = process.env.GOOGLE_CALENDAR_BOOKING_URL;
 const preview = process.env.VERCEL_ENV === "preview";
+const liveLogin = 'href="https://emberweb.co.za/login" rel="noreferrer" aria-label="Customer Login on the live EmberWeb site"';
+const linkLiveCustomerLogin = html => preview ? html.replaceAll('href="/login"', liveLogin) : html;
 let calendarUrl = null;
 if (configuredCalendar && !preview) {
   const url = new URL(configuredCalendar);
@@ -174,7 +176,7 @@ function optimizePageImages(html, pagePath) {
 }
 
 async function preparePage(page) {
-  let html = renderDocument(page, renderBody(page.path, { connected: preview || Boolean(workspaceOrigin), calendarUrl, art }));
+  let html = linkLiveCustomerLogin(renderDocument(page, renderBody(page.path, { connected: preview || Boolean(workspaceOrigin), calendarUrl, art })));
   if (preview) html = setMeta(html, "name", "ember-intake-preview", "synthetic");
   if (workspaceOrigin) html = html.replace(/<\/head>/i, '<meta name="ember-workspace-origin" content="' + workspaceOrigin + '"></head>');
 
@@ -257,6 +259,6 @@ for (const page of pages) {
 const bookPage = { file: "book.html", path: "/book", title: "Book a discovery call | EmberWeb", description: "Choose a 30-minute Google Meet discovery call for your website, app or AI workflow project." };
 await writeFile(path.join(outputDirectory, bookPage.file), await preparePage(bookPage), "utf8");
 const notFound = { path: "/404", title: "Page not found | EmberWeb" };
-await writeFile(path.join(outputDirectory, "404.html"), renderDocument(notFound, '<section class="error-page"><div class="container"><p class="eyebrow">Page not found</p><h1>Let’s get you<br>back on track.</h1><p class="lead">This page is no longer here. You can explore our services or start a conversation.</p><a class="button button-primary" href="/">Return to EmberWeb →</a></div></section>').replace('</head>', '<meta name="robots" content="noindex"></head>'), "utf8");
+await writeFile(path.join(outputDirectory, "404.html"), linkLiveCustomerLogin(renderDocument(notFound, '<section class="error-page"><div class="container"><p class="eyebrow">Page not found</p><h1>Let’s get you<br>back on track.</h1><p class="lead">This page is no longer here. You can explore our services or start a conversation.</p><a class="button button-primary" href="/">Return to EmberWeb →</a></div></section>')).replace('</head>', '<meta name="robots" content="noindex"></head>'), "utf8");
 await syncSecurityHeaders(appRoot, outputDirectory);
 process.stdout.write("Built Design 2.0: " + (pages.length + 1) + " EmberWeb pages in " + outputDirectory + "\n");
