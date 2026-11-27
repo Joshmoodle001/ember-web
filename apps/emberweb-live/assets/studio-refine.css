@@ -205,3 +205,17 @@ html.signal-motion body[data-page="/"] .atlas-route { background:linear-gradient
 }
 
 .studio-ember { display:block; width:min(82vw,360px); height:auto; margin:32px auto; object-fit:contain; }
+.ember-specialists .crew-web { border-top: 3px solid #508cff; }
+.ember-specialists .crew-app { border-top: 3px solid #49e7ff; }
+.ember-specialists .crew-systems { border-top: 3px solid #d4ff24; }
+.ember-specialists h2 { font-size: 24px; margin: 8px 0 14px; }
+.ember-specialists a { display: inline-flex; padding-block: 14px; min-height: 44px; text-underline-offset: 4px; }
+.studio-working { margin-top: 40px; }
+.studio-working > p { max-width: 66ch; }
+body[data-page="/studio"] .ember-homeworld .page-artwork { height: 580px; }
+body[data-page="/studio"] .homeworld-heading { min-height: 500px; max-width: 48%; }
+@media (max-width: 760px) {
+  body[data-page="/studio"] .homeworld-heading { max-width: 100%; min-height: 660px; }
+  body[data-page="/studio"] .ember-homeworld .page-artwork { top: 290px; height: 370px; opacity: 1; }
+  body[data-page="/studio"] .page-artwork img { mask-image: none; width: 100%; object-fit: contain; }
+}

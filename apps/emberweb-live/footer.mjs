@@ -6,7 +6,7 @@ export function renderFooter() {
     : `${COMPANY.brand} · ${COMPANY.location}`;
   return `<footer class="site-footer studio-footer">
     <div class="footer-contact">
-      <img class="footer-ember" src="/brand/ember-digital-320.webp" alt="" width="160" height="150" loading="lazy" decoding="async">
+      <img class="footer-ember" src="/brand/ember-leader-320.webp" alt="" width="160" height="150" loading="lazy" decoding="async">
       <div><p class="eyebrow">A useful next step</p><h2>Let’s make it work.</h2><p>A website, an app or a better way to get things done.<br>Tell us what you have in mind.</p></div>
       <div class="footer-contact-actions"><a class="button button-primary" href="${whatsappLink("Hi EmberWeb, I would like to discuss a website, app or automation project.")}" target="_blank" rel="noopener noreferrer">Chat on WhatsApp <span aria-hidden="true">↗</span></a><a class="footer-phone" href="${COMPANY.phoneLink}">Call ${COMPANY.phone}</a></div>
     </div>

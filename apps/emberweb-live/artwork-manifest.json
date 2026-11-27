@@ -392,18 +392,18 @@
         }
       ]
     },
-    "hero-studio-digital": {
+    "hero-ember-team": {
       "width": 1536,
       "height": 1024,
-      "src": "/visuals/library/hero-studio-digital.webp",
+      "src": "/visuals/library/hero-ember-team.webp",
       "variants": [
         {
-          "url": "/visuals/library/hero-studio-digital-768.webp",
+          "url": "/visuals/library/hero-ember-team-768.webp",
           "width": 768,
           "height": 512
         },
         {
-          "url": "/visuals/library/hero-studio-digital.webp",
+          "url": "/visuals/library/hero-ember-team.webp",
           "width": 1536,
           "height": 1024
         }
