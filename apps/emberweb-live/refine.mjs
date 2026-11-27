@@ -74,12 +74,12 @@ export function refinePage(html, pagePath) {
   html = html.replace('Launch fees are paid securely on PayFast. Monthly EmberCare starts only after scope, timing and the care arrangement have been confirmed.', 'We discuss your scope first, then send a proposal and a private PayFast invoice link for the agreed amount. Monthly care and its payment arrangement are confirmed separately.');
   html = html.replace('No signup needed. Just a useful first conversation about what is possible.', 'Choose a goal to prefill your brief. Send it, then book a discovery call.');
   if (pagePath !== '/') {
-    const footer = '<footer class="simple-footer"><a href="/" aria-label="EmberWeb home">EMBERWEB</a><nav aria-label="Footer navigation"><a href="/book">Book a discovery call</a><a href="/industries">Industries</a><a href="/policies">Privacy &amp; policies</a><a href="mailto:info@emberweb.co.za">Email EmberWeb</a><a href="https://wa.me/27723398781" target="_blank" rel="noopener noreferrer">WhatsApp</a></nav><p>© 2026 EmberWeb · South Africa</p></footer>';
+    const footer = '<footer class="simple-footer"><a href="/" aria-label="EmberWeb home">EMBERWEB</a><nav aria-label="Footer navigation"><a href="/book">Book a discovery call</a><a href="/industries">Industries</a><a href="/policies">Privacy &amp; policies</a><a href="mailto:info@emberweb.co.za">Email EmberWeb</a><a href="https://wa.me/27501692896" target="_blank" rel="noopener noreferrer">WhatsApp</a></nav><p>© 2026 EmberWeb · South Africa</p></footer>';
     html = html.replace('</main>', '');
     html = html.replace(/(<aside\b[^>]*class="ember-guide[^\"]*"[^>]*>)/, '</main>' + footer + '$1');
   }
   // No inbound MX exists for this domain yet. Offer verified contact routes.
-  html = html.replace(/<a\b([^>]*?)href="mailto:info@emberweb\.co\.za[^\"]*"([^>]*)>[\s\S]*?<\/a>/gi, '<a $1href="https://wa.me/27723398781"$2>Message EmberWeb</a>');
+  html = html.replace(/<a\b([^>]*?)href="mailto:info@emberweb\.co\.za[^\"]*"([^>]*)>[\s\S]*?<\/a>/gi, '<a $1href="https://wa.me/27501692896"$2>Message EmberWeb</a>');
   html = html.replaceAll('Prefer email?', 'Prefer a message?');
   html = html.replaceAll('email info@emberweb.co.za.', 'contact us using the project request form or WhatsApp.');
   return html;

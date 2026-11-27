@@ -55,7 +55,7 @@ export const PACKAGE_PLANS = Object.freeze(plans.map((plan) => Object.freeze({
 })));
 
 const html = (value) => String(value).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#39;");
-const waUrl = "https://wa.me/27723398781";
+const waUrl = "https://wa.me/27501692896";
 
 function button(href, label, primary = false) {
   return `<a class="button ${primary ? "button-primary action-primary" : "button-secondary action-secondary"}" href="${html(href)}">${label}<span aria-hidden="true">${primary ? "↗" : "→"}</span></a>`;

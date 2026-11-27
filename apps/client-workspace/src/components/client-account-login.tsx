@@ -34,7 +34,7 @@ export default function ClientAccountLogin({ confirmationError = false, register
       {mode === "register" ? <p className="account-note">Use at least 12 characters. Confirm your email before signing in. Creating an account does not grant access to another client’s information.</p> : null}
       <button className="button button-primary" disabled={pending} type="submit">{pending ? "Please wait…" : mode === "register" ? "Create my account" : "Sign in"}</button>
     </form>
-    {!registrationEnabled ? <p className="account-note">Need client access? <a className="text-link" href="https://wa.me/27723398781" target="_blank" rel="noopener noreferrer">Contact EmberWeb to arrange your account <span className="sr-only">(opens in a new tab)</span></a>.</p> : null}
+    {!registrationEnabled ? <p className="account-note">Need client access? <a className="text-link" href="https://wa.me/27501692896" target="_blank" rel="noopener noreferrer">Contact EmberWeb to arrange your account <span className="sr-only">(opens in a new tab)</span></a>.</p> : null}
     {message ? <p className="account-message" role="status">{message}</p> : null}
   </>;
 }

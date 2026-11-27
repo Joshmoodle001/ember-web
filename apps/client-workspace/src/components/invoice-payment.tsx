@@ -68,7 +68,7 @@ export default function InvoicePayment({ token }: { token: string }) {
         </>}
       </section>
       <p className="footer-note">This private invoice link is for the named client. If the link is unavailable, open the latest link shared by EmberWeb or ask us for a fresh one. You do not need an account.</p>
-      <div className="hero-actions"><a className="button button-quiet" href="https://wa.me/27723398781" target="_blank" rel="noopener noreferrer">Contact EmberWeb about this invoice</a><a className="button button-quiet" href="https://emberweb.co.za/">Return to EmberWeb</a></div>
+      <div className="hero-actions"><a className="button button-quiet" href="https://wa.me/27501692896" target="_blank" rel="noopener noreferrer">Contact EmberWeb about this invoice</a><a className="button button-quiet" href="https://emberweb.co.za/">Return to EmberWeb</a></div>
     </div>
   );
 }

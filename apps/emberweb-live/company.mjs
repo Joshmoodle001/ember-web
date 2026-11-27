@@ -7,7 +7,7 @@ export const COMPANY = Object.freeze({
   website: "https://emberweb.co.za",
   phone: "050 169 2896",
   phoneLink: "tel:+27501692896",
-  whatsapp: "https://wa.me/27723398781",
+  whatsapp: "https://wa.me/27501692896",
 });
 
 export const whatsappLink = message => COMPANY.whatsapp + "?text=" + encodeURIComponent(message);

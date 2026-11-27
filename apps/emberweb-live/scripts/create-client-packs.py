@@ -165,7 +165,7 @@ def welcome():
     p.text("Choose your next step", M, y, size=17, bold=True)
     p.button("Send a project brief", COMPANY["website"]+"/start", M, y+34, 235)
     p.button("Chat on WhatsApp", COMPANY["whatsapp"], M+250, y+34, 249)
-    p.text("Book a discovery call: <link href='https://emberweb.co.za/book' color='#205DE8'>emberweb.co.za/book</link><br/>WhatsApp: +27 72 339 8781", M, y+88, size=11, colour=MUTED)
+    p.text("Book a discovery call: <link href='https://emberweb.co.za/book' color='#205DE8'>emberweb.co.za/book</link><br/>WhatsApp: +27 50 169 2896", M, y+88, size=11, colour=MUTED)
     p.text("Please keep passwords, bank details and sensitive customer records out of an initial enquiry. Project terms and privacy information: <link href='https://emberweb.co.za/policies' color='#205DE8'>emberweb.co.za/policies</link>.", M, y+143, size=9, colour=MUTED)
     p.finish()
 
@@ -234,7 +234,7 @@ def capabilities():
     p.text("Tell us what would make your work easier.", M, y, size=17, bold=True)
     p.button("Start a project", COMPANY["website"]+"/start", M, y+37, 235)
     p.button("Talk on WhatsApp", COMPANY["whatsapp"], M+250, y+37, 249)
-    p.text("WhatsApp: +27 72 339 8781<br/><link href='https://emberweb.co.za/packages' color='#205DE8'>Current website packages</link>  /  <link href='https://emberweb.co.za/portfolio' color='#205DE8'>Explore the portfolio</link>  /  <link href='https://emberweb.co.za/book' color='#205DE8'>Book a call</link>", M, y+92, size=11, colour=MUTED)
+    p.text("WhatsApp: +27 50 169 2896<br/><link href='https://emberweb.co.za/packages' color='#205DE8'>Current website packages</link>  /  <link href='https://emberweb.co.za/portfolio' color='#205DE8'>Explore the portfolio</link>  /  <link href='https://emberweb.co.za/book' color='#205DE8'>Book a call</link>", M, y+92, size=11, colour=MUTED)
     p.text("Public information as at 9 November 2026. Scope and pricing are confirmed in a proposal. This brochure does not grant access to private projects or disclose their implementation.", M, y+152, size=9, colour=MUTED)
     p.finish()
 
