@@ -46,6 +46,7 @@ function startScenes() {
   const root = document.documentElement;
   const reduced = matchMedia("(prefers-reduced-motion: reduce)");
   const compact = matchMedia("(max-width: 760px)");
+  const touch = matchMedia("(pointer: coarse)");
   const economical = navigator.connection?.saveData || navigator.deviceMemory <= 2 || navigator.hardwareConcurrency <= 2;
   const sections = [...main.children].filter(section => section.tagName === "SECTION");
   const scenes = new Map(sections.map((section, index) => [section, {
@@ -92,17 +93,11 @@ function startScenes() {
   function update() {
     frame = 0;
     const gated = root.classList.contains("cosmos-gated");
-    const animate = !gated && !document.hidden && !reduced.matches && !economical && root.classList.contains("motion-enabled");
+    const animate = !gated && !document.hidden && !reduced.matches && !economical && !touch.matches && !compact.matches && root.classList.contains("motion-enabled");
     if (root.classList.contains("signal-motion") !== animate) root.classList.toggle("signal-motion", animate);
     if (gated || document.hidden) return;
 
-    if (!animate) {
-      for (const section of nearbySections) {
-        const scene = scenes.get(section);
-        if (!scene.layer) addLayer(section, scene);
-      }
-      return;
-    }
+    if (!animate) return;
 
     const viewport = innerHeight;
     const small = compact.matches;
@@ -182,6 +177,7 @@ function startScenes() {
   });
   reduced.addEventListener("change", request);
   compact.addEventListener("change", request);
+  touch.addEventListener("change", request);
   new MutationObserver(request).observe(root, { attributes: true, attributeFilter: ["class"] });
   request();
 }

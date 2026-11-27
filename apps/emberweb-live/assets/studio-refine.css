@@ -1,4 +1,9 @@
 /* Contact and resources form one compact, readable finish on every page. */
+html { scroll-padding-top: 110px; }
+main :is(input, select, textarea) { max-width: 100%; min-width: 0; }
+@media (max-width: 760px), (pointer: coarse), (prefers-reduced-motion: reduce) {
+  body .signal-scene { display: none; }
+}
 body .site-footer.studio-footer{position:relative;isolation:isolate;overflow:clip;background:#050c17;border-top:1px solid #7199c633;padding:0 max(32px,calc((100% - 1240px)/2));color:#edf4ff;max-width:none;margin:0}
 .studio-footer::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(ellipse at 100% 0,#17498260,transparent 57%)}
 .footer-contact{display:flex;justify-content:space-between;align-items:center;gap:32px;padding:48px 0 36px;border-bottom:1px solid #91b0d52e}
