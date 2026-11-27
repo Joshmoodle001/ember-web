@@ -217,7 +217,7 @@ function assertPublicLinkSafety(html, filename) {
 function assertPublicPricing(html) {
   const cards = [...html.matchAll(/<article\b[^>]*class=["'][^"']*\bpackage-card\b[^"']*["'][^>]*>([\s\S]*?)<\/article>/gi)].map((match) => match[1]);
   const expectedPlans = [
-    { name: "Launch Lite", launch: "R500", care: "R799" },
+    { name: "Launch Lite", launch: "R500", care: "R499" },
     { name: "Starter", launch: "R1,000", care: "R999" },
     { name: "Business", launch: "R1,500", care: "R1,250" },
     { name: "Growth", launch: "From R2,000", care: "R1,500" },

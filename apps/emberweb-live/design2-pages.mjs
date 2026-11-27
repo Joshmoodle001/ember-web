@@ -14,7 +14,7 @@ const plans = [
     tagline: "A smart, credible first presence.",
     description: "One page with your offer, contact details and a way for customers to enquire.",
     launch: "R500",
-    care: "R799",
+    care: "R499",
     features: ["One focused launch page", "Mobile-first layout", "WhatsApp and enquiry pathways", "Managed hosting, SSL and backups"],
   },
   {
@@ -160,7 +160,7 @@ function carePage() {
     ["Practical support", "A clear route to ask for help when something needs attention."],
     ["Future improvements", "Larger new features are scoped separately so you can decide before work starts."],
   ];
-  return `<main id="main-content" class="page page-care">${subHero("EmberCare", "Website care.", "Websites, apps and AI workflows need a clear plan after launch. Hosting, maintenance, support and any model or third-party usage are agreed for your project.")}<section class="section section-light"><div class="container"><div class="care-grid">${benefits.map(([title, copy]) => `<article class="card"><h2>${title}</h2><p>${copy}</p></article>`).join("")}</div></div></section><section class="section section-ink"><div class="container split"><div>${sectionHead("A clear arrangement", "Know what your care covers.", "Your monthly package, support level and cancellation notice are confirmed in the project agreement.")}</div><div class="card card-wide"><p class="eyebrow">Package pricing</p><h3>EmberCare starts at R799 / month.</h3><p>Package-specific monthly amounts are listed alongside launch fees on the pricing page.</p><div class="actions">${button("/packages", "View package prices", true)}${button("/start", "Ask about support")}</div></div></div></section>${finalCta("Need help with an existing site?")}</main>`;
+  return `<main id="main-content" class="page page-care">${subHero("EmberCare", "Website care.", "Websites, apps and AI workflows need a clear plan after launch. Hosting, maintenance, support and any model or third-party usage are agreed for your project.")}<section class="section section-light"><div class="container"><div class="care-grid">${benefits.map(([title, copy]) => `<article class="card"><h2>${title}</h2><p>${copy}</p></article>`).join("")}</div></div></section><section class="section section-ink"><div class="container split"><div>${sectionHead("A clear arrangement", "Know what your care covers.", "Your monthly package, support level and cancellation notice are confirmed in the project agreement.")}</div><div class="card card-wide"><p class="eyebrow">Package pricing</p><h3>EmberCare starts at R499 / month.</h3><p>Package-specific monthly amounts are listed alongside launch fees on the pricing page.</p><div class="actions">${button("/packages", "View package prices", true)}${button("/start", "Ask about support")}</div></div></div></section>${finalCta("Need help with an existing site?")}</main>`;
 }
 
 function policiesPage() {

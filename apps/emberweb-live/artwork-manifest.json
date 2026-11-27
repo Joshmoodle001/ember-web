@@ -392,18 +392,18 @@
         }
       ]
     },
-    "hero-ember-team": {
+    "hero-ember-vanguard-team": {
       "width": 1536,
       "height": 1024,
-      "src": "/visuals/library/hero-ember-team.webp",
+      "src": "/visuals/library/hero-ember-vanguard-team.webp",
       "variants": [
         {
-          "url": "/visuals/library/hero-ember-team-768.webp",
+          "url": "/visuals/library/hero-ember-vanguard-team-768.webp",
           "width": 768,
           "height": 512
         },
         {
-          "url": "/visuals/library/hero-ember-team.webp",
+          "url": "/visuals/library/hero-ember-vanguard-team.webp",
           "width": 1536,
           "height": 1024
         }

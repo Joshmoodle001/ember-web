@@ -27,7 +27,7 @@ const pageArtwork = {
   "/book": "hero-book",
   "/policies": "hero-policies",
   "/ai-lab": "hero-ai-lab",
-  "/studio": "hero-ember-team"
+  "/studio": "hero-ember-vanguard-team"
 };
 export function renderDocument(page, body) {
   const illustration = pageArtwork[page.path];
