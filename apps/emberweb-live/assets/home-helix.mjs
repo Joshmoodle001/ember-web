@@ -17,39 +17,67 @@ if (stage && canvas && context) {
   function drawHelix(phase) {
     context.clearRect(0, 0, width, height);
     const center = width / 2;
-    const radius = width * (compact.matches ? .33 : .36);
-    const wavelength = height * .43;
-    const segments = 96;
-    const paths = [new Path2D(), new Path2D(), new Path2D(), new Path2D()];
-    for (let strand = 0; strand < 2; strand++) {
-      let previousX;
-      let previousY;
-      for (let segment = 0; segment <= segments; segment++) {
-        const y = segment * height / segments;
-        const angle = y / wavelength * turn + phase + strand * Math.PI;
-        const x = center + Math.sin(angle) * radius;
-        if (segment) {
-          const depth = Math.cos(angle) > 0 ? 1 : 0;
-          const path = paths[strand * 2 + depth];
-          path.moveTo(previousX, previousY);
-          path.lineTo(x, y);
-        }
-        previousX = x;
-        previousY = y;
+    const compactView = compact.matches;
+    const radius = width * (compactView ? .32 : .36);
+    const segments = 100;
+    const depthBands = 7;
+    const ribbons = ["#5b92ff", "#d4ff59"].map((color, index) => {
+      const points = Array.from({ length: segments + 1 }, (_, segment) => {
+        const along = segment / segments;
+        const angle = Math.log1p(along * 3) * 1.82 * turn + phase + index * Math.PI;
+        const depth = .5 + Math.cos(angle) * .5;
+        const perspective = (.32 + along * .7) * (.73 + depth * .42);
+        return { x: center + Math.sin(angle) * radius * perspective, y: along * height, depth, perspective };
+      });
+      const bands = Array.from({ length: depthBands }, () => ({
+        hull: new Path2D(), edge: new Path2D(), glow: new Path2D(),
+      }));
+      const sides = points.map((point, segment) => {
+        const previous = points[Math.max(0, segment - 1)];
+        const next = points[Math.min(segments, segment + 1)];
+        const dx = next.x - previous.x;
+        const dy = next.y - previous.y;
+        const thickness = (compactView ? 6 : 12) * point.perspective / Math.hypot(dx, dy);
+        return { x: dy * thickness, y: -dx * thickness };
+      });
+      for (let segment = 1; segment <= segments; segment++) {
+        const a = points[segment - 1];
+        const b = points[segment];
+        const depth = Math.min(depthBands - 1, Math.floor((a.depth + b.depth) * depthBands / 2));
+        const { hull, edge, glow } = bands[depth];
+        const left = sides[segment - 1];
+        const right = sides[segment];
+        hull.moveTo(a.x - left.x, a.y - left.y);
+        hull.lineTo(b.x - right.x, b.y - right.y);
+        hull.lineTo(b.x + right.x, b.y + right.y);
+        hull.lineTo(a.x + left.x, a.y + left.y);
+        hull.closePath();
+        edge.moveTo(a.x + left.x, a.y + left.y);
+        edge.lineTo(b.x + right.x, b.y + right.y);
+        glow.moveTo(a.x, a.y);
+        glow.lineTo(b.x, b.y);
+      }
+      return { color, bands };
+    });
+    context.save();
+    context.lineCap = "round";
+    for (let index = 0; index < depthBands; index++) {
+      const depth = index / (depthBands - 1);
+      for (const { color, bands } of ribbons) {
+        const { hull, edge, glow } = bands[index];
+        context.strokeStyle = color;
+        context.globalAlpha = .025 + depth * .07;
+        context.lineWidth = compactView ? 13 : 25;
+        context.stroke(glow);
+        context.fillStyle = color;
+        context.globalAlpha = .10 + depth * .29;
+        context.fill(hull);
+        context.globalAlpha = .20 + depth * .55;
+        context.lineWidth = compactView ? 1 : 1.8;
+        context.stroke(edge);
       }
     }
-    const colours = ["#225ad7", "#86b4ff", "#638031", "#d4ff5a"];
-    context.lineCap = "round";
-    for (const index of [0, 2, 1, 3]) {
-      const foreground = index % 2 === 1;
-      context.strokeStyle = colours[index];
-      context.globalAlpha = foreground ? .13 : .09;
-      context.lineWidth = foreground ? 7 : 4;
-      context.stroke(paths[index]);
-      context.globalAlpha = foreground ? .73 : .29;
-      context.lineWidth = foreground ? 1.65 : 1;
-      context.stroke(paths[index]);
-    }
+    context.restore();
   }
 
   function update() {
@@ -63,14 +91,20 @@ if (stage && canvas && context) {
     const arrival = smooth(clamp(position / (viewport * .82), 0, 1));
     const end = views.at(-1)[1].bottom;
     const exit = smooth(clamp(end / (viewport * .85), 0, 1));
-    stage.style.setProperty("--helix-strength", (still ? .28 : (.38 + arrival * .5) * exit * (compact.matches ? .68 : 1)).toFixed(3));
+    const drift = still ? 0 : clamp(position / viewport, 0, 1);
+    stage.parentElement.style.setProperty("--hero-drift", `${(drift * 42).toFixed(1)}px`);
+    stage.parentElement.style.setProperty("--hero-scale", (1 + drift * .09).toFixed(3));
+    stage.style.setProperty("--helix-strength", (still ? .21 : (.18 + arrival * .77) * exit * (compact.matches ? .67 : 1)).toFixed(3));
     for (const [chapter, rect] of views) {
       const enter = clamp((viewport - rect.top) / (viewport * .58), 0, 1);
       const leave = clamp(rect.bottom / (viewport * .48), 0, 1);
       const focus = still ? 1 : smooth(Math.min(enter, leave));
-      chapter.style.setProperty("--chapter-art-opacity", (.10 + focus * .68).toFixed(3));
-      chapter.style.setProperty("--chapter-copy-opacity", (.86 + focus * .14).toFixed(3));
-      chapter.style.setProperty("--chapter-shift", `${((1 - focus) * (enter < leave ? 12 : -12)).toFixed(1)}px`);
+      const travel = still ? 0 : clamp((viewport / 2 - rect.top - rect.height / 2) / viewport, -1, 1);
+      chapter.style.setProperty("--chapter-art-opacity", (.10 + focus * .84).toFixed(3));
+      chapter.style.setProperty("--chapter-drift", `${(travel * (compact.matches ? 34 : 55)).toFixed(1)}px`);
+      chapter.style.setProperty("--chapter-scale", (still ? 1 : 1.08 + Math.abs(travel) * .10).toFixed(3));
+      chapter.style.setProperty("--chapter-copy-opacity", (.90 + focus * .10).toFixed(3));
+      chapter.style.setProperty("--chapter-shift", `${(travel * -12).toFixed(1)}px`);
     }
   }
 

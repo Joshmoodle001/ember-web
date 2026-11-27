@@ -6,7 +6,7 @@ const worlds = [
 ];
 
 function chapterArtwork(name) {
-  return `<picture class="home-chapter-art" aria-hidden="true"><source srcset="/visuals/library/${name}-768.webp 768w, /visuals/library/${name}.webp 1536w" sizes="(max-width: 760px) 100vw, 58vw"><img src="/visuals/library/${name}.webp" alt="" width="1536" height="1024" loading="lazy" decoding="async"></picture>`;
+  return `<picture class="home-chapter-art" aria-hidden="true"><source srcset="/visuals/library/${name}-768.webp 768w, /visuals/library/${name}.webp 1536w" sizes="100vw"><img src="/visuals/library/${name}.webp" alt="" width="1536" height="1024" loading="lazy" decoding="async"></picture>`;
 }
 
 export function cosmosHome() {
@@ -18,7 +18,7 @@ export function cosmosHome() {
   <div class="hero-actions"><a class="button button-primary" href="/start">Start a project <svg aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 13 13 3M5 3h8v8"/></svg></a><a class="atlas-link" href="/portfolio">See our work <span aria-hidden="true">→</span></a></div></div>
   <div class="atlas-edge"><a class="atlas-scroll-cue" href="#explore">Find your next step <span aria-hidden="true">↓</span></a><button type="button" class="universe-replay" hidden>Play opening film</button></div></div></section>
   <section class="atlas-directory home-chapter" id="explore" aria-labelledby="atlas-title">${chapterArtwork("hero-solutions")}<div class="container home-chapter-content"><h2 id="atlas-title">A better way<br><em>to work.</em></h2>
-  <nav class="atlas-routes" aria-label="Choose a destination">${worlds.map(([href,title,description],index)=>`<a class="atlas-route route-0${index+1}" href="${href}"><strong>${title}</strong><span class="atlas-description">${description}</span><span class="atlas-arrow" aria-hidden="true">↗</span></a>`).join("")}</nav>
+  <nav class="atlas-routes" aria-label="Choose a destination">${worlds.map(([href,title,description])=>`<a class="atlas-route" href="${href}"><strong>${title}</strong><span class="atlas-description">${description}</span><span class="atlas-arrow" aria-hidden="true">↗</span></a>`).join("")}</nav>
   <div class="atlas-shortcuts"><span>Ready to plan?</span><a href="/packages">Compare website packages →</a><a href="/process">How projects work →</a><a href="/book">Book a discovery call →</a></div></div></section>
   <section class="home-chapter home-work" id="selected-work" aria-labelledby="home-work-title">${chapterArtwork("hero-portfolio")}
     <div class="container home-chapter-content"><div class="home-chapter-copy">
