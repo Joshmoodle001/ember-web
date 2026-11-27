@@ -12,15 +12,15 @@
     "preserveOriginalDimensions": true
   },
   "totals": {
-    "sourceImages": 19,
-    "sourceBytes": 37667344,
-    "fullSizeWebpBytes": 3509040,
-    "fullSizeSavingsBytes": 34158304,
-    "fullSizeSavingsPercent": 90.68,
-    "responsiveVariantCount": 38,
-    "responsiveVariantBytes": 3764060,
-    "allGeneratedWebpBytes": 7273100,
-    "generatedBytesWhileOriginalsAreKept": 44940444
+    "sourceImages": 20,
+    "sourceBytes": 38872815,
+    "fullSizeWebpBytes": 3641380,
+    "fullSizeSavingsBytes": 35231435,
+    "fullSizeSavingsPercent": 90.63,
+    "responsiveVariantCount": 39,
+    "responsiveVariantBytes": 3791008,
+    "allGeneratedWebpBytes": 7432388,
+    "generatedBytesWhileOriginalsAreKept": 46305203
   },
   "images": {
     "/brand/ember-guide.png": {
@@ -592,6 +592,29 @@
       ],
       "fullSizeSavingsBytes": 2009082,
       "fullSizeSavingsPercent": 93.72
+    },
+    "/brand/ember-digital-master.png": {
+      "width": 1303,
+      "height": 1207,
+      "hasAlpha": true,
+      "sourceBytes": 1205471,
+      "mainWebp": {
+        "url": "/brand/ember-digital.webp",
+        "width": 960,
+        "height": 889,
+        "bytes": 132340
+      },
+      "variants": [
+        {
+          "url": "/brand/ember-digital-320.webp",
+          "width": 320,
+          "height": 296,
+          "bytes": 26948,
+          "requestedWidth": 320
+        }
+      ],
+      "fullSizeSavingsBytes": 1073131,
+      "fullSizeSavingsPercent": 89.02
     }
   }
 }

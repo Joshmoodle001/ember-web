@@ -1,4 +1,9 @@
 /* Contact and resources form one compact, readable finish on every page. */
+.footer-ember { width: 144px; height: 144px; object-fit: contain; flex: none; }
+.footer-contact > div:first-of-type { flex: 1; }
+@media (max-width: 760px) {
+  .footer-ember { width: 116px; height: 110px; margin-bottom: 8px; }
+}
 html { scroll-padding-top: 110px; }
 main :is(input, select, textarea) { max-width: 100%; min-width: 0; }
 @media (max-width: 760px), (pointer: coarse), (prefers-reduced-motion: reduce) {
@@ -198,3 +203,5 @@ html.signal-motion body[data-page="/"] .atlas-route { background:linear-gradient
  html.signal-motion body[data-page="/"] .cinema-world-veil { background:linear-gradient(180deg,#030916cf 0%,#03091680 42%,#03091678 100%); }
  html.signal-motion body[data-page="/"] .atlas-directory { background:linear-gradient(180deg,#07142696,#040a16a8); }
 }
+
+.studio-ember { display:block; width:min(82vw,360px); height:auto; margin:32px auto; object-fit:contain; }

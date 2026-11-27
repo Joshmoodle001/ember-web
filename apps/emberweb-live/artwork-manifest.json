@@ -205,23 +205,6 @@
         }
       ]
     },
-    "hero-studio": {
-      "width": 1536,
-      "height": 1024,
-      "src": "/visuals/library/hero-studio.webp",
-      "variants": [
-        {
-          "url": "/visuals/library/hero-studio-768.webp",
-          "width": 768,
-          "height": 512
-        },
-        {
-          "url": "/visuals/library/hero-studio.webp",
-          "width": 1536,
-          "height": 1024
-        }
-      ]
-    },
     "service-website": {
       "width": 1536,
       "height": 1024,
@@ -404,6 +387,23 @@
         },
         {
           "url": "/visuals/library/closing-home.webp",
+          "width": 1536,
+          "height": 1024
+        }
+      ]
+    },
+    "hero-studio-digital": {
+      "width": 1536,
+      "height": 1024,
+      "src": "/visuals/library/hero-studio-digital.webp",
+      "variants": [
+        {
+          "url": "/visuals/library/hero-studio-digital-768.webp",
+          "width": 768,
+          "height": 512
+        },
+        {
+          "url": "/visuals/library/hero-studio-digital.webp",
           "width": 1536,
           "height": 1024
         }
